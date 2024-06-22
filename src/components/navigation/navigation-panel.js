@@ -10,6 +10,7 @@ import {
   faCloudArrowUp,
   faSliders,
 } from "@fortawesome/free-solid-svg-icons";
+import ApperanceContext from "../../context/apperance-context";
 
 const navmenu = [
   {
@@ -63,16 +64,20 @@ const NavigationPanel = (props) => {
       : [];
   rulesetLink = rulesetLink.concat(navmenu);
 
-  let sideNav = loggedIn && closedState ? "open" : "closed";
+  let sideNav = closedState ? "open" : "closed";
 
   return (
-    <div className={`nav-container ${closedState ? "closed" : "open"} dark}`}>
+    <div
+      className={`nav-container ${closedState ? "closed" : "open"} ${
+        ApperanceContext.background
+      }}`}
+    >
       <div className="menu-bar">
         <a
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            updateState(true);
+            updateState(sideNav);
           }}
         >
           <FontAwesomeIcon

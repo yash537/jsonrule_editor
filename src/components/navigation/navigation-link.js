@@ -42,7 +42,7 @@ const NavParentLink = ({ link, onConfirm, index, visible }) => {
       className={link.linkClass}
       onClick={(e) => onConfirm(e, index, link.navigate)}
     >
-      <a href="" className={`link ${visible ? "active" : ""}`}>
+      <a href="/" className={`link ${visible ? "active" : ""}`}>
         <span className={link.iconClass} />
         {link.fontIcons && <FontAwesomeIcon icon={link.fontIcons} />}
         <span className="text">{link.name}</span>
@@ -82,7 +82,7 @@ const NavSubLink = ({ sublinks, visible, onConfirm, activeIndex }) => {
         }`}
         onClick={(e) => handleClick(e, link)}
       >
-        <a href="" className="link">
+        <a href="/" className="link">
           <span className="text">{link}</span>
         </a>
       </li>
