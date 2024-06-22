@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PageTitle from "../components/title/page-title";
 import Tabs from "../components/tabs/tabs";
 // import Attributes from "../components/attributes/attributes";
-// import Decisions from "../components/decisions/decision";
+import Decisions from "../components/decisions/decision";
 // import ValidateRules from "../components/validate/validate-rules";
 import Banner from "../components/panel/banner";
 import * as Message from "../constants/messages";
@@ -19,7 +19,7 @@ const tabs = [
   { name: "Facts" },
   { name: "Decisions" },
   { name: "Validate" },
-  { name: "Generate" },
+  { name: "Generate" }
 ];
 
 const RulesetContainer = () => {
@@ -88,16 +88,7 @@ const RulesetContainer = () => {
               }
             />
           )}
-          {/* {activeTab === "Decisions" && (
-            <Decisions
-              decisions={indexedDecisions || []}
-              attributes={attributes}
-              handleDecisions={(operation, decision) =>
-                dispatch(handleDecision(operation, decision))
-              }
-              outcomes={outcomes}
-            />
-          )} */}
+          {activeTab === "Decisions" && <Decisions />}
           {/* {activeTab === "Validate" && (
             <ValidateRules attributes={attributes} decisions={decisions} />
           )} */}
@@ -120,14 +111,14 @@ RulesetContainer.propTypes = {
   handleAttribute: PropTypes.func,
   handleDecisions: PropTypes.func,
   updatedFlag: PropTypes.bool,
-  runRules: PropTypes.func,
+  runRules: PropTypes.func
 };
 
 RulesetContainer.defaultProps = {
   ruleset: {},
   handleAttribute: () => false,
   handleDecisions: () => false,
-  updatedFlag: false,
+  updatedFlag: false
 };
 
 export default RulesetContainer;
