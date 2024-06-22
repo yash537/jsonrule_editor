@@ -17,21 +17,22 @@ function ruleset(state = initialState, action = "") {
   switch (action.type) {
     case ActionTypes.UPLOAD_RULESET: {
       const { ruleset } = action.payload;
-      const rulesets = state.rulesets.concat(ruleset);
+      const updatedRulesets = state.rulesets.concat(ruleset);
       return {
         ...state,
-        rulesets: cloneDeep(rulesets),
-        uploadedRules: cloneDeep(rulesets),
+        rulesets: cloneDeep(updatedRulesets),
+        uploadedRules: cloneDeep(updatedRulesets),
       };
     }
 
     case ActionTypes.ADD_RULESET: {
       const { name } = action.payload;
-      const rulset = { name, attributes: [], decisions: [] };
-      const count = state.rulesets.length === 0 ? 0 : state.rulesets.length;
+      const newRuleset = { name, attributes: [], decisions: [] };
+      const updatedRulesets = state.rulesets.concat(newRuleset);
+      const count = updatedRulesets.length - 1; // index of the last added ruleset
       return {
         ...state,
-        rulesets: state.rulesets.concat(rulset),
+        rulesets: cloneDeep(updatedRulesets),
         activeRuleset: count,
       };
     }
@@ -44,15 +45,22 @@ function ruleset(state = initialState, action = "") {
 
     case ActionTypes.ADD_DECISION: {
       const { condition } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-      activeRuleSet.decisions = activeRuleSet.decisions.concat(condition);
+      const updatedDecisions = [
+        ...state.rulesets[state.activeRuleset].decisions,
+        condition,
+      ];
+
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        decisions: updatedDecisions,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
@@ -60,32 +68,50 @@ function ruleset(state = initialState, action = "") {
 
     case ActionTypes.UPDATE_DECISION: {
       const { condition, decisionIndex } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+      const updatedDecisions = [
+        ...state.rulesets[state.activeRuleset].decisions,
+      ];
+      updatedDecisions[decisionIndex] = condition;
 
-      activeRuleSet.decisions[decisionIndex] = condition;
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        decisions: updatedDecisions,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
     }
+
     case ActionTypes.REMOVE_DECISION: {
       const { decisionIndex } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+      const updatedDecisions = [
+        ...state.rulesets[state.activeRuleset].decisions.slice(
+          0,
+          decisionIndex
+        ),
+        ...state.rulesets[state.activeRuleset].decisions.slice(
+          decisionIndex + 1
+        ),
+      ];
 
-      activeRuleSet.decisions.splice(decisionIndex, 1);
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        decisions: updatedDecisions,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
@@ -93,18 +119,23 @@ function ruleset(state = initialState, action = "") {
 
     case ActionTypes.REMOVE_DECISIONS: {
       const { outcome } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-
-      activeRuleSet.decisions = activeRuleSet.decisions.filter(
-        (decision) => decision.event && decision.event.type !== outcome
+      const updatedDecisions = state.rulesets[
+        state.activeRuleset
+      ].decisions.filter(
+        (decision) => !(decision.event && decision.event.type === outcome)
       );
+
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        decisions: updatedDecisions,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
@@ -112,15 +143,22 @@ function ruleset(state = initialState, action = "") {
 
     case ActionTypes.ADD_ATTRIBUTE: {
       const { attribute } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-      activeRuleSet.attributes.push(attribute);
+      const updatedAttributes = [
+        ...state.rulesets[state.activeRuleset].attributes,
+        attribute,
+      ];
+
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        attributes: updatedAttributes,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
@@ -128,15 +166,23 @@ function ruleset(state = initialState, action = "") {
 
     case ActionTypes.UPDATE_ATTRIBUTE: {
       const { attribute, index } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-      activeRuleSet.attributes.splice(index, 1, attribute);
+      const updatedAttributes = [
+        ...state.rulesets[state.activeRuleset].attributes.slice(0, index),
+        attribute,
+        ...state.rulesets[state.activeRuleset].attributes.slice(index + 1),
+      ];
+
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        attributes: updatedAttributes,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
@@ -144,35 +190,44 @@ function ruleset(state = initialState, action = "") {
 
     case ActionTypes.REMOVE_ATTRIBUTE: {
       const { index } = action.payload;
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-      activeRuleSet.attributes.splice(index, 1);
+      const updatedAttributes = [
+        ...state.rulesets[state.activeRuleset].attributes.slice(0, index),
+        ...state.rulesets[state.activeRuleset].attributes.slice(index + 1),
+      ];
+
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        attributes: updatedAttributes,
+      };
 
       return {
         ...state,
         updatedFlag: true,
         rulesets: replaceRulesetByIndex(
           state.rulesets,
-          activeRuleSet,
+          updatedRuleSet,
           state.activeRuleset
         ),
       };
     }
 
     case ActionTypes.RESET_ATTRIBUTE: {
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
       if (
         state.uploadedRules[state.activeRuleset] &&
         state.uploadedRules[state.activeRuleset].attributes
       ) {
-        activeRuleSet.attributes = cloneDeep(
-          state.uploadedRules[state.activeRuleset].attributes
-        );
+        const updatedRuleSet = {
+          ...state.rulesets[state.activeRuleset],
+          attributes: cloneDeep(
+            state.uploadedRules[state.activeRuleset].attributes
+          ),
+        };
 
         return {
           ...state,
           rulesets: replaceRulesetByIndex(
             state.rulesets,
-            activeRuleSet,
+            updatedRuleSet,
             state.activeRuleset
           ),
         };
@@ -181,20 +236,22 @@ function ruleset(state = initialState, action = "") {
     }
 
     case ActionTypes.RESET_DECISION: {
-      const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
       if (
         state.uploadedRules[state.activeRuleset] &&
         state.uploadedRules[state.activeRuleset].decisions
       ) {
-        activeRuleSet.decisions = cloneDeep(
-          state.uploadedRules[state.activeRuleset].decisions
-        );
+        const updatedRuleSet = {
+          ...state.rulesets[state.activeRuleset],
+          decisions: cloneDeep(
+            state.uploadedRules[state.activeRuleset].decisions
+          ),
+        };
 
         return {
           ...state,
           rulesets: replaceRulesetByIndex(
             state.rulesets,
-            activeRuleSet,
+            updatedRuleSet,
             state.activeRuleset
           ),
         };
