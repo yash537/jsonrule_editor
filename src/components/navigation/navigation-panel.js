@@ -39,7 +39,6 @@ const navmenu = [
 const NavigationPanel = (props) => {
   const [links, setLinks] = useState([]);
   const navigate = useNavigate();
-  // const appctx = useContext(AppearanceContext);
   const { closedState, loggedIn, updateState } = props;
 
   const handleNavBtn = () => {
@@ -48,7 +47,7 @@ const NavigationPanel = (props) => {
 
   const handleNavLink = (name) => {
     props.setActiveRulesetIndex(name);
-    navigate.push("/ruleset");
+    navigate("/ruleset");
   };
 
   let rulesetLink =

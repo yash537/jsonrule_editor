@@ -1,4 +1,5 @@
-import * as ActionTypes from "./action-types";
+/* eslint-disable default-case */
+import * as ActionTypes from "../actionTypes/action-type";
 
 export const add = (attribute) => {
   const payload = { attribute };
