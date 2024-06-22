@@ -13,7 +13,7 @@
     color: $link-clr-drk;
 
     .plus-icon {
-      background: url("../../assets/icons/plus-rounded-dark.svg") no-repeat;
+      background: url("../../../assets/icons/plus-rounded-dark.svg") no-repeat;
       background-size: contain;
     }
   }
@@ -22,7 +22,7 @@
     color: $link-clr-drk;
 
     .plus-icon {
-      background: url("../../assets/icons/plus-rounded-dark.svg") no-repeat;
+      background: url("../../../assets/icons/plus-rounded-dark.svg") no-repeat;
       background-size: contain;
     }
   }
@@ -31,7 +31,7 @@
     color: $form-label-color;
 
     .plus-icon {
-      background: url("../../assets/icons/plus-icon-rounded.svg") no-repeat;
+      background: url("../../../assets/icons/plus-icon-rounded.svg") no-repeat;
       background-size: contain;
     }
   }
@@ -54,7 +54,7 @@
   }
 
   .plus-icon {
-    background: url("../../assets/icons/plus-icon-rounded.svg") no-repeat;
+    background: url("../../../assets/icons/plus-icon-rounded.svg") no-repeat;
     background-size: contain;
     margin: 0 0px 0 0;
     padding: 0;
@@ -64,7 +64,7 @@
   }
 
   .submit-icon {
-    background: url("../../assets/icons/submit-icon-green-rounded.svg")
+    background: url("../../../assets/icons/submit-icon-green-rounded.svg")
       no-repeat;
     background-size: contain;
     margin: 0 0px 0 0;
@@ -75,7 +75,8 @@
   }
 
   .reset-icon {
-    background: url("../../assets/icons/reset-icon-red-rounded.svg") no-repeat;
+    background: url("../../../assets/icons/reset-icon-red-rounded.svg")
+      no-repeat;
     background-size: contain;
     margin: 0 0px 0 0;
     padding: 0;
