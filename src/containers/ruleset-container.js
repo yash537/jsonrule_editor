@@ -14,12 +14,13 @@ import RuleErrorBoundary from "../components/error/ruleset-error";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Attributes from "../components/attributes/attributes";
 import { handleAttribute } from "../redux/actions/attributes";
+import ValidateRules from "../components/validate/validate-rules";
 
 const tabs = [
   { name: "Facts" },
   { name: "Decisions" },
   { name: "Validate" },
-  { name: "Generate" }
+  { name: "Generate" },
 ];
 
 const RulesetContainer = () => {
@@ -89,9 +90,9 @@ const RulesetContainer = () => {
             />
           )}
           {activeTab === "Decisions" && <Decisions />}
-          {/* {activeTab === "Validate" && (
+          {activeTab === "Validate" && (
             <ValidateRules attributes={attributes} decisions={decisions} />
-          )} */}
+          )}
           {activeTab === "Generate" && (
             <Banner
               message={message}
@@ -111,14 +112,14 @@ RulesetContainer.propTypes = {
   handleAttribute: PropTypes.func,
   handleDecisions: PropTypes.func,
   updatedFlag: PropTypes.bool,
-  runRules: PropTypes.func
+  runRules: PropTypes.func,
 };
 
 RulesetContainer.defaultProps = {
   ruleset: {},
   handleAttribute: () => false,
   handleDecisions: () => false,
-  updatedFlag: false
+  updatedFlag: false,
 };
 
 export default RulesetContainer;
