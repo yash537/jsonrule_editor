@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
-const Title = ({ title, toggleNav }) => {
+const Title = ({ title, updateState, closedState }) => {
+  let sideNav = closedState ? "open" : "closed";
+
   return (
     <div className="header-container">
       <div className="menu-bar">
@@ -11,7 +13,7 @@ const Title = ({ title, toggleNav }) => {
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            toggleNav();
+            updateState(sideNav);
           }}
         >
           <FontAwesomeIcon className="menu-icon" icon={faBars} />

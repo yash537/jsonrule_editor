@@ -100,6 +100,12 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
   );
 };
 
+AttributeDetails.defaultProps = {
+  attributes: [],
+  updateAttribute: () => false,
+  removeAttribute: () => false
+};
+
 AttributeDetails.propTypes = {
   attributes: PropTypes.array,
   updateAttribute: PropTypes.func,

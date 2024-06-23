@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const theme = {
-    background: 'light',
-    toggleBackground: () => {},
+  background: "light",
+  toggleBackground: () => {}
 };
 
 const ApperanceContext = React.createContext(theme);

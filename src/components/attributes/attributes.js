@@ -1,11 +1,14 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
+// import AddAttributes from "./add-atrribtues";
+// import AttributeDetails from "./attr-details";
 import ToolBar from "../toolbar/toolbar";
 import Banner from "../panel/banner";
 import * as Message from "../../constants/messages";
 import { isContains } from "../../utils/stringutils";
 import AddAttributes from "./add-atrribtues";
 import AttributeDetails from "./attr-details";
+// import AttributeDetails from "./attr-details";
 
 const Attributes = ({ handleAttribute, attributes }) => {
   const [showAddAttr, setShowAddAttr] = useState(false);
@@ -74,6 +77,11 @@ const Attributes = ({ handleAttribute, attributes }) => {
       )}
     </div>
   );
+};
+
+Attributes.defaultProps = {
+  handleAttribute: () => false,
+  attributes: []
 };
 
 Attributes.propTypes = {

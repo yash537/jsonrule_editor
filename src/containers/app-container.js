@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Title from "../components/title/title";
 import NavigationPanel from "../components/navigation/navigation-panel";
 import ApperanceContext from "../context/apperance-context";
@@ -19,28 +19,22 @@ const AppContainer = (props) => {
   } = props;
   const [theme, setTheme] = useState(ApperanceContext);
 
-  const toggleBackground = (value) => {
-    const updatedTheme = { ...theme, background: value };
-    document.body.className = value;
-    setTheme(updatedTheme);
-  };
-
-  const [navClosed, setNavClosed] = useState(true);
-
-  const toggleNav = () => {
-    setNavClosed(!navClosed);
-  };
-
   useEffect(() => {
     document.body.className = theme.background;
   }, [theme.background]);
 
+  const closednav = navState !== "open";
+
   return (
     <>
       <ApperanceContext.Provider value={theme}>
-        <Title title={"Json Rule Engine"} toggleNav={toggleNav} />
+        <Title
+          title={"Json Rule Editor"}
+          closedState={closednav}
+          updateState={updateState}
+        />
         <NavigationPanel
-          closedState={navClosed}
+          closedState={closednav}
           updateState={updateState}
           activeIndex={activeIndex}
           rulenames={rulenames}
@@ -48,7 +42,7 @@ const AppContainer = (props) => {
           loggedIn={loggedIn}
         />
         <AppRoutes
-          closedState={navClosed}
+          closedState={closednav}
           loggedIn={loggedIn}
           appctx={ApperanceContext}
         />
@@ -56,15 +50,6 @@ const AppContainer = (props) => {
     </>
   );
 };
-
-// AppContainer.defaultProps = {
-//   rulenames: [],
-//   setActiveRulesetIndex: () => false,
-//   navState: undefined,
-//   activeIndex: 0,
-//   loggedIn: false,
-//   updateState: () => false
-// };
 
 AppContainer.propTypes = {
   rulenames: PropTypes.array,
@@ -88,5 +73,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
-
-// export default AppContainer;
