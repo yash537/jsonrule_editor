@@ -1,5 +1,8 @@
 @use "sass:map";
 
+.menu {
+  display: flex;
+}
 .attributes-header {
   color: $form-label-color;
   display: flex;
@@ -54,7 +57,7 @@
   }
 
   .plus-icon {
-    background: url("../../../assets/icons/plus-icon-rounded.svg") no-repeat;
+    // background: url("../../../assets/icons/plus-icon-rounded.svg") no-repeat;
     background-size: contain;
     margin: 0 0px 0 0;
     padding: 0;
@@ -64,8 +67,7 @@
   }
 
   .submit-icon {
-    background: url("../../../assets/icons/submit-icon-green-rounded.svg")
-      no-repeat;
+    // background: url("../../../assets/icons/submit-icon-green-rounded.svg") no-repeat;
     background-size: contain;
     margin: 0 0px 0 0;
     padding: 0;
@@ -75,7 +77,6 @@
   }
 
   .reset-icon {
-    background: url("../../../assets/icons/reset-icon-red-rounded.svg") no-repeat;
     background-size: contain;
     margin: 0 0px 0 0;
     padding: 0;

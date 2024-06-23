@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import SweetAlert from "react-bootstrap-sweetalert";
 import AddAttributes from "./add-atrribtues";
 import { PanelBox } from "../panel/panel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Button from "../button/button";
 
 const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
   const [removeAlert, setRemoveAlert] = useState(false);
@@ -75,12 +78,18 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
               <span className={attr.type}>{attr.type}</span>
             </div>
             <div className="menu">
-              <a href="#" onClick={(e) => handleEdit(e, index)}>
-                Edit
-              </a>
-              <a href="#" onClick={(e) => handleRemove(e, attr, index)}>
-                Remove
-              </a>
+              <Button
+                label={"Edit"}
+                onConfirm={(e) => handleEdit(e, index)}
+                classname="btn-primary"
+                type="submit"
+              />
+              <Button
+                label={"Delete"}
+                onConfirm={(e) => handleRemove(e, index)}
+                classname="btn-danger"
+                type="submit"
+              />
             </div>
           </PanelBox>
           {showRuleIndex === index && (
@@ -98,12 +107,6 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
       ))}
     </React.Fragment>
   );
-};
-
-AttributeDetails.defaultProps = {
-  attributes: [],
-  updateAttribute: () => false,
-  removeAttribute: () => false
 };
 
 AttributeDetails.propTypes = {
