@@ -144,14 +144,9 @@ const ValidateRules = ({ attributes, decisions }) => {
   );
 };
 
-ValidateRules.defaultProps = {
-  attributes: [],
-  decisions: [],
-};
-
 ValidateRules.propTypes = {
   attributes: PropTypes.array,
-  decisions: PropTypes.array,
+  decisions: PropTypes.array
 };
 
 export default ValidateRules;

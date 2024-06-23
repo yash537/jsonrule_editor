@@ -1,12 +1,9 @@
-/* eslint-disable no-undef */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import PageTitle from "../components/title/page-title";
 import Tabs from "../components/tabs/tabs";
-// import Attributes from "../components/attributes/attributes";
 import Decisions from "../components/decisions/decision";
-// import ValidateRules from "../components/validate/validate-rules";
 import Banner from "../components/panel/banner";
 import * as Message from "../constants/messages";
 import { groupBy } from "lodash/collection";
@@ -20,7 +17,7 @@ const tabs = [
   { name: "Facts" },
   { name: "Decisions" },
   { name: "Validate" },
-  { name: "Generate" },
+  { name: "Generate" }
 ];
 
 const RulesetContainer = () => {
@@ -61,7 +58,7 @@ const RulesetContainer = () => {
     );
   };
 
-  const { attributes, decisions, name } = ruleset;
+  const { attributes, decisions, name } = ruleset || {};
 
   const indexedDecisions =
     decisions &&
@@ -105,21 +102,6 @@ const RulesetContainer = () => {
       </RuleErrorBoundary>
     </div>
   );
-};
-
-RulesetContainer.propTypes = {
-  ruleset: PropTypes.object,
-  handleAttribute: PropTypes.func,
-  handleDecisions: PropTypes.func,
-  updatedFlag: PropTypes.bool,
-  runRules: PropTypes.func,
-};
-
-RulesetContainer.defaultProps = {
-  ruleset: {},
-  handleAttribute: () => false,
-  handleDecisions: () => false,
-  updatedFlag: false,
 };
 
 export default RulesetContainer;

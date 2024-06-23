@@ -15,7 +15,7 @@ const AppContainer = (props) => {
     loggedIn,
     activeIndex,
     updateState,
-    setActiveRulesetIndex,
+    setActiveRulesetIndex
   } = props;
   const [theme, setTheme] = useState(ApperanceContext);
 
@@ -25,18 +25,22 @@ const AppContainer = (props) => {
     setTheme(updatedTheme);
   };
 
+  const [navClosed, setNavClosed] = useState(true);
+
+  const toggleNav = () => {
+    setNavClosed(!navClosed);
+  };
+
   useEffect(() => {
     document.body.className = theme.background;
   }, [theme.background]);
 
-  const closednav = navState !== "open";
-
   return (
     <>
       <ApperanceContext.Provider value={theme}>
-        <Title title={"Json Rule Editor"} />
+        <Title title={"Json Rule Engine"} toggleNav={toggleNav} />
         <NavigationPanel
-          closedState={closednav}
+          closedState={navClosed}
           updateState={updateState}
           activeIndex={activeIndex}
           rulenames={rulenames}
@@ -44,7 +48,7 @@ const AppContainer = (props) => {
           loggedIn={loggedIn}
         />
         <AppRoutes
-          closedState={closednav}
+          closedState={navClosed}
           loggedIn={loggedIn}
           appctx={ApperanceContext}
         />
@@ -53,14 +57,14 @@ const AppContainer = (props) => {
   );
 };
 
-AppContainer.defaultProps = {
-  rulenames: [],
-  setActiveRulesetIndex: () => false,
-  navState: undefined,
-  activeIndex: 0,
-  loggedIn: false,
-  updateState: () => false,
-};
+// AppContainer.defaultProps = {
+//   rulenames: [],
+//   setActiveRulesetIndex: () => false,
+//   navState: undefined,
+//   activeIndex: 0,
+//   loggedIn: false,
+//   updateState: () => false
+// };
 
 AppContainer.propTypes = {
   rulenames: PropTypes.array,
@@ -68,19 +72,19 @@ AppContainer.propTypes = {
   navState: PropTypes.string,
   loggedIn: PropTypes.bool,
   updateState: PropTypes.func,
-  activeIndex: PropTypes.number,
+  activeIndex: PropTypes.number
 };
 
 const mapStateToProps = (state) => ({
   navState: state.app.navState,
   rulenames: state.ruleset.rulesets.map((r) => r.name),
   loggedIn: state.app.loggedIn,
-  activeIndex: state.ruleset.activeRuleset,
+  activeIndex: state.ruleset.activeRuleset
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setActiveRulesetIndex: (name) => dispatch(updateRulesetIndex(name)),
-  updateState: (val) => dispatch(updateState(val)),
+  updateState: (val) => dispatch(updateState(val))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

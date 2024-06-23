@@ -3,7 +3,6 @@
   font-family: $title-font-family;
   height: 100%;
   left: 0;
-  margin-top: -70px;
   overflow-y: auto;
   position: fixed;
   padding: 0 10px 25px;
@@ -32,9 +31,7 @@
 .menu-bar {
   cursor: pointer;
   font-size: 19px;
-  margin-top: 30px;
-  margin-bottom: 25px;
-
+  margin-left: 30px;
   a {
     color: $title-color;
   }
@@ -70,7 +67,7 @@
   }
 
   .link-heading {
-    font-size: 20px;
+    font-size: 16px;
 
     a {
       color: $btn-color;

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { includes } from "lodash/collection";
-import { RULE_AVAILABLE_CREATE } from "../constants/messages";
+import { includes } from "lodash";
+import { useNavigate } from "react-router-dom";
 import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-
-import { TitlePanel } from "../components/panel/panel";
+import { RULE_AVAILABLE_CREATE } from "../constants/messages";
+import { addRuleset } from "../redux/actions/rule";
 import InputField from "../components/forms/input-field";
 import Button from "../components/button/button";
 import Notification from "../components/notification/notification";
-import { useNavigate } from "react-router-dom";
-import { addRuleset } from "../redux/actions/rule";
+import { TitlePanel } from "../components/panel/panel";
 
 const CreateRulesetContainer = () => {
   const [name, setName] = useState("");
@@ -18,27 +17,24 @@ const CreateRulesetContainer = () => {
   const [fileExist, setFileExist] = useState(false);
   const [message, setMessage] = useState({});
 
-  const rulesetnames = useSelector((state) =>
+  const rulesetNames = useSelector((state) =>
     state.ruleset.rulesets.map((r) => r.name)
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const history = useNavigate();
-
-  const onChangeName = (e) => {
-    setName(e.target.value);
-  };
+  const onChangeName = (e) => setName(e.target.value);
 
   const handleAdd = (e) => {
     e.preventDefault();
-    if (!name || !name.trim()) {
-      setError({ name: "Please specify value" });
-    } else if (includes(rulesetnames, name)) {
+    if (!name.trim()) {
+      setError({ name: "Please specify a value" });
+    } else if (includes(rulesetNames, name)) {
       setFileExist(true);
       setMessage(RULE_AVAILABLE_CREATE);
     } else {
       dispatch(addRuleset(name));
-      history("/ruleset");
+      navigate("/ruleset");
     }
   };
 
@@ -52,7 +48,7 @@ const CreateRulesetContainer = () => {
         />
       )}
       <TitlePanel title="Create Rules" titleClass={faSquarePlus}>
-        <form>
+        <form onSubmit={handleAdd}>
           <div className="upload-panel">
             <InputField
               label="Name"
@@ -60,12 +56,7 @@ const CreateRulesetContainer = () => {
               value={name}
               error={error.name}
             />
-            <Button
-              label={"Create"}
-              onConfirm={handleAdd}
-              classname="primary-btn"
-              type="submit"
-            />
+            <Button label="Create" classname="primary-btn" type="submit" />
           </div>
         </form>
       </TitlePanel>
@@ -73,12 +64,8 @@ const CreateRulesetContainer = () => {
   );
 };
 
-CreateRulesetContainer.defaultProps = {
-  rulesetnames: [],
-};
-
 CreateRulesetContainer.propTypes = {
-  rulesetnames: PropTypes.array,
+  rulesetNames: PropTypes.array
 };
 
 export default CreateRulesetContainer;

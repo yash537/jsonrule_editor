@@ -51,18 +51,11 @@ const NavParentLink = ({ link, onConfirm, index, visible }) => {
   );
 };
 
-NavParentLink.defaultProps = {
-  link: {},
-  onConfirm: () => undefined,
-  index: 0,
-  visible: false,
-};
-
 NavParentLink.propTypes = {
   link: PropTypes.object,
   onConfirm: PropTypes.func,
   index: PropTypes.number,
-  visible: PropTypes.bool,
+  visible: PropTypes.bool
 };
 
 const NavSubLink = ({ sublinks, visible, onConfirm, activeIndex }) => {
@@ -90,18 +83,11 @@ const NavSubLink = ({ sublinks, visible, onConfirm, activeIndex }) => {
   ));
 };
 
-NavSubLink.defaultProps = {
-  sublinks: [],
-  visible: false,
-  onConfirm: () => undefined,
-  activeIndex: 0,
-};
-
 NavSubLink.propTypes = {
   sublinks: PropTypes.array,
   visible: PropTypes.bool,
   onConfirm: PropTypes.func,
-  activeIndex: PropTypes.number,
+  activeIndex: PropTypes.number
 };
 
 export default NavLinks;

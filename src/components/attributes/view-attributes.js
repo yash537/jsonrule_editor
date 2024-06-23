@@ -10,12 +10,8 @@ const ViewAttributes = ({ items }) => {
   ));
 };
 
-ViewAttributes.defaultProps = {
-  items: {},
-};
-
 ViewAttributes.propTypes = {
-  items: PropTypes.object,
+  items: PropTypes.object
 };
 
 export const ViewOutcomes = ({ items }) => {
@@ -27,12 +23,8 @@ export const ViewOutcomes = ({ items }) => {
   ));
 };
 
-ViewOutcomes.defaultProps = {
-  items: [],
-};
-
 ViewOutcomes.propTypes = {
-  items: PropTypes.array,
+  items: PropTypes.array
 };
 
 export default ViewAttributes;

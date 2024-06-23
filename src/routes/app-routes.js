@@ -23,16 +23,10 @@ const AppRoutes = (props) => {
   );
 };
 
-AppRoutes.defaultProps = {
-  closedState: false,
-  loggedIn: false,
-  appctx: {},
-};
-
 AppRoutes.propTypes = {
   closedState: PropTypes.bool,
   loggedIn: PropTypes.bool,
-  appctx: PropTypes.object,
+  appctx: PropTypes.object
 };
 
 export default AppRoutes;

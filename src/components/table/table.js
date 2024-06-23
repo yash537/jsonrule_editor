@@ -16,14 +16,9 @@ const Table = ({ columns, children }) => {
   );
 };
 
-Table.defaultProps = {
-  columns: [],
-  children: undefined,
-};
-
 Table.propTypes = {
   columns: PropTypes.array,
-  children: PropTypes.any,
+  children: PropTypes.any
 };
 
 export default Table;

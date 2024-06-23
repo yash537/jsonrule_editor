@@ -109,11 +109,6 @@ const Decisions = () => {
     setShowModal(false);
   };
 
-  const generateJson = () => {
-    alert(JSON.stringify(treeData, null, 2));
-    console.log(JSON.stringify(treeData, null, 2));
-  };
-
   return (
     <div className="tree">
       <Tree

@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { faEdit, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPencil,
+  faTrash,
+  faAdd,
+  faAngleDown,
+  faAngleUp
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
@@ -13,32 +19,51 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
     <ul className="tree">
       <li style={{ listStyleType: "none" }}>
         <div className="tree-box">
-          {condition.conditions && condition.conditions.length > 0 && (
-            <span className="toggle-btn" onClick={handleToggleChildren}>
-              {showChildren ? "▼" : "▶"}
-            </span>
-          )}
-          <span className="textbold">{condition.field} </span>
-          <span> ({condition.operator}) </span>
-          <span className="textbold">{condition.value}</span>
-          <span className="edit-node" onClick={() => onEditNode(condition)}>
-            <FontAwesomeIcon
-              className="close-icon"
-              icon={faEdit}
-            ></FontAwesomeIcon>
-          </span>
-          <span className="delete-node" onClick={() => onDeleteNode(condition)}>
-            <FontAwesomeIcon
-              className="close-icon"
-              icon={faTrash}
-            ></FontAwesomeIcon>
-          </span>
-          <span className="add-node" onClick={() => onAddNode(condition)}>
-            <FontAwesomeIcon
-              className="close-icon"
-              icon={faAdd}
-            ></FontAwesomeIcon>
-          </span>
+          <div className="tree-box-inner">
+            <div>
+              {condition.conditions && condition.conditions.length > 0 && (
+                <span className="toggle-btn" onClick={handleToggleChildren}>
+                  {showChildren ? (
+                    <FontAwesomeIcon
+                      className="close-icon"
+                      icon={faAngleDown}
+                    ></FontAwesomeIcon>
+                  ) : (
+                    <FontAwesomeIcon
+                      className="close-icon"
+                      icon={faAngleUp}
+                    ></FontAwesomeIcon>
+                  )}
+                </span>
+              )}
+              <span className="textbold">{condition.field} </span>
+              <span> ({condition.operator}) </span>
+              <span className="textbold">{condition.value}</span>
+            </div>
+            <div className="action-btn">
+              <span className="add-node" onClick={() => onAddNode(condition)}>
+                <FontAwesomeIcon
+                  className="close-icon"
+                  icon={faAdd}
+                ></FontAwesomeIcon>
+              </span>
+              <span className="edit-node" onClick={() => onEditNode(condition)}>
+                <FontAwesomeIcon
+                  className="close-icon"
+                  icon={faPencil}
+                ></FontAwesomeIcon>
+              </span>
+              <span
+                className="delete-node"
+                onClick={() => onDeleteNode(condition)}
+              >
+                <FontAwesomeIcon
+                  className="close-icon"
+                  icon={faTrash}
+                ></FontAwesomeIcon>
+              </span>
+            </div>
+          </div>
           {condition.action && (
             <div className="action">
               Action: {condition.action.action}

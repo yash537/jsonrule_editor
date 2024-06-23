@@ -1,22 +1,30 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-// import AppearanceContext from "../../context/apperance-context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
-const Title = (props) => {
-  // const appctx = useContext(AppearanceContext);
+const Title = ({ title, toggleNav }) => {
   return (
-    <div className={`header-container `}>
-      <div>{props.title}</div>
+    <div className="header-container">
+      <div className="menu-bar">
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            toggleNav();
+          }}
+        >
+          <FontAwesomeIcon className="menu-icon" icon={faBars} />
+        </a>
+      </div>
+      <div className="title">{title}</div>
     </div>
   );
 };
 
-Title.defaultProps = {
-  title: "Json Rule Editor",
-};
-
 Title.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  toggleNav: PropTypes.func.isRequired
 };
 
 export default Title;

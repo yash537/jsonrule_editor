@@ -67,18 +67,11 @@ const AddAttributes = ({ attribute, addAttribute, cancel, buttonProps }) => {
   );
 };
 
-AddAttributes.defaultProps = {
-  addAttribute: () => false,
-  cancel: () => false,
-  attribute: {},
-  buttonProps: {},
-};
-
 AddAttributes.propTypes = {
   addAttribute: PropTypes.func,
   cancel: PropTypes.func,
   attribute: PropTypes.object,
-  buttonProps: PropTypes.object,
+  buttonProps: PropTypes.object
 };
 
 export default AddAttributes;

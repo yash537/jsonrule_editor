@@ -1,6 +1,12 @@
 #tree {
     padding: 20px;
   }
+  .tree-box-inner {
+    display: flex;
+  }
+  .action-btn{
+    margin-left: 72px;
+  }
   
   .tree {
     ul {
@@ -33,14 +39,19 @@
   }
   
   .tree-box {
-    box-shadow: 3px 3px lightblue;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     display: inline-block;
-    background-color: #f9f9f9;
-    border: 1px solid #32d35a;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 0 10px 10px 10px;
+    padding: 10px 15px;
     position: relative;
     cursor: pointer;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    }
   
     .condition {
       font-weight: bold;
@@ -58,6 +69,7 @@
     margin-right: 5px;
     cursor: pointer;
     color: #0ae240;
+    user-select: none;
   }
   
   .box {
@@ -83,8 +95,13 @@
   .edit-node,
   .delete-node {
     cursor: pointer;
-    color: blue;
+    color: #007bff;
     margin-left: 10px;
+    transition: color 0.3s ease;
+  
+    &:hover {
+      color: #0056b3;
+    }
   }
   
   .add-node {

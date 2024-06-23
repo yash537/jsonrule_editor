@@ -1,11 +1,28 @@
 .header-container {
-    background-color: $title-color;
-    color: $title-bg-clr;
-    display: flex;
-    font-family: $title-font-family;
-    justify-content: flex-end;
-    font-size: 22px;
-    padding: 15px;
+  background-color: #ECF0F1;
+  color: #2A3F54;
+  display: flex;
+  align-items: center;
+  font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+  font-size: 22px;
+  padding: 30px 0px;
+  
+  .menu-bar {
+    margin-right: 15px;
+
+    a {
+      color: $title-bg-clr;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+    }
+  }
+
+  .title {
+    flex-grow: 1;
+    text-align: left;
+  }
 
   &.light {
     background-color: $title-color;
@@ -24,22 +41,19 @@
 }
 
 .page-title {
-    display: flex;
+  display: flex;
 
-    h1 {
-        color: $page-title-color;
-        font-size: 1.5rem;
-        font-family: $title-font-family;
-        font-weight: 400;
-        margin-top: 5px;
-    }
+  h1 {
+    color: $page-title-color;
+    font-size: 1.5rem;
+    font-family: $title-font-family;
+    font-weight: 400;
+    margin-top: 5px;
+  }
 }
-
 
 .icon-card {
-    color: $icon-color;
-    font-size: 45px;
-    margin-right: 10px;
+  color: $icon-color;
+  font-size: 45px;
+  margin-right: 10px;
 }
-
-

@@ -6,12 +6,12 @@ import Button from "../components/button/button";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { includes } from "lodash/collection";
-import ApperanceContext from "../context/apperance-context";
+import AppearanceContext from "../context/apperance-context";
 import { login } from "../redux/actions/app";
 import { uploadRuleset } from "../redux/actions/rule";
 
 function readFile(file, cb) {
-  var reader = new FileReader();
+  const reader = new FileReader();
   reader.onload = () => {
     try {
       cb(JSON.parse(reader.result), file.name);
@@ -22,14 +22,20 @@ function readFile(file, cb) {
   reader.readAsText(file);
 }
 
-const HomeContainer = (props) => {
-  const [uploadedFilesCount, setUploadedFilesCount] = useState(0);
+const HomeContainer = ({
+  rulenames = [],
+  initialRuleset = [],
+  uploadRuleset = () => {},
+  login = () => {},
+  loggedIn = false
+}) => {
   const [files, setFiles] = useState([]);
-  const [ruleset, setRuleset] = useState([]);
   const [uploadError, setUploadError] = useState(false);
   const [fileExist, setFileExist] = useState(false);
   const [message, setMessage] = useState({});
-  const appctx = useContext(ApperanceContext);
+  const appctx = useContext(AppearanceContext);
+
+  const [ruleset, setRuleset] = useState(initialRuleset); // Consolidated ruleset state
 
   const allowDrop = (e) => {
     e.preventDefault();
@@ -42,16 +48,14 @@ const HomeContainer = (props) => {
       setMessage("");
     } else {
       const isFileAdded =
-        files.some((fname) => fname === name) ||
-        includes(props.rulenames, file.name);
+        files.some((fname) => fname === name) || includes(rulenames, file.name);
       if (!isFileAdded) {
         setFiles([...files, name]);
         setRuleset([...ruleset, file]);
         setFileExist(false);
       } else {
-        const message = "";
         setFileExist(true);
-        setMessage(message);
+        setMessage("");
       }
     }
   };
@@ -62,70 +66,58 @@ const HomeContainer = (props) => {
   };
 
   const uploadDirectory = (item) => {
-    var dirReader = item.createReader();
-    dirReader.readEntries(function (entries) {
-      for (let j = 0; j < entries.length; j++) {
-        let subItem = entries[j];
+    const dirReader = item.createReader();
+    dirReader.readEntries((entries) => {
+      entries.forEach((subItem) => {
         if (subItem.isFile) {
           subItem.file((file) => {
             readFile(file, printFile);
           });
         }
-      }
+      });
     });
   };
 
   const chooseDirectory = (e) => {
     const files = e.target.files;
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].type === "application/json") {
-          readFile(files[i], printFile);
-        }
+    Array.from(files).forEach((file) => {
+      if (file.type === "application/json") {
+        readFile(file, printFile);
       }
-    }
+    });
   };
 
   const drop = (e) => {
     e.preventDefault();
     const items = e.dataTransfer.items;
-    if (items) {
-      for (let i = 0; i < items.length; i++) {
-        let item = items[i].webkitGetAsEntry();
-        if (item.isFile) {
-          uploadFile(items, i);
-        } else if (item.isDirectory) {
-          uploadDirectory(item);
-        }
+    Array.from(items).forEach((item, i) => {
+      const entry = item.webkitGetAsEntry();
+      if (entry.isFile) {
+        uploadFile(items, i);
+      } else if (entry.isDirectory) {
+        uploadDirectory(entry);
       }
-    }
+    });
   };
 
   const handleUpload = () => {
     if (ruleset.length > 0) {
-      props.uploadRuleset(ruleset);
-      navigate("./ruleset");
+      uploadRuleset(ruleset);
+      navigate("/ruleset");
     }
   };
 
   const history = useNavigate();
   const navigate = (location) => {
-    props.login();
+    login();
     history(location);
   };
 
-  const title = props.loggedIn ? "Upload Rules" : "Create / Upload Rules";
+  const title = loggedIn ? "Upload Rules" : "Create / Upload Rules";
 
   return (
     <div className="home-container">
       <div className="single-panel-container">
-        {/* {(fileExist || uploadError) && (
-          <Notification
-            body={message.body}
-            heading={message.heading}
-            type={message.type}
-          />
-        )} */}
         <TitlePanel title={title} titleClass={faCloudArrowUp}>
           <div className="upload-panel">
             <div
@@ -143,7 +135,7 @@ const HomeContainer = (props) => {
                     webkitdirectory="true"
                     multiple
                   />
-                </label>
+                </label>{" "}
                 or Drop Files
               </div>
               {files.length > 0 && (
@@ -158,10 +150,10 @@ const HomeContainer = (props) => {
               classname="primary-btn"
               type="button"
             />
-            {!props.loggedIn && (
+            {!loggedIn && (
               <Button
                 label={"Create"}
-                onConfirm={() => navigate("./create-ruleset")}
+                onConfirm={() => navigate("/create-ruleset")}
                 classname="primary-btn"
                 type="button"
                 disabled={files.length > 0}
@@ -175,29 +167,21 @@ const HomeContainer = (props) => {
 };
 
 HomeContainer.propTypes = {
-  ruleset: PropTypes.array,
+  rulenames: PropTypes.array,
+  initialRuleset: PropTypes.array,
   uploadRuleset: PropTypes.func,
   login: PropTypes.func,
-  loggedIn: PropTypes.bool,
-  rulenames: PropTypes.array,
-};
-
-HomeContainer.defaultProps = {
-  rulenames: [],
-  ruleset: [],
-  uploadRuleset: () => false,
-  login: () => false,
-  loggedIn: false,
+  loggedIn: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({
   rulenames: state.ruleset.rulesets.map((r) => r.name),
-  loggedIn: state.app.loggedIn,
+  loggedIn: state.app.loggedIn
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  login: () => dispatch(login()),
-  uploadRuleset: (ruleset) => dispatch(uploadRuleset(ruleset)),
-});
+const mapDispatchToProps = {
+  login,
+  uploadRuleset
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

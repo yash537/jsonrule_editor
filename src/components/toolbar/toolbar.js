@@ -1,67 +1,83 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Search from "../search/search";
-import ApperanceContext from "../../context/apperance-context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faUndo } from "@fortawesome/free-solid-svg-icons"; // Assuming these icons are used
 
 const ToolBar = ({ handleAdd, reset, searchTxt }) => {
-  const [submitAlert, setSubmitAlert] = useState(false);
-  const [resetAlert, setResetAlert] = useState(false);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [successMsg, setSuccessMsg] = useState("");
-
-  const context = useContext(ApperanceContext);
+  const [alert, setAlert] = useState({
+    type: null, // success, warning, null
+    show: false,
+    message: ""
+  });
 
   const handleReset = () => {
-    setResetAlert(true);
+    setAlert({ type: "warning", show: true, message: "Are you sure?" });
   };
 
   const handleSearch = (value) => {
     searchTxt(value);
   };
 
-  const cancelAlert = () => {
-    setSubmitAlert(false);
-    setResetAlert(false);
-    setSuccessAlert(false);
+  const handleAlertConfirm = () => {
+    if (alert.type === "success") {
+      reset();
+    }
+    setAlert({ ...alert, show: false });
+  };
+
+  const handleAlertCancel = () => {
+    setAlert({ ...alert, show: false });
   };
 
   const resetAction = () => {
     reset();
-    setResetAlert(false);
-    setSuccessAlert(true);
-    setSuccessMsg("Your changes are reset");
+    setAlert({
+      type: "success",
+      show: true,
+      message: "Your changes are reset"
+    });
   };
 
-  const successAlertComponent = () => (
-    <SweetAlert success title={successMsg} onConfirm={cancelAlert} />
-  );
-
-  const resetAlertComponent = () => (
-    <SweetAlert
-      warning
-      showCancel
-      confirmBtnText="Yes, Reset it!"
-      confirmBtnBsStyle="danger"
-      title="Are you sure?"
-      onConfirm={resetAction}
-      onCancel={cancelAlert}
-      focusCancelBtn
-    >
-      You will not be able to recover the changes!
-    </SweetAlert>
-  );
+  const alertComponent = () => {
+    if (alert.type === "success") {
+      return (
+        <SweetAlert
+          success
+          title={alert.message}
+          onConfirm={handleAlertConfirm}
+          onCancel={handleAlertCancel}
+        />
+      );
+    } else if (alert.type === "warning") {
+      return (
+        <SweetAlert
+          warning
+          showCancel
+          confirmBtnText="Yes, Reset it!"
+          confirmBtnBsStyle="danger"
+          title={alert.message}
+          onConfirm={resetAction}
+          onCancel={handleAlertCancel}
+          focusCancelBtn
+        >
+          You will not be able to recover the changes!
+        </SweetAlert>
+      );
+    }
+    return null;
+  };
 
   return (
-    <div className={`attributes-header ${context.background}`}>
-      {resetAlert && resetAlertComponent()}
-      {successAlert && successAlertComponent()}
+    <div className={`attributes-header`}>
+      {alert.show && alertComponent()}
       <div className="attr-link" onClick={handleAdd}>
-        <span className="plus-icon" />
+        <FontAwesomeIcon icon={faPlus} className="plus-icon" />
         <span className="text">Add</span>
       </div>
       <div className="attr-link" onClick={handleReset}>
-        <span className="reset-icon" />
+        <FontAwesomeIcon icon={faUndo} className="reset-icon" />
         <span className="text">Reset</span>
       </div>
       <div>
@@ -71,16 +87,10 @@ const ToolBar = ({ handleAdd, reset, searchTxt }) => {
   );
 };
 
-ToolBar.defaultProps = {
-  handleAdd: () => false,
-  reset: () => false,
-  searchTxt: () => false,
-};
-
 ToolBar.propTypes = {
-  handleAdd: PropTypes.func,
-  reset: PropTypes.func,
-  searchTxt: PropTypes.func,
+  handleAdd: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  searchTxt: PropTypes.func.isRequired
 };
 
 export default ToolBar;

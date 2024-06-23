@@ -90,7 +90,7 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
               cancel={cancelAlert}
               buttonProps={{
                 primaryLabel: "Save Changes",
-                secondaryLabel: "Cancel",
+                secondaryLabel: "Cancel"
               }}
             />
           )}
@@ -100,16 +100,10 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
   );
 };
 
-AttributeDetails.defaultProps = {
-  attributes: [],
-  updateAttribute: () => false,
-  removeAttribute: () => false,
-};
-
 AttributeDetails.propTypes = {
   attributes: PropTypes.array,
   updateAttribute: PropTypes.func,
-  removeAttribute: PropTypes.func,
+  removeAttribute: PropTypes.func
 };
 
 export default AttributeDetails;

@@ -32,12 +32,8 @@ const RuleErrorBoundary = ({ children }) => {
   );
 };
 
-RuleErrorBoundary.defaultProps = {
-  children: undefined,
-};
-
 RuleErrorBoundary.propTypes = {
-  children: PropTypes.any,
+  children: PropTypes.any
 };
 
 export default RuleErrorBoundary;

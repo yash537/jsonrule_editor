@@ -39,16 +39,10 @@ const Banner = ({ message, onConfirm }) => {
   );
 };
 
-Banner.defaultProps = {
-  ruleset: {},
-  message: {},
-  onConfirm: () => false,
-};
-
 Banner.propTypes = {
   ruleset: PropTypes.object,
   message: PropTypes.object,
-  onConfirm: PropTypes.func,
+  onConfirm: PropTypes.func
 };
 
 export default Banner;
