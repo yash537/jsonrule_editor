@@ -33,6 +33,7 @@ const AppContainer = (props) => {
           title={"Json Rule Editor"}
           closedState={closednav}
           updateState={updateState}
+          loggedIn={loggedIn}
         />
         <NavigationPanel
           closedState={closednav}
@@ -40,7 +41,6 @@ const AppContainer = (props) => {
           activeIndex={activeIndex}
           rulenames={rulenames}
           setActiveRulesetIndex={setActiveRulesetIndex}
-          loggedIn={loggedIn}
         />
         <AppRoutes
           closedState={closednav}

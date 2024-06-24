@@ -11,7 +11,7 @@ import { validateRuleset } from "../../validations/rule-validation";
 import Loader from "../loader/loader";
 import { ViewOutcomes } from "../attributes/view-attributes";
 
-const ValidateRules = ({ attributes, decisions }) => {
+const ValidateRules = ({ attributes = [], decisions = [] }) => {
   const [conditions, setConditions] = useState(
     attributes
       .filter((attr) => attr.type !== "object")

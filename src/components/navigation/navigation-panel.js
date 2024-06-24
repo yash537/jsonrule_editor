@@ -54,7 +54,6 @@ const NavigationPanel = (props) => {
         ]
       : [];
   rulesetLink = rulesetLink.concat(navmenu);
-
   return (
     <div
       className={`nav-container ${closedState ? "closed" : "open"} ${
@@ -80,7 +79,6 @@ NavigationPanel.propTypes = {
   closedState: PropTypes.bool,
   rulenames: PropTypes.array,
   setActiveRulesetIndex: PropTypes.func,
-  loggedIn: PropTypes.bool,
   updateState: PropTypes.func,
   activeIndex: PropTypes.number
 };

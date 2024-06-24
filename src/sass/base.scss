@@ -16,7 +16,7 @@ h1 {
         top: 10px;
         bottom: 30px;
     };
-    position: relative;
+    position: fixed;
     overflow-x: hidden;
 
     &.closed {
