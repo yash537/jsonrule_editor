@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PageTitle from "../components/title/page-title";
 import Tabs from "../components/tabs/tabs";
-import Decisions from "../components/decisions/decision";
 import Banner from "../components/panel/banner";
 import * as Message from "../constants/messages";
 import RuleErrorBoundary from "../components/error/ruleset-error";
@@ -10,6 +9,10 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import Attributes from "../components/attributes/attributes";
 import { handleAttribute } from "../redux/actions/attributes";
 import ValidateRules from "../components/validate/validate-rules";
+import PropTypes from "prop-types";
+import { login } from "../redux/actions/app";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const tabs = [
   { name: "Facts" },
@@ -18,7 +21,7 @@ const tabs = [
   { name: "Generate" }
 ];
 
-const RulesetContainer = () => {
+const RulesetContainer = ({ loggedIn = false }) => {
   const [activeTab, setActiveTab] = useState("Facts");
   const [generateFlag, setGenerateFlag] = useState(false);
 
@@ -59,6 +62,13 @@ const RulesetContainer = () => {
   const { attributes, decisions, name } = ruleset || {};
 
   const message = updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div>
@@ -74,7 +84,6 @@ const RulesetContainer = () => {
               }
             />
           )}
-          {activeTab === "Decisions" && <Decisions />}
           {activeTab === "Validate" && (
             <ValidateRules attributes={attributes} decisions={decisions} />
           )}
@@ -92,4 +101,16 @@ const RulesetContainer = () => {
   );
 };
 
-export default RulesetContainer;
+RulesetContainer.propTypes = {
+  loggedIn: PropTypes.bool
+};
+
+const mapStateToProps = (state) => ({
+  loggedIn: state.app.loggedIn
+});
+
+const mapDispatchToProps = {
+  login
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RulesetContainer);
