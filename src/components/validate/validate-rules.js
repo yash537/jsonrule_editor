@@ -17,7 +17,6 @@ const ValidateRules = ({ attributes, decisions }) => {
       .filter((attr) => attr.type !== "object")
       .map((attr) => ({ name: attr.name, value: "" }))
   );
-  const [message, setMessage] = useState(Message.NO_VALIDATION_MSG);
   const [loading, setLoading] = useState(false);
   const [outcomes, setOutcomes] = useState([]);
   const [error, setError] = useState(false);
@@ -34,10 +33,6 @@ const ValidateRules = ({ attributes, decisions }) => {
     const newConditions = [...conditions];
     newConditions[index].value = e.target.value;
     setConditions(newConditions);
-  };
-
-  const handleAdd = () => {
-    setConditions([...conditions, { name: "", value: "" }]);
   };
 
   const validateRules = async (e) => {
@@ -132,7 +127,7 @@ const ValidateRules = ({ attributes, decisions }) => {
 
   return (
     <React.Fragment>
-      {decisions.length < 1 && <Banner message={message} />}
+      {decisions.length < 1 && <Banner message={Message.NO_VALIDATION_MSG} />}
       {decisions.length > 0 && (
         <Panel>
           <form>

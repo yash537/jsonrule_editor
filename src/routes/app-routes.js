@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import HomeContainer from "../containers/home-container";
 import CreateRulesetContainer from "../containers/create-ruleset-container";

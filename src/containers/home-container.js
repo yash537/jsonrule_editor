@@ -30,9 +30,9 @@ const HomeContainer = ({
   loggedIn = false
 }) => {
   const [files, setFiles] = useState([]);
-  const [uploadError, setUploadError] = useState(false);
-  const [fileExist, setFileExist] = useState(false);
-  const [message, setMessage] = useState({});
+  // const [uploadError, setUploadError] = useState(false);
+  // const [fileExist, setFileExist] = useState(false);
+  // const [message, setMessage] = useState({});
   const appctx = useContext(AppearanceContext);
 
   const [ruleset, setRuleset] = useState(initialRuleset); // Consolidated ruleset state
@@ -43,19 +43,19 @@ const HomeContainer = ({
 
   const printFile = (file, name, error) => {
     if (error) {
-      setUploadError(true);
-      setFileExist(false);
-      setMessage("");
+      // setUploadError(true);
+      // setFileExist(false);
+      // setMessage("");
     } else {
       const isFileAdded =
         files.some((fname) => fname === name) || includes(rulenames, file.name);
       if (!isFileAdded) {
         setFiles([...files, name]);
         setRuleset([...ruleset, file]);
-        setFileExist(false);
+        // setFileExist(false);
       } else {
-        setFileExist(true);
-        setMessage("");
+        // setFileExist(true);
+        // setMessage("");
       }
     }
   };

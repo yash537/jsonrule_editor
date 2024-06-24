@@ -7,9 +7,14 @@ import Button from "../button/button";
 import attributeValidations from "../../validations/attribute-validations";
 import dataTypes from "../../data-objects/operator.json";
 
-const AddAttributes = ({ attribute, addAttribute, cancel, buttonProps }) => {
-  const [name, setName] = useState(attribute.name);
-  const [type, setType] = useState(attribute.type);
+const AddAttributes = ({
+  attribute = {},
+  addAttribute,
+  cancel,
+  buttonProps = {}
+}) => {
+  const [name, setName] = useState(attribute.name ?? "");
+  const [type, setType] = useState(attribute.type ?? "");
   const [error, setError] = useState({});
 
   const handleAdd = (e) => {
@@ -39,6 +44,7 @@ const AddAttributes = ({ attribute, addAttribute, cancel, buttonProps }) => {
               onChange={(e) => setName(e.target.value)}
               value={name}
               error={error.name}
+              required
             />
             <SelectField
               label="Type"
@@ -67,18 +73,17 @@ const AddAttributes = ({ attribute, addAttribute, cancel, buttonProps }) => {
   );
 };
 
-AddAttributes.defaultProps = {
-  addAttribute: () => false,
-  cancel: () => false,
-  attribute: {},
-  buttonProps: {}
-};
-
 AddAttributes.propTypes = {
-  addAttribute: PropTypes.func,
-  cancel: PropTypes.func,
-  attribute: PropTypes.object,
-  buttonProps: PropTypes.object
+  addAttribute: PropTypes.func.isRequired,
+  cancel: PropTypes.func.isRequired,
+  attribute: PropTypes.shape({
+    name: PropTypes.string,
+    type: PropTypes.string
+  }),
+  buttonProps: PropTypes.shape({
+    primaryLabel: PropTypes.string.isRequired,
+    secondaryLabel: PropTypes.string.isRequired
+  })
 };
 
 export default AddAttributes;

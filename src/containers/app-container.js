@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Title from "../components/title/title";
 import NavigationPanel from "../components/navigation/navigation-panel";
 import ApperanceContext from "../context/apperance-context";
@@ -17,7 +17,8 @@ const AppContainer = (props) => {
     updateState,
     setActiveRulesetIndex
   } = props;
-  const [theme, setTheme] = useState(ApperanceContext);
+
+  const theme = useContext(ApperanceContext);
 
   useEffect(() => {
     document.body.className = theme.background;

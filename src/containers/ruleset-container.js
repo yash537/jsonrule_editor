@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import PageTitle from "../components/title/page-title";
 import Tabs from "../components/tabs/tabs";
 import Decisions from "../components/decisions/decision";
 import Banner from "../components/panel/banner";
 import * as Message from "../constants/messages";
-import { groupBy } from "lodash/collection";
 import RuleErrorBoundary from "../components/error/ruleset-error";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Attributes from "../components/attributes/attributes";
@@ -59,16 +57,6 @@ const RulesetContainer = () => {
   };
 
   const { attributes, decisions, name } = ruleset || {};
-
-  const indexedDecisions =
-    decisions &&
-    decisions.length > 0 &&
-    decisions.map((decision, index) => ({ ...decision, index }));
-
-  let outcomes;
-  if (indexedDecisions && indexedDecisions.length > 0) {
-    outcomes = groupBy(indexedDecisions, (data) => data.event.type);
-  }
 
   const message = updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
 

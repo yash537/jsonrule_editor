@@ -25,8 +25,7 @@ const Title = ({ title, updateState, closedState }) => {
 };
 
 Title.propTypes = {
-  title: PropTypes.string.isRequired,
-  toggleNav: PropTypes.func.isRequired
+  title: PropTypes.string.isRequired
 };
 
 export default Title;

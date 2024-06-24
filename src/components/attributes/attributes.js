@@ -7,9 +7,8 @@ import { isContains } from "../../utils/stringutils";
 import AddAttributes from "./add-atrribtues";
 import AttributeDetails from "./attr-details";
 
-const Attributes = ({ handleAttribute, attributes }) => {
+const Attributes = ({ handleAttribute, attributes = [] }) => {
   const [showAddAttr, setShowAddAttr] = useState(false);
-  const [message, setMessage] = useState(Message.NO_ATTRIBUTE_MSG);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [bannerflag, setBannerflag] = useState(false);
 
@@ -70,7 +69,7 @@ const Attributes = ({ handleAttribute, attributes }) => {
         removeAttribute={handleAttribute}
       />
       {!bannerflag && attributes.length < 1 && (
-        <Banner message={message} onConfirm={handleAdd} />
+        <Banner message={Message.NO_ATTRIBUTE_MSG} onConfirm={handleAdd} />
       )}
     </div>
   );

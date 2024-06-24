@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { includes } from "lodash";
@@ -17,9 +17,11 @@ const CreateRulesetContainer = () => {
   const [fileExist, setFileExist] = useState(false);
   const [message, setMessage] = useState({});
 
-  const rulesetNames = useSelector((state) =>
-    state.ruleset.rulesets.map((r) => r.name)
-  );
+  const rulesets = useSelector((state) => state.ruleset.rulesets);
+  const rulesetNames = useMemo(() => {
+    return rulesets.map((r) => r.name);
+  }, [rulesets]);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +58,12 @@ const CreateRulesetContainer = () => {
               value={name}
               error={error.name}
             />
-            <Button label="Create" classname="primary-btn" type="submit" />
+            <Button
+              label="Create"
+              classname="primary-btn"
+              type="submit"
+              onConfirm={(e) => {}}
+            />
           </div>
         </form>
       </TitlePanel>

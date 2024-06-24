@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import SweetAlert from "react-bootstrap-sweetalert";
 import AddAttributes from "./add-atrribtues";
 import { PanelBox } from "../panel/panel";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "../button/button";
 
 const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
