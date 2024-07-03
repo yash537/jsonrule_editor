@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import NavLinks from "./navigation-link";
 import PropTypes from "prop-types";
@@ -54,11 +54,13 @@ const NavigationPanel = (props) => {
         ]
       : [];
   rulesetLink = rulesetLink.concat(navmenu);
+  const { background } = useContext(ApperanceContext);
+
   return (
     <div
-      className={`nav-container ${closedState ? "closed" : "open"} ${
-        ApperanceContext.background
-      }}`}
+      className={`nav-container ${
+        closedState ? "closed" : "open"
+      } ${background}`}
     >
       {!closedState && (
         <div className="links-section">

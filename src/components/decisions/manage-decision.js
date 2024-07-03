@@ -1,86 +1,120 @@
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import InputField from "../forms/input-field";
+import Button from "../button/button";
+import decisionValidations from "../../validations/decision-validation";
+import SelectField from "../forms/selectmenu-field";
 
-const ManageDecision = ({ formData, onChange, onSubmit, onClose }) => {
+const ManageDecision = ({ inputData, onSubmit, onClose, showModal }) => {
+  const [formData, setFormData] = useState(inputData);
+  const [error, setError] = useState({});
+
+  const handleFormChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = decisionValidations(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setError(validationErrors);
+    } else {
+      onSubmit(formData);
+    }
+  };
+
   return (
-    <div id="myModal" className="modal">
+    <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
-        <span className="close" onClick={onClose}>
-          &times;
-        </span>
-        <form id="addNodeForm" onSubmit={onSubmit}>
-          <label htmlFor="field">Field:</label>
-          <input
-            type="text"
-            id="field"
-            name="field"
-            value={formData.field}
-            onChange={onChange}
-            className="input-field"
+        <div className="title-bar">
+          <span className="title">Create decision</span>
+          <span className="close" onClick={onClose}>
+            &times;
+          </span>
+        </div>
+        <form onSubmit={handleSubmit} className="fact-form">
+          <InputField
+            label="Fact"
+            name="fact"
+            onChange={handleFormChange}
+            value={formData.fact}
+            error={error.fact}
             required
           />
-          <br />
-          <label htmlFor="operator">Operator:</label>
-          <input
-            type="text"
-            id="operator"
+          <SelectField
+            label="Operator"
             name="operator"
-            value={formData.operator}
-            onChange={onChange}
-            className="input-field"
+            onChange={handleFormChange}
+            options={[
+              "equal",
+              "lessThan",
+              "lessThanInclusive",
+              "greaterThan",
+              "greaterThanInclusive",
+              "notEqual"
+            ]}
+            error={error.fact}
             required
           />
-          <br />
-          <label htmlFor="value">Value:</label>
-          <input
-            type="text"
-            id="value"
+          <InputField
+            label="Value"
             name="value"
+            onChange={handleFormChange}
             value={formData.value}
-            onChange={onChange}
-            className="input-field"
+            error={error.value}
             required
           />
-          <br />
-          <label htmlFor="valueref">Value Reference:</label>
-          <input
-            type="text"
-            id="valueref"
+          <InputField
+            label="Value Reference"
             name="valueref"
+            onChange={handleFormChange}
             value={formData.valueref}
-            onChange={onChange}
-            className="input-field"
+            error={error.valueref}
             required
           />
-          <br />
-          <label htmlFor="type">Type:</label>
-          <input
-            type="text"
-            id="type"
+          <SelectField
+            label="Type"
             name="type"
-            value={formData.type}
-            onChange={onChange}
-            className="input-field"
+            onChange={handleFormChange}
+            options={["integer", "number", "string", "array", "list", "object"]}
+            error={error.fact}
             required
           />
-          <br />
-          <label htmlFor="action">Action:</label>
-          <input
-            type="text"
-            id="action"
+          <SelectField
+            label="Action"
             name="action"
-            value={formData.action}
-            onChange={onChange}
-            className="input-field"
+            onChange={handleFormChange}
+            options={["proceed", "execute"]}
+            error={error.action}
             required
           />
-          <br />
-          <button type="submit" className="form-button">
-            {formData.mode === "edit" ? "Edit" : "Add"} Condition
-          </button>
+          <div style={{ display: "flex" }}>
+            <Button
+              label="Cancel"
+              onConfirm={onClose}
+              classname="btn-danger"
+              type="reset"
+            />
+            <Button
+              label={formData.mode === "edit" ? "Edit" : "Add"}
+              classname="btn-success"
+              type="submit"
+            />
+          </div>
         </form>
       </div>
     </div>
   );
+};
+
+ManageDecision.propTypes = {
+  inputData: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  showModal: PropTypes.bool.isRequired
 };
 
 export default ManageDecision;

@@ -1,32 +1,72 @@
+/* Enhanced theme-container styling */
 .theme-container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
+  padding: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
 
-  .theme-icon {
-    margin-left: 30px;
-    text-align: center;
-  }
+/* Enhanced theme-icon styling */
+.theme-icon {
+  margin: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 
-  span {
-    &.light-mode {
-      background: url("../../../assets/icons/light-mode.png") no-repeat;
-      background-size: contain;
-      display: block;
-      padding: 20px 40px;
-    }
+.theme-icon:hover {
+  transform: scale(1.1);
+}
 
-    &.dark-mode {
-      background: url("../../../assets/icons/dark-mode.png") no-repeat;
-      background-size: contain;
-      display: block;
-      padding: 20px 40px;
-    }
+/* Enhanced span styling */
+.theme-container span {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+  background-size: cover;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
 
-    &.mdblue-mode {
-      background: url("../../../assets/icons/mdblue-mode.png") no-repeat;
-      background-size: contain;
-      display: block;
-      padding: 20px 40px;
-    }
-  }
+span.light-mode {
+  background: url("../../../assets/icons/light-mode.png") no-repeat center;
+}
+
+span.dark-mode {
+  background: url("../../../assets/icons/dark-mode.png") no-repeat center;
+}
+
+span.mdblue-mode {
+  background: url("../../../assets/icons/mdblue-mode.png") no-repeat center;
+}
+
+/* Hide the input radio button */
+input[type="radio"] {
+  display: none;
+}
+
+/* Style the label when the input is checked */
+input[type="radio"]:checked + label span {
+  border: 2px solid #007bff;
+}
+
+/* Style the label and text */
+.theme-container label {
+  display: block;
+  cursor: pointer;
+  text-align: center;
+}
+
+.theme-container label div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
 }

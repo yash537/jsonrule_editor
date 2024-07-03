@@ -6,6 +6,7 @@ import SelectField from "../forms/selectmenu-field";
 import Button from "../button/button";
 import attributeValidations from "../../validations/attribute-validations";
 import dataTypes from "../../data-objects/operator.json";
+import CheckBox from "../forms/checkbox";
 
 const AddAttributes = ({
   attribute = {},
@@ -15,16 +16,17 @@ const AddAttributes = ({
 }) => {
   const [name, setName] = useState(attribute.name ?? "");
   const [type, setType] = useState(attribute.type ?? "");
+  const [isMandatory, setMandatory] = useState(attribute.mandatory ?? false);
   const [error, setError] = useState({});
 
   const handleAdd = (e) => {
     e.preventDefault();
-    const validationErrors = attributeValidations({ name, type });
+    const validationErrors = attributeValidations({ name, type, isMandatory });
 
     if (Object.keys(validationErrors).length > 0) {
       setError(validationErrors);
     } else {
-      addAttribute({ name, type });
+      addAttribute({ name, type, isMandatory });
     }
   };
 
@@ -32,6 +34,10 @@ const AddAttributes = ({
     cancel();
   };
 
+  const handleChange = (e) => {
+    const { checked } = e.target;
+    setMandatory(checked);
+  };
   const attributeTypes = Object.keys(dataTypes);
 
   return (
@@ -53,18 +59,25 @@ const AddAttributes = ({
               value={type}
               error={error.type}
             />
+            <CheckBox
+              label="Is Mandatory"
+              name="isMandatory"
+              checked={isMandatory}
+              onChange={handleChange}
+              required={false}
+            />
           </div>
           <div className="btn-group">
             <Button
               label={buttonProps.primaryLabel}
               onConfirm={handleAdd}
-              classname="primary-btn"
+              classname="btn-success"
               type="submit"
             />
             <Button
               label={buttonProps.secondaryLabel}
               onConfirm={handleCancel}
-              classname="cancel-btn"
+              classname="btn-danger"
             />
           </div>
         </div>

@@ -46,7 +46,7 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
     );
   }, [attributes, searchCriteria]);
 
-  const buttonProps = { primaryLabel: "Add Facts", secondaryLabel: "Cancel" };
+  const buttonProps = { primaryLabel: "Add Fact", secondaryLabel: "Cancel" };
   const filteredAttributes = searchCriteria ? filterAttribute() : attributes;
 
   return (

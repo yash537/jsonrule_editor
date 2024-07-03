@@ -44,7 +44,7 @@
 
     div {
         margin: 0 20px;
-        width: 10%;
+        // width: 10%;
      }
  
     .index {
@@ -52,12 +52,16 @@
     }
  
     .name {
-         width: 25%;
+         width: 20%;
     }
  
     .type {
          width: 15%;
     }
+
+    .mandatory {
+        width: 15%;
+   }
     
     .type-badge {
         background-color: map-get($attribute-type, "boolean");
@@ -66,6 +70,22 @@
         font-size: 14px;
         padding: 4px 8px;
         
+    }
+
+    .success-badge {
+        background-color: $succees;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    .warning-badge {
+        background-color: $warning;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        padding: 4px 8px;
     }
 
     .menu {

@@ -8,7 +8,8 @@ const SelectField = ({
   required,
   options,
   value,
-  readOnly
+  readOnly,
+  name
 }) => {
   const [fieldValue, setFieldValue] = useState(value);
 
@@ -31,6 +32,7 @@ const SelectField = ({
         className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`}
         value={fieldValue}
         disabled={readOnly}
+        name={name}
       >
         <option value="-1">Please select...</option>
         {options.map((option) => (
@@ -46,6 +48,7 @@ const SelectField = ({
 
 SelectField.propTypes = {
   label: PropTypes.string,
+  name: PropTypes.string,
   onChange: PropTypes.func,
   error: PropTypes.string,
   required: PropTypes.bool,

@@ -6,7 +6,7 @@ const initialState = {
   rulesets: [],
   activeRuleset: 0,
   updatedFlag: false,
-  uploadedRules: [],
+  uploadedRules: []
 };
 
 const replaceRulesetByIndex = (rulesets, targetset, index) => {
@@ -21,7 +21,7 @@ function ruleset(state = initialState, action = "") {
       return {
         ...state,
         rulesets: cloneDeep(updatedRulesets),
-        uploadedRules: cloneDeep(updatedRulesets),
+        uploadedRules: cloneDeep(updatedRulesets)
       };
     }
 
@@ -33,7 +33,7 @@ function ruleset(state = initialState, action = "") {
       return {
         ...state,
         rulesets: cloneDeep(updatedRulesets),
-        activeRuleset: count,
+        activeRuleset: count
       };
     }
 
@@ -47,12 +47,12 @@ function ruleset(state = initialState, action = "") {
       const { condition } = action.payload;
       const updatedDecisions = [
         ...state.rulesets[state.activeRuleset].decisions,
-        condition,
+        condition
       ];
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        decisions: updatedDecisions,
+        decisions: updatedDecisions
       };
 
       return {
@@ -62,20 +62,38 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
+      };
+    }
+
+    case ActionTypes.UPDTAE_RULE_NAME: {
+      const { name } = action.payload;
+      const updatedRuleSet = {
+        ...state.rulesets[state.activeRuleset],
+        name
+      };
+
+      return {
+        ...state,
+        updatedFlag: true,
+        rulesets: replaceRulesetByIndex(
+          state.rulesets,
+          updatedRuleSet,
+          state.activeRuleset
+        )
       };
     }
 
     case ActionTypes.UPDATE_DECISION: {
       const { condition, decisionIndex } = action.payload;
       const updatedDecisions = [
-        ...state.rulesets[state.activeRuleset].decisions,
+        ...state.rulesets[state.activeRuleset].decisions
       ];
       updatedDecisions[decisionIndex] = condition;
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        decisions: updatedDecisions,
+        decisions: updatedDecisions
       };
 
       return {
@@ -85,7 +103,7 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
       };
     }
 
@@ -98,12 +116,12 @@ function ruleset(state = initialState, action = "") {
         ),
         ...state.rulesets[state.activeRuleset].decisions.slice(
           decisionIndex + 1
-        ),
+        )
       ];
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        decisions: updatedDecisions,
+        decisions: updatedDecisions
       };
 
       return {
@@ -113,7 +131,7 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
       };
     }
 
@@ -127,7 +145,7 @@ function ruleset(state = initialState, action = "") {
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        decisions: updatedDecisions,
+        decisions: updatedDecisions
       };
 
       return {
@@ -137,7 +155,7 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
       };
     }
 
@@ -145,12 +163,12 @@ function ruleset(state = initialState, action = "") {
       const { attribute } = action.payload;
       const updatedAttributes = [
         ...state.rulesets[state.activeRuleset].attributes,
-        attribute,
+        attribute
       ];
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        attributes: updatedAttributes,
+        attributes: updatedAttributes
       };
 
       return {
@@ -160,7 +178,7 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
       };
     }
 
@@ -169,12 +187,12 @@ function ruleset(state = initialState, action = "") {
       const updatedAttributes = [
         ...state.rulesets[state.activeRuleset].attributes.slice(0, index),
         attribute,
-        ...state.rulesets[state.activeRuleset].attributes.slice(index + 1),
+        ...state.rulesets[state.activeRuleset].attributes.slice(index + 1)
       ];
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        attributes: updatedAttributes,
+        attributes: updatedAttributes
       };
 
       return {
@@ -184,7 +202,7 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
       };
     }
 
@@ -192,12 +210,12 @@ function ruleset(state = initialState, action = "") {
       const { index } = action.payload;
       const updatedAttributes = [
         ...state.rulesets[state.activeRuleset].attributes.slice(0, index),
-        ...state.rulesets[state.activeRuleset].attributes.slice(index + 1),
+        ...state.rulesets[state.activeRuleset].attributes.slice(index + 1)
       ];
 
       const updatedRuleSet = {
         ...state.rulesets[state.activeRuleset],
-        attributes: updatedAttributes,
+        attributes: updatedAttributes
       };
 
       return {
@@ -207,7 +225,7 @@ function ruleset(state = initialState, action = "") {
           state.rulesets,
           updatedRuleSet,
           state.activeRuleset
-        ),
+        )
       };
     }
 
@@ -220,7 +238,7 @@ function ruleset(state = initialState, action = "") {
           ...state.rulesets[state.activeRuleset],
           attributes: cloneDeep(
             state.uploadedRules[state.activeRuleset].attributes
-          ),
+          )
         };
 
         return {
@@ -229,7 +247,7 @@ function ruleset(state = initialState, action = "") {
             state.rulesets,
             updatedRuleSet,
             state.activeRuleset
-          ),
+          )
         };
       }
       return { ...state };
@@ -244,7 +262,7 @@ function ruleset(state = initialState, action = "") {
           ...state.rulesets[state.activeRuleset],
           decisions: cloneDeep(
             state.uploadedRules[state.activeRuleset].decisions
-          ),
+          )
         };
 
         return {
@@ -253,7 +271,7 @@ function ruleset(state = initialState, action = "") {
             state.rulesets,
             updatedRuleSet,
             state.activeRuleset
-          ),
+          )
         };
       }
       return { ...state };

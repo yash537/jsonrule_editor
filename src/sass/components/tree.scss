@@ -1,147 +1,174 @@
 #tree {
-    padding: 20px;
-  }
-  .tree-box-inner {
-    display: flex;
-  }
-  .action-btn{
-    margin-left: 72px;
-  }
-  
-  .tree {
-    ul {
+  padding: 20px;
+  max-height: 600px; /* Set a maximum height for the tree container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrolling if not needed */
+ 
+  scrollbar-width: thin;
+}
+
+#tree:first-child {
+  border: 1px solid #006a4d;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.tree-box-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-btn {
+  margin-left: 72px;
+}
+
+.tree {
+  ul {
       ul {
-        &::before {
-          content: "";
-          border-left: 1px solid #ccc;
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-        }
+          &::before {
+              content: "";
+              border-left: 1px solid #ccc;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+          }
       }
-    }
-  
-    li {
+  }
+
+  li {
       margin: 20px 10px 10px 0;
       padding-left: 20px;
       position: relative;
-  
+
       &::before {
-        content: "";
-        border-top: 1px solid #ccc;
-        position: absolute;
-        top: 20px;
-        left: 0;
-        width: 40px;
+          content: "";
+          border-top: 1px solid #ccc;
+          position: absolute;
+          top: 20px;
+          left: 0;
+          width: 40px;
       }
-    }
   }
-  
-  .tree-box {
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px 15px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  
-    &:hover {
+}
+
+.tree-box {
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
       box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-    }
-  
-    .condition {
+  }
+
+  .condition {
       font-weight: bold;
-    }
-  
-    .action {
+  }
+
+  .action {
       margin-top: 10px;
       font-size: 0.9em;
       color: #555;
-    }
   }
-  
-  .toggle-btn {
-    font-size: 21px;
-    margin-right: 5px;
-    cursor: pointer;
-    color: #0ae240;
-    user-select: none;
-  }
-  
-  .box {
-    border: 1px solid #000;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-    display: inline-block;
-    margin-left: 10px;
-    position: relative;
-  }
-  
-  .toggle-icon {
-    margin-left: 10px;
-    cursor: pointer;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  .add-node,
-  .edit-node,
-  .delete-node {
-    cursor: pointer;
-    color: #007bff;
-    margin-left: 10px;
-    transition: color 0.3s ease;
-  
-    &:hover {
+}
+
+.toggle-btn {
+  font-size: 21px;
+  margin-right: 5px;
+  cursor: pointer;
+  color: #0ae240;
+  user-select: none;
+}
+
+.box {
+  border: 1px solid #000;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  display: inline-block;
+  margin-left: 10px;
+  position: relative;
+}
+
+.toggle-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-node,
+.edit-node,
+.delete-node {
+  cursor: pointer;
+  color: $primary-btn-color;
+  margin-left: 10px;
+  transition: color 0.3s ease;
+
+  &:hover {
       color: #0056b3;
-    }
   }
-  
-  .add-node {
-    width: 20%;
-  }
-  
-  .textbold {
-    font-weight: bold;
-  }
-  
-  .input-field {
-    margin: 5px 0;
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 5px;
-    position: relative;
-  
-    .close {
+}
+
+.add-node {
+  color: $primary-btn-color;
+}
+
+.edit-node {
+  color: $warning;
+}
+
+.delete-node {
+  color: $danger;
+}
+
+.textbold {
+  font-weight: bold;
+}
+
+.input-field {
+  margin: 5px 0;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.action-message {
+  color: $succees;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 5px;
+  position: relative;
+
+  .close {
       color: #aaa;
       float: right;
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
-  
+
       &:hover,
       &:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
       }
-    }
   }
-  
+}

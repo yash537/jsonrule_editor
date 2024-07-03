@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { login } from "../redux/actions/app";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Decisions from "../components/decisions/decision";
 
 const tabs = [
   { name: "Facts" },
@@ -84,6 +85,7 @@ const RulesetContainer = ({ loggedIn = false }) => {
               }
             />
           )}
+          {activeTab === "Decisions" && <Decisions />}
           {activeTab === "Validate" && (
             <ValidateRules attributes={attributes} decisions={decisions} />
           )}

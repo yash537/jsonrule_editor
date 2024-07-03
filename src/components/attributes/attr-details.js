@@ -75,6 +75,13 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
             <div className="type">
               <span className={attr.type}>{attr.type}</span>
             </div>
+            <div className="mandatory">
+              <span
+                className={attr.isMandatory ? "success-badge" : "warning-badge"}
+              >
+                {attr.isMandatory ? "Mandatory" : "Not Mandatory"}
+              </span>
+            </div>
             <div className="menu">
               <Button
                 label={"Edit"}

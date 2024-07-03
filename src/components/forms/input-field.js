@@ -8,7 +8,8 @@ const InputField = ({
   value,
   required,
   readOnly,
-  placeholder
+  placeholder,
+  name
 }) => {
   const [fieldValue, setFieldValue] = useState(value);
 
@@ -20,8 +21,6 @@ const InputField = ({
     onChange(e);
 
     if (required && e.target.value.trim() !== "") {
-      // Reset error class if input has a value when required
-      // and it's not empty or whitespace
       onChange({ ...e, error: "" });
     }
   };
@@ -36,6 +35,7 @@ const InputField = ({
         className={`${errorClass} ${readOnlyClass}`}
         disabled={readOnly}
         placeholder={placeholder}
+        name={name}
       />
       {error && <p className="error-message">{error}</p>}
     </div>
@@ -49,7 +49,8 @@ InputField.propTypes = {
   value: PropTypes.any.isRequired, // Example of making value required
   required: PropTypes.bool,
   readOnly: PropTypes.bool,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  name: PropTypes.string
 };
 
 export default InputField;

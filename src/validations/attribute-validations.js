@@ -1,17 +1,18 @@
+const validationMessages = {
+  name: "Please specify the attribute name",
+  type: "Please specify the attribute type"
+};
 
 export const validateAttribute = (attribute) => {
-    const error = {};
-    if (!attribute.name) {
-        error.name = 'Please specify the attribute name'
+  console.log(attribute);
+  return Object.keys(validationMessages).reduce((error, key) => {
+    if (!attribute[key]) {
+      error[key] = validationMessages[key];
     }
-
-    if (!attribute.type) {
-        error.type = 'Please specify the attribute type'
-    }
-
     return error;
-}
+  }, {});
+};
 
 export default function attributeValidations(attribute) {
-    return validateAttribute(attribute);
+  return validateAttribute(attribute);
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Tree from "./decision-tree";
 import ManageDecision from "./manage-decision";
+import Button from "../button/button";
 
 const initialData = {
   name: "mplemployeeEligibility",
@@ -9,28 +10,30 @@ const initialData = {
 
 const Decisions = () => {
   const [treeData, setTreeData] = useState(initialData);
-  const [showModal, setShowModal] = useState(true);
-  const [modalMode, setModalMode] = useState("add"); // 'add' or 'edit'
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState("add");
   const [currentNode, setCurrentNode] = useState(null);
   const [formData, setFormData] = useState({
-    field: "",
+    fact: "",
     operator: "",
     value: "",
     valueref: "",
     type: "",
-    action: ""
+    action: "",
+    mode: "add"
   });
 
   const handleAddNode = (parentNode) => {
     setModalMode("add");
     setCurrentNode(parentNode);
     setFormData({
-      field: "",
+      fact: "",
       operator: "",
       value: "",
       valueref: "",
       type: "",
-      action: ""
+      action: "",
+      mode: "add"
     });
     setShowModal(true);
   };
@@ -39,12 +42,13 @@ const Decisions = () => {
     setModalMode("edit");
     setCurrentNode(node);
     setFormData({
-      field: node.field,
+      fact: node.fact,
       operator: node.operator,
       value: node.value,
       valueref: node.valueref,
       type: node.type,
-      action: node.action?.action || ""
+      action: node.action?.action || "",
+      mode: "edit"
     });
     setShowModal(true);
   };
@@ -64,23 +68,15 @@ const Decisions = () => {
     setTreeData(newData);
   };
 
-  const handleFormChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (submittedData) => {
     const updatedCondition = {
-      field: formData.field,
-      operator: formData.operator,
-      value: formData.value,
-      valueref: formData.valueref,
-      type: formData.type,
+      fact: submittedData.fact,
+      operator: submittedData.operator,
+      value: submittedData.value,
+      valueref: submittedData.valueref,
+      type: submittedData.type,
       action: {
-        action: formData.action
+        action: submittedData.action
       }
     };
 
@@ -98,7 +94,6 @@ const Decisions = () => {
 
     const newData = { ...treeData };
     if (modalMode === "add" && currentNode === null) {
-      // If adding the first node to the root
       newData.conditions = newData.conditions
         ? [...newData.conditions, updatedCondition]
         : [updatedCondition];
@@ -111,6 +106,14 @@ const Decisions = () => {
 
   return (
     <div className="tree">
+      {treeData.conditions.length === 0 && (
+        <Button
+          label="Create Node"
+          onConfirm={() => handleAddNode(null)}
+          classname="btn-success"
+          type="button"
+        />
+      )}
       <Tree
         treeData={treeData}
         onAddNode={handleAddNode}
@@ -119,10 +122,10 @@ const Decisions = () => {
       />
       {showModal && (
         <ManageDecision
-          formData={formData}
-          onChange={handleFormChange}
+          inputData={formData}
           onSubmit={handleSubmit}
           onClose={() => setShowModal(false)}
+          showModal={showModal}
         />
       )}
     </div>

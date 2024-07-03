@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import HomeContainer from "../containers/home-container";
 import CreateRulesetContainer from "../containers/create-ruleset-container";
 import RulesetContainer from "../containers/ruleset-container";
+import AppearanceContainer from "../containers/appearance-container";
 
 const AppRoutes = (props) => {
   const { background } = props.appctx;
@@ -18,6 +19,7 @@ const AppRoutes = (props) => {
         <Route path="/" element={<HomeContainer />} />
         <Route path="/ruleset" element={<RulesetContainer />} />
         <Route path="/create-ruleset" element={<CreateRulesetContainer />} />
+        <Route path="/appearance" element={<AppearanceContainer />} />
       </Routes>
     </div>
   );

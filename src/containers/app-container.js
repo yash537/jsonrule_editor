@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Title from "../components/title/title";
 import NavigationPanel from "../components/navigation/navigation-panel";
 import ApperanceContext from "../context/apperance-context";
@@ -7,49 +7,53 @@ import { updateRulesetIndex } from "../redux/actions/rule";
 import { updateState } from "../redux/actions/app";
 import PropTypes from "prop-types";
 import AppRoutes from "../routes/app-routes";
+import { useNavigate } from "react-router-dom";
 
 const AppContainer = (props) => {
-  const {
-    navState,
-    rulenames,
-    loggedIn,
-    activeIndex,
-    updateState,
-    setActiveRulesetIndex
-  } = props;
+  const history = useNavigate();
 
-  const theme = useContext(ApperanceContext);
+  const toggleBackground = useCallback((value) => {
+    setTheme((prevTheme) => ({ ...prevTheme, background: value }));
+    document.body.className = value;
+  }, []);
+
+  const [theme, setTheme] = useState({ background: "light", toggleBackground });
 
   useEffect(() => {
     document.body.className = theme.background;
-  }, [theme.background]);
+  }, [props.loggedIn, history, theme.background]);
 
-  const closednav = navState !== "open";
+  const closednav = props.navState !== "open";
 
   return (
-    <>
+    <React.Fragment>
       <ApperanceContext.Provider value={theme}>
-        <Title
-          title={"Json Rule Editor"}
-          closedState={closednav}
-          updateState={updateState}
-          loggedIn={loggedIn}
-        />
+        <Title title={"Json Rule Editor"} />
         <NavigationPanel
           closedState={closednav}
-          updateState={updateState}
-          activeIndex={activeIndex}
-          rulenames={rulenames}
-          setActiveRulesetIndex={setActiveRulesetIndex}
+          updateState={props.updateState}
+          activeIndex={props.activeIndex}
+          rulenames={props.rulenames}
+          setActiveRulesetIndex={props.setActiveRulesetIndex}
+          loggedIn={props.loggedIn}
         />
         <AppRoutes
           closedState={closednav}
-          loggedIn={loggedIn}
-          appctx={ApperanceContext}
+          loggedIn={props.loggedIn}
+          appctx={theme}
         />
       </ApperanceContext.Provider>
-    </>
+    </React.Fragment>
   );
+};
+
+AppContainer.defaultProps = {
+  rulenames: [],
+  setActiveRulesetIndex: () => false,
+  navState: undefined,
+  activeIndex: 0,
+  loggedIn: false,
+  updateState: () => false
 };
 
 AppContainer.propTypes = {
@@ -61,14 +65,18 @@ AppContainer.propTypes = {
   activeIndex: PropTypes.number
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   navState: state.app.navState,
   rulenames: state.ruleset.rulesets.map((r) => r.name),
   loggedIn: state.app.loggedIn,
-  activeIndex: state.ruleset.activeRuleset
+  activeIndex: state.ruleset.activeRuleset,
+  ownProps
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  handleClick: () => {
+    return false;
+  },
   setActiveRulesetIndex: (name) => dispatch(updateRulesetIndex(name)),
   updateState: (val) => dispatch(updateState(val))
 });

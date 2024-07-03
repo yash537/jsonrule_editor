@@ -21,32 +21,26 @@
 .form-field {
     margin-right: 10%;
     margin-top: 5px;
-
-    input {
-        border: 1px solid $form-border-color;
-        border-radius: 4px;
-        color: $form-field-color;
-        font-size: 16px;
-        height: 35px;
-        margin-top: 5px;
-        padding-left: 10px;
-        width: 90%;
+width: 100%;
+    .error-message {
+        color: $danger;
     }
 
+    input,
     select {
-        background-color: #fff;
         border: 1px solid $form-border-color;
         border-radius: 4px;
-        font-size: 16px;
         color: $form-field-color;
-        height: 40px;
+        font-size: 16px;
+        height: 40px; /* Ensure both input and select have the same height */
         margin-top: 5px;
         padding-left: 10px;
-        width: 90%;
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding is included in the width */
     }
 
     .error {
-        border-color: red;
+        border-color: $danger;
     }
 
     .readOnly {
@@ -56,7 +50,23 @@
 }
 
 .form-error {
-    color: red;
+    color: $danger;
     font-family: $form-font-family;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+input[type="checkbox"] {
+    margin-right: 0.5rem;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+
+    &:checked {
+        background-color: blue;
+        border-color: blue;
+    }
+}
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
 }
