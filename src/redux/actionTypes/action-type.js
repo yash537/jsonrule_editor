@@ -11,5 +11,5 @@ export const UPLOAD_RULESET = "UPLOAD_RULESET";
 export const ADD_RULESET = "ADD_RULESET";
 export const UPDATE_RULESET_INDEX = "UPDATE_RULESET_INDEX";
 export const UPDATE_NAV_STATE = "UPDATE_NAV_STATE";
-export const LOG_IN = "LOG_IN";
 export const UPDTAE_RULE_NAME = "UPDTAE_RULE_NAME";
+export const ADD_FACT = "ADD_FACT";

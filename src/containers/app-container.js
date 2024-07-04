@@ -35,13 +35,8 @@ const AppContainer = (props) => {
           activeIndex={props.activeIndex}
           rulenames={props.rulenames}
           setActiveRulesetIndex={props.setActiveRulesetIndex}
-          loggedIn={props.loggedIn}
         />
-        <AppRoutes
-          closedState={closednav}
-          loggedIn={props.loggedIn}
-          appctx={theme}
-        />
+        <AppRoutes closedState={closednav} appctx={theme} />
       </ApperanceContext.Provider>
     </React.Fragment>
   );

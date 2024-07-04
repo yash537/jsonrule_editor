@@ -25,15 +25,6 @@ const Banner = ({ message, onConfirm }) => {
           </header>
           <p>{message.body}</p>
         </div>
-        {message.buttonProps && (
-          <div>
-            <Button
-              label={message.buttonProps.label}
-              classname={btnClass}
-              onConfirm={onConfirm}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,8 +1,7 @@
-import { UPDATE_NAV_STATE, LOG_IN } from "../actionTypes/action-type";
+import { UPDATE_NAV_STATE } from "../actionTypes/action-type";
 
 const initialState = {
-  navState: "closed",
-  loggedIn: false,
+  navState: "open"
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -15,8 +14,6 @@ const AppReducer = (state = initialState, action) => {
       }
       return { ...state, navState: nav };
     }
-    case LOG_IN:
-      return { ...state, loggedIn: true };
     default:
       return state;
   }

@@ -5,16 +5,12 @@ import Search from "../search/search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUndo } from "@fortawesome/free-solid-svg-icons"; // Assuming these icons are used
 
-const ToolBar = ({ handleAdd, reset, searchTxt }) => {
+const ToolBar = ({ handleAdd, reset, searchTxt, addTitle = "Create" }) => {
   const [alert, setAlert] = useState({
     type: null, // success, warning, null
     show: false,
     message: ""
   });
-
-  const handleReset = () => {
-    setAlert({ type: "warning", show: true, message: "Are you sure?" });
-  };
 
   const handleSearch = (value) => {
     searchTxt(value);
@@ -74,11 +70,7 @@ const ToolBar = ({ handleAdd, reset, searchTxt }) => {
       {alert.show && alertComponent()}
       <div className="attr-link" onClick={handleAdd}>
         <FontAwesomeIcon icon={faPlus} className="plus-icon" />
-        <span className="text">Add</span>
-      </div>
-      <div className="attr-link" onClick={handleReset}>
-        <FontAwesomeIcon icon={faUndo} className="reset-icon" />
-        <span className="text">Reset</span>
+        <span className="text">{addTitle}</span>
       </div>
       <div>
         <Search onConfirm={handleSearch} onChange={handleSearch} />

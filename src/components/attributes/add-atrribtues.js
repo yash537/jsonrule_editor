@@ -38,6 +38,7 @@ const AddAttributes = ({
     const { checked } = e.target;
     setMandatory(checked);
   };
+
   const attributeTypes = Object.keys(dataTypes);
 
   return (

@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import rulereducer from "./rulereducer";
 import AppReducer from "./app-reducer";
+import FactReducer from "./factReducer";
 
 export const rootReducer = combineReducers({
   app: AppReducer,
   ruleset: rulereducer,
+  fact: FactReducer
 });

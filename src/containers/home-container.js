@@ -7,7 +7,6 @@ import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { includes } from "lodash/collection";
 import AppearanceContext from "../context/apperance-context";
-import { login } from "../redux/actions/app";
 import { uploadRuleset } from "../redux/actions/rule";
 
 function readFile(file, cb) {
@@ -30,9 +29,6 @@ const HomeContainer = ({
   loggedIn = false
 }) => {
   const [files, setFiles] = useState([]);
-  // const [uploadError, setUploadError] = useState(false);
-  // const [fileExist, setFileExist] = useState(false);
-  // const [message, setMessage] = useState({});
   const appctx = useContext(AppearanceContext);
 
   const [ruleset, setRuleset] = useState(initialRuleset); // Consolidated ruleset state
@@ -43,9 +39,6 @@ const HomeContainer = ({
 
   const printFile = (file, name, error) => {
     if (error) {
-      // setUploadError(true);
-      // setFileExist(false);
-      // setMessage("");
     } else {
       const isFileAdded =
         files.some((fname) => fname === name) || includes(rulenames, file.name);
@@ -109,7 +102,6 @@ const HomeContainer = ({
 
   const history = useNavigate();
   const navigate = (location) => {
-    login();
     history(location);
   };
 
@@ -169,18 +161,14 @@ const HomeContainer = ({
 HomeContainer.propTypes = {
   rulenames: PropTypes.array,
   initialRuleset: PropTypes.array,
-  uploadRuleset: PropTypes.func,
-  login: PropTypes.func,
-  loggedIn: PropTypes.bool
+  uploadRuleset: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
-  rulenames: state.ruleset.rulesets.map((r) => r.name),
-  loggedIn: state.app.loggedIn
+  rulenames: state.ruleset.rulesets.map((r) => r.name)
 });
 
 const mapDispatchToProps = {
-  login,
   uploadRuleset
 };
 

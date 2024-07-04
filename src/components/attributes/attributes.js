@@ -55,6 +55,7 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
         handleAdd={handleAdd}
         reset={handleReset}
         searchTxt={handleSearch}
+        addTitle="Add"
       />
       {showAddAttr && (
         <AddAttributes

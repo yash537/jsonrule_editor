@@ -10,23 +10,37 @@ import {
 import ApperanceContext from "../../context/apperance-context";
 
 const navmenu = [
+  // {
+  //   name: "Create Rules",
+  //   navigate: "/create-ruleset",
+  //   iconClass: "icon",
+  //   fontIcons: faSquarePlus,
+  //   linkClass: "navmenu"
+  // },
+  // {
+  //   name: "Upload Rules",
+  //   navigate: "/home",
+  //   iconClass: "icon",
+  //   fontIcons: faCloudArrowUp,
+  //   linkClass: "navmenu"
+  // },
+  // {
+  //   name: "Appearance",
+  //   navigate: "/appearance",
+  //   iconClass: "icon",
+  //   fontIcons: faSliders,
+  //   linkClass: "navmenu"
+  // },
   {
-    name: "Create Rules",
-    navigate: "/create-ruleset",
+    name: "Rule Groups",
+    navigate: "/rule-groups",
     iconClass: "icon",
     fontIcons: faSquarePlus,
     linkClass: "navmenu"
   },
   {
-    name: "Upload Rules",
-    navigate: "/home",
-    iconClass: "icon",
-    fontIcons: faCloudArrowUp,
-    linkClass: "navmenu"
-  },
-  {
-    name: "Appearance",
-    navigate: "/appearance",
+    name: "Manage Facts",
+    navigate: "/manage-facts",
     iconClass: "icon",
     fontIcons: faSliders,
     linkClass: "navmenu"
@@ -42,18 +56,18 @@ const NavigationPanel = (props) => {
     navigate("/ruleset");
   };
 
-  let rulesetLink =
-    props.rulenames.length > 0
-      ? [
-          {
-            name: "Ruleset",
-            sublinks: props.rulenames,
-            iconClass: "rules-icon",
-            linkClass: "link-heading"
-          }
-        ]
-      : [];
-  rulesetLink = rulesetLink.concat(navmenu);
+  // let rulesetLink =
+  //   props.rulenames.length > 0
+  //     ? [
+  //         {
+  //           name: "Ruleset",
+  //           sublinks: props.rulenames,
+  //           iconClass: "rules-icon",
+  //           linkClass: "link-heading"
+  //         }
+  //       ]
+  //     : [];
+  let rulesetLink = navmenu;
   const { background } = useContext(ApperanceContext);
 
   return (

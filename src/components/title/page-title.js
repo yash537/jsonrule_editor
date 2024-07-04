@@ -41,7 +41,7 @@ const PageTitle = ({ titleFlag }) => {
             />
           ) : (
             <span onClick={() => setEditingTitle(true)}>
-              {ruleset?.name ?? ""}
+              {ruleset?.name ?? "Test Rule"}
             </span>
           )}
         </h1>

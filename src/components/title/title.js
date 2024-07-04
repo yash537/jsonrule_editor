@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faMoon } from "@fortawesome/free-solid-svg-icons";
 
 const Title = ({ title, updateState, closedState, loggedIn = false }) => {
   let sideNav = closedState ? "open" : "closed";
@@ -12,13 +12,16 @@ const Title = ({ title, updateState, closedState, loggedIn = false }) => {
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            loggedIn && updateState(sideNav);
+            // updateState(sideNav);
           }}
         >
           <FontAwesomeIcon className="menu-icon" icon={faBars} />
         </a>
       </div>
       <div className="title">{title}</div>
+      <div className="theme">
+        <FontAwesomeIcon className="menu-icon" icon={faMoon} />
+      </div>
     </div>
   );
 };

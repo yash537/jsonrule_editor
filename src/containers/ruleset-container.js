@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PageTitle from "../components/title/page-title";
 import Tabs from "../components/tabs/tabs";
@@ -9,11 +9,9 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import Attributes from "../components/attributes/attributes";
 import { handleAttribute } from "../redux/actions/attributes";
 import ValidateRules from "../components/validate/validate-rules";
-import PropTypes from "prop-types";
-import { login } from "../redux/actions/app";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Decisions from "../components/decisions/decision";
+import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
 
 const tabs = [
   { name: "Facts" },
@@ -63,18 +61,18 @@ const RulesetContainer = ({ loggedIn = false }) => {
   const { attributes, decisions, name } = ruleset || {};
 
   const message = updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loggedIn) {
-      navigate("/");
-    }
-  }, []);
+  const breadcrumbItems = [
+    { name: "Home", link: "/" },
+    { name: "Rule-Groups", link: "/rule-groups" },
+    { name: "Rules", link: "/rule-group/1" }
+  ];
 
   return (
     <div>
       <RuleErrorBoundary>
-        <PageTitle name={name} />
+        <Breadcrumbs items={breadcrumbItems} />
+        {/* <PageTitle name={name} /> */}
         <Tabs tabs={tabs} onConfirm={handleTab} activeTab={activeTab} />
         <div className="tab-page-container">
           {activeTab === "Facts" && (
@@ -103,16 +101,10 @@ const RulesetContainer = ({ loggedIn = false }) => {
   );
 };
 
-RulesetContainer.propTypes = {
-  loggedIn: PropTypes.bool
-};
+RulesetContainer.propTypes = {};
 
-const mapStateToProps = (state) => ({
-  loggedIn: state.app.loggedIn
-});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {
-  login
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RulesetContainer);
