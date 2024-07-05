@@ -1,45 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CustomTable from "../components/table/custom-table";
 import ToolBar from "../components/toolbar/toolbar";
 import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
 import CreateRuleGroup from "../components/rule-group/create-rule-group";
+import { useDispatch, useSelector } from "react-redux";
+import { createRuleGroup, loadRuleGroups } from "../redux/actions/rule-group";
 
 const RuleGroupsContainer = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     title: ""
   });
+  const dispatch = useDispatch();
+  const { ruleGroups, error } = useSelector((state) => state.ruleGroup);
 
   const columns = [
     { header: "Id", accessor: "id", isLink: false },
     { header: "RuleGroup Name", accessor: "name", isLink: true },
     { header: "Status", accessor: "status", isLink: false },
     { header: "Created At", accessor: "created_at", isLink: false }
-  ];
-
-  const data = [
-    {
-      id: 1,
-      name: "Rule Gruoup1",
-      status: 1,
-      created_at: "1st July,2024",
-      link: "/rule-group/1"
-    },
-    {
-      id: 2,
-      name: "Rule Gruoup2",
-      status: 0,
-      created_at: "1st July,2024",
-      link: "/rule-group/2"
-    },
-    {
-      id: 3,
-      name: "Rule Gruoup3",
-      status: 1,
-      created_at: "1st July,2024",
-      link: "/rule-group/3"
-    }
   ];
 
   const handleActionClick = (row) => {
@@ -58,12 +38,24 @@ const RuleGroupsContainer = () => {
     alert(`Action clicked for ${row.name}`);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (formData) => {
     console.log("submit clicked");
     setShowModal(false);
+    console.log(formData);
+    dispatch(createRuleGroup(formData.title));
   };
 
+  useEffect(() => {
+    if (ruleGroups.length === 0) {
+      dispatch(loadRuleGroups());
+    }
+  }, []);
+
   const breadcrumbItems = [{ name: "Home", link: "/" }];
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="rules-container">
@@ -84,7 +76,7 @@ const RuleGroupsContainer = () => {
       <div className="custom-table">
         <CustomTable
           columns={columns}
-          data={data}
+          data={ruleGroups}
           onActionClick={handleActionClick}
         />
       </div>

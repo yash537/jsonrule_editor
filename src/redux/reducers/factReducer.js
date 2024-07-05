@@ -7,11 +7,27 @@ const initialState = {
 const FactReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.ADD_FACT:
-      console.log("zxczxczxc", action.payload);
       return {
         ...state,
         attributes: state.attributes.concat(action.payload)
       };
+    case ActionTypes.UPDATE_FACT: {
+      const { index, attribute } = action.payload;
+      return {
+        ...state,
+        attributes: [
+          attribute,
+          ...state.attributes.filter((attribute) => attribute.id !== index)
+        ]
+      };
+    }
+    case ActionTypes.FETCH_FACTS: {
+      return {
+        ...state,
+        attributes: action.payload,
+        error: null
+      };
+    }
     default:
       return state;
   }

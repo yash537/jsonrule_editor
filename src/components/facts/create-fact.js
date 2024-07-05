@@ -6,9 +6,9 @@ import SelectField from "../forms/selectmenu-field";
 import dataTypes from "../../data-objects/operator.json";
 
 const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
-  console.log(inputData);
   const [formData, setFormData] = useState(inputData);
   const [error, setError] = useState({});
+  console.log(formData);
 
   const handleFormChange = (e) => {
     setFormData({
@@ -38,8 +38,8 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
             label="Name"
             name="name"
             onChange={handleFormChange}
-            value={formData.title}
-            error={error.title}
+            value={formData.name}
+            error={error.name}
             required
           />
           <SelectField
@@ -52,7 +52,7 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
           />
           <div style={{ display: "flex" }}>
             <Button
-              label={formData.mode === "edit" ? "Update" : "Create"}
+              label={formData.id ? "Update" : "Create"}
               classname="btn-success"
               type="submit"
             />

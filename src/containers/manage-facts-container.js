@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CustomTable from "../components/table/custom-table";
 import ToolBar from "../components/toolbar/toolbar";
 import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
 import CreateFact from "../components/facts/create-fact";
-import { handleFact } from "../redux/actions/fact";
+import { handleFact, handleFetchFacts } from "../redux/actions/fact";
 import { useDispatch, useSelector } from "react-redux";
 import { isContains } from "../utils/stringutils";
 
@@ -15,18 +15,45 @@ const ManageFactsContainer = () => {
 
   const attributes = useSelector((state) => state.fact.attributes);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    id: "1",
-    created_at: "1st July, 2024"
-  });
+  const [formData, setFormData] = useState({});
+
+  const handleEdit = (row) => {
+    setFormData(row);
+    setShowModal(true);
+  };
+
+  const handleDelete = (row) => {
+    alert(`Delete action clicked for ${row.id}`);
+  };
+
+  useEffect(() => {
+    if (attributes.length === 0) {
+      dispatch(handleFetchFacts());
+    }
+  }, []);
 
   const columns = [
     { header: "Id", accessor: "id", isLink: false },
     { header: "Fact Name", accessor: "name", isLink: false },
     { header: "Type", accessor: "type", isLink: false, className: "type" },
-    { header: "Created At", accessor: "created_at", isLink: false }
+    { header: "Created At", accessor: "created_at", isLink: false },
+    {
+      header: "Action",
+      accessor: "id",
+      isLink: false,
+      actions: [
+        {
+          actionName: "Edit",
+          handler: (row) => handleEdit(row),
+          className: "btn btn-primary"
+        },
+        {
+          actionName: "Delete",
+          handler: (row) => handleDelete(row),
+          className: "btn btn-danger"
+        }
+      ]
+    }
   ];
 
   const handleActionClick = (row) => {
@@ -35,6 +62,7 @@ const ManageFactsContainer = () => {
 
   const handleAdd = (row) => {
     setShowModal(true);
+    setFormData({});
   };
 
   const handleReset = (row) => {
@@ -46,7 +74,13 @@ const ManageFactsContainer = () => {
   }, []);
 
   const handleSubmit = (payload) => {
-    dispatch(handleFact("ADD", payload));
+    if (payload.id) {
+      console.log("updae");
+      dispatch(handleFact("UPDATE", payload, payload.id));
+    } else {
+      console.log("add");
+      dispatch(handleFact("ADD", payload));
+    }
     setShowModal(false);
   };
 
@@ -61,6 +95,7 @@ const ManageFactsContainer = () => {
   const breadcrumbItems = [{ name: "Home", link: "/" }];
   const filteredAttributes = searchCriteria ? filterAttribute() : attributes;
 
+  console.log(attributes);
   return (
     <div className="rules-container">
       {showModal && (

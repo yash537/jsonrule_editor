@@ -4,7 +4,6 @@
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  padding: 20px;
   background: #f0f0f0;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -26,8 +25,8 @@
 /* Enhanced span styling */
 .theme-container span {
   display: block;
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   margin: 0 auto 10px;
   background-size: cover;
   border-radius: 50%;

@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const CustomTable = ({ columns, data, onActionClick, className }) => {
+const CustomTable = ({ columns, data, className }) => {
   return (
     <table>
       <thead>
@@ -17,7 +18,19 @@ const CustomTable = ({ columns, data, onActionClick, className }) => {
               {columns.map((col, colIndex) => (
                 <td key={colIndex}>
                   {col.isLink ? (
-                    <a href={row["link"]}>{row[col.accessor]}</a>
+                    <Link to={row["link"]}>{row[col.accessor]}</Link>
+                  ) : col.actions ? (
+                    <div className="action-wrapper">
+                      {col.actions.map((action, actionIndex) => (
+                        <button
+                          key={actionIndex}
+                          className={action.className}
+                          onClick={() => action.handler(row)}
+                        >
+                          {action.actionName}
+                        </button>
+                      ))}
+                    </div>
                   ) : (
                     <span className={className}>{row[col.accessor]}</span>
                   )}
