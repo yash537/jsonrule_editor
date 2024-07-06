@@ -6,6 +6,7 @@ import RuleGroupsContainer from "../containers/rule-groups-container";
 import RuleListContainer from "../containers/rule-list-container";
 import ManageFactsContainer from "../containers/manage-facts-container";
 import ManageKeysContainer from "../containers/manage-keys-container";
+import ManageConstantsContainer from "../containers/manage-constants-container";
 
 const AppRoutes = (props) => {
   const { background } = props.appctx;
@@ -22,6 +23,10 @@ const AppRoutes = (props) => {
         <Route path="/rule-groups" element={<RuleGroupsContainer />} />
         <Route path="/manage-facts" element={<ManageFactsContainer />} />
         <Route path="/manage-keys" element={<ManageKeysContainer />} />
+        <Route
+          path="/manage-constants"
+          element={<ManageConstantsContainer />}
+        />
 
         <Route
           path="/rule-group/:ruleGroupId"

@@ -1,36 +1,16 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import NavLinks from "./navigation-link";
+import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   faSquarePlus,
   faSliders,
-  faKey
+  faKey,
+  faShield
 } from "@fortawesome/free-solid-svg-icons";
 import ApperanceContext from "../../context/apperance-context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const navmenu = [
-  // {
-  //   name: "Create Rules",
-  //   navigate: "/create-ruleset",
-  //   iconClass: "icon",
-  //   fontIcons: faSquarePlus,
-  //   linkClass: "navmenu"
-  // },
-  // {
-  //   name: "Upload Rules",
-  //   navigate: "/home",
-  //   iconClass: "icon",
-  //   fontIcons: faCloudArrowUp,
-  //   linkClass: "navmenu"
-  // },
-  // {
-  //   name: "Appearance",
-  //   navigate: "/appearance",
-  //   iconClass: "icon",
-  //   fontIcons: faSliders,
-  //   linkClass: "navmenu"
-  // },
   {
     name: "Rule Groups",
     navigate: "/rule-groups",
@@ -43,6 +23,13 @@ const navmenu = [
     navigate: "/manage-facts",
     iconClass: "icon",
     fontIcons: faSliders,
+    linkClass: "navmenu"
+  },
+  {
+    name: "Global Constants",
+    navigate: "/manage-constants",
+    iconClass: "icon",
+    fontIcons: faShield,
     linkClass: "navmenu"
   },
   {
@@ -63,17 +50,6 @@ const NavigationPanel = (props) => {
     navigate("/ruleset");
   };
 
-  // let rulesetLink =
-  //   props.rulenames.length > 0
-  //     ? [
-  //         {
-  //           name: "Ruleset",
-  //           sublinks: props.rulenames,
-  //           iconClass: "rules-icon",
-  //           linkClass: "link-heading"
-  //         }
-  //       ]
-  //     : [];
   let rulesetLink = navmenu;
   const { background } = useContext(ApperanceContext);
 
@@ -86,11 +62,17 @@ const NavigationPanel = (props) => {
       {!closedState && (
         <div className="links-section">
           <div>
-            <NavLinks
-              links={rulesetLink}
-              onConfirm={handleNavLink}
-              activeIndex={props.activeIndex}
-            />
+            <nav>
+              {navmenu.map((value) => (
+                <NavLink
+                  key={value.name}
+                  to={value.navigate}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  <FontAwesomeIcon icon={value.fontIcons} /> {value.name}
+                </NavLink>
+              ))}
+            </nav>
           </div>
         </div>
       )}

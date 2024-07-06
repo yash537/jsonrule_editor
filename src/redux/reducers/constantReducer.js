@@ -6,12 +6,12 @@ const initialState = {
 
 const ConstantReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.ADD_FACT:
+    case ActionTypes.ADD_CONSTANT:
       return {
         ...state,
         constants: state.constants.concat(action.payload)
       };
-    case ActionTypes.UPDATE_FACT: {
+    case ActionTypes.UPDATE_CONSTANT: {
       const { index, attribute } = action.payload;
       return {
         ...state,
@@ -21,7 +21,7 @@ const ConstantReducer = (state = initialState, action) => {
         ]
       };
     }
-    case ActionTypes.FETCH_FACTS: {
+    case ActionTypes.FETCH_CONSTANTS: {
       return {
         ...state,
         constants: action.payload,
