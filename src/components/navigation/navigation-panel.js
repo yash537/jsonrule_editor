@@ -4,8 +4,8 @@ import NavLinks from "./navigation-link";
 import PropTypes from "prop-types";
 import {
   faSquarePlus,
-  faCloudArrowUp,
-  faSliders
+  faSliders,
+  faKey
 } from "@fortawesome/free-solid-svg-icons";
 import ApperanceContext from "../../context/apperance-context";
 
@@ -43,6 +43,13 @@ const navmenu = [
     navigate: "/manage-facts",
     iconClass: "icon",
     fontIcons: faSliders,
+    linkClass: "navmenu"
+  },
+  {
+    name: "Global Keys",
+    navigate: "/manage-keys",
+    iconClass: "icon",
+    fontIcons: faKey,
     linkClass: "navmenu"
   }
 ];
