@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isContains } from "../utils/stringutils";
 import { handleKey, handlefetchKeys } from "../redux/actions/key";
 import CreateKey from "../components/keys/create-key";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ManageKeysContainer = () => {
   const [showModal, setShowModal] = useState(false);
@@ -38,18 +39,20 @@ const ManageKeysContainer = () => {
     { header: "Created At", accessor: "created_at", isLink: false },
     {
       header: "Action",
-      accessor: "id",
+      accessor: "action",
       isLink: false,
       actions: [
         {
           actionName: "Edit",
           handler: (row) => handleEdit(row),
-          className: "btn btn-primary"
+          font: faEdit,
+          iconClass: "icon edit-icon"
         },
         {
           actionName: "Delete",
           handler: (row) => handleDelete(row),
-          className: "btn btn-danger"
+          font: faTrash,
+          iconClass: "icon delete-icon"
         }
       ]
     }
@@ -85,7 +88,6 @@ const ManageKeysContainer = () => {
     return keys.filter((att) => isContains(att.name, searchCriteria));
   }, [keys, searchCriteria]);
 
-  const breadcrumbItems = [{ name: "Home", link: "/" }];
   const filteredkeys = searchCriteria ? filterKey() : keys;
 
   return (
@@ -98,7 +100,6 @@ const ManageKeysContainer = () => {
           showModal={showModal}
         />
       )}
-      <Breadcrumbs items={breadcrumbItems} />
       <ToolBar
         handleAdd={handleAdd}
         reset={handleReset}

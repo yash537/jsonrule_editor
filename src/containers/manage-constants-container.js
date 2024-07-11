@@ -7,6 +7,7 @@ import { isContains } from "../utils/stringutils";
 import { handleKey } from "../redux/actions/key";
 import CreateConstant from "../components/constants/create-constant";
 import { handleFetchConstants } from "../redux/actions/constant";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ManageConstantsContainer = () => {
   const [showModal, setShowModal] = useState(false);
@@ -41,18 +42,20 @@ const ManageConstantsContainer = () => {
     { header: "Created At", accessor: "created_at", isLink: false },
     {
       header: "Action",
-      accessor: "id",
+      accessor: "action",
       isLink: false,
       actions: [
         {
           actionName: "Edit",
           handler: (row) => handleEdit(row),
-          className: "btn btn-primary"
+          font: faEdit,
+          iconClass: "icon edit-icon"
         },
         {
           actionName: "Delete",
           handler: (row) => handleDelete(row),
-          className: "btn btn-danger"
+          font: faTrash,
+          iconClass: "icon delete-icon"
         }
       ]
     }
@@ -93,7 +96,6 @@ const ManageConstantsContainer = () => {
     );
   }, [constants, searchCriteria]);
 
-  const breadcrumbItems = [{ name: "Home", link: "/" }];
   const filteredconstants = searchCriteria ? filterKey() : constants;
 
   return (
@@ -106,7 +108,6 @@ const ManageConstantsContainer = () => {
           showModal={showModal}
         />
       )}
-      <Breadcrumbs items={breadcrumbItems} />
       <ToolBar
         handleAdd={handleAdd}
         reset={handleReset}

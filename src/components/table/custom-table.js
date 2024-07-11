@@ -1,7 +1,25 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const CustomTable = ({ columns, data, className }) => {
+  const formatCellValue = (value) => {
+    if (Array.isArray(value)) {
+      const formattedArray = value
+        .map((item) =>
+          typeof item === "object" ? item.name || JSON.stringify(item) : item
+        )
+        .join(", ");
+      return formattedArray || "-";
+    } else if (typeof value === "object" && value !== null) {
+      const formattedObject = Object.keys(value)
+        .map((key) => `${key}: ${value[key]}`)
+        .join(", ");
+      return formattedObject || "-";
+    }
+    return value || "-";
+  };
+
   return (
     <table>
       <thead>
@@ -14,25 +32,30 @@ const CustomTable = ({ columns, data, className }) => {
       <tbody>
         {data.length > 0 ? (
           data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={row.id ? row.id : rowIndex + 1}>
               {columns.map((col, colIndex) => (
                 <td key={colIndex}>
-                  {col.isLink ? (
-                    <Link to={row["link"]}>{row[col.accessor]}</Link>
+                  {col.accessor === "id" ? (
+                    <span>{row.id ? row.id : rowIndex + 1}</span>
+                  ) : col.isLink ? (
+                    <Link to={`${row[col.accessor]}`}>
+                      {formatCellValue(row[col.accessor])}
+                    </Link>
                   ) : col.actions ? (
                     <div className="action-wrapper">
                       {col.actions.map((action, actionIndex) => (
-                        <button
-                          key={actionIndex}
-                          className={action.className}
+                        <FontAwesomeIcon
                           onClick={() => action.handler(row)}
-                        >
-                          {action.actionName}
-                        </button>
+                          key={actionIndex}
+                          icon={action.font}
+                          className={action.iconClass}
+                        />
                       ))}
                     </div>
                   ) : (
-                    <span className={className}>{row[col.accessor]}</span>
+                    <span className={className}>
+                      {formatCellValue(row[col.accessor])}
+                    </span>
                   )}
                 </td>
               ))}

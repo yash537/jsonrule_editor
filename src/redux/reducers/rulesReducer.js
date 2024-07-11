@@ -1,34 +1,40 @@
 import * as ActionTypes from "../actionTypes/action-type";
 
 const initialState = {
-  ruleGroups: [],
+  rules: [],
   error: null
 };
 
-const RuleGroupReducer = (state = initialState, action) => {
+const RulesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.FETCH_RULE_GROUPS_SUCCESS:
+    case ActionTypes.FETCH_RULE_SUCCESS:
       return {
         ...state,
-        ruleGroups: action.payload,
+        rules: action.payload,
         error: null
       };
-    case ActionTypes.FETCH_RULE_GROUPS_FAILURE:
+    case ActionTypes.RESET_RULES:
       return {
         ...state,
-        ruleGroups: [],
+        rules: action.payload,
+        error: null
+      };
+    case ActionTypes.FETCH_RULE_FAILURE:
+      return {
+        ...state,
+        rules: [],
         error: action.payload
       };
-    case ActionTypes.CREATE_RULE_GROUP:
+    case ActionTypes.CREATE_RULE:
       return {
         ...state,
-        ruleGroups: state.ruleGroups.concat(action.payload)
+        rules: state.rules.concat(action.payload)
       };
-    case ActionTypes.UPDATE_RULE_GROUP: {
+    case ActionTypes.UPDATE_RULE: {
       const updatedRuleGroup = action.payload;
       return {
         ...state,
-        ruleGroups: state.ruleGroups.map((ruleGroup) =>
+        rules: state.rules.map((ruleGroup) =>
           ruleGroup.name === updatedRuleGroup.oldName
             ? { ...ruleGroup, ...updatedRuleGroup }
             : ruleGroup
@@ -40,4 +46,4 @@ const RuleGroupReducer = (state = initialState, action) => {
   }
 };
 
-export default RuleGroupReducer;
+export default RulesReducer;

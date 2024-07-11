@@ -19,7 +19,7 @@ const AppRoutes = (props) => {
     >
       <Routes>
         <Route path="/" element={<RuleGroupsContainer />} />
-        <Route path="/rule-details/:ruleId" element={<RulesetContainer />} />
+        <Route path="/rule-groups/:ruleId" element={<RuleListContainer />} />
         <Route path="/rule-groups" element={<RuleGroupsContainer />} />
         <Route path="/manage-facts" element={<ManageFactsContainer />} />
         <Route path="/manage-keys" element={<ManageKeysContainer />} />

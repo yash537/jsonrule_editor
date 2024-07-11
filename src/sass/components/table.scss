@@ -55,4 +55,11 @@ table {
     .action-wrapper .btn:first-child {
       margin-right: 10px;
     }
+    .action-wrapper .edit-icon {
+      margin-right: 10px;
+      color: $primary-btn-color;
+    }
+    .action-wrapper .delete-icon {
+      color: $danger;
+    }
   }

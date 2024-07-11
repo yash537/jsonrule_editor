@@ -5,6 +5,7 @@ import FactReducer from "./factReducer";
 import RuleGroupReducer from "./rule-group-reducer";
 import ConstantReducer from "./constantReducer";
 import KeyReducer from "./KeyReducer";
+import RulesReducer from "./rulesReducer";
 
 export const rootReducer = combineReducers({
   app: AppReducer,
@@ -12,5 +13,6 @@ export const rootReducer = combineReducers({
   fact: FactReducer,
   ruleGroup: RuleGroupReducer,
   constant: ConstantReducer,
-  key: KeyReducer
+  key: KeyReducer,
+  rules: RulesReducer
 });

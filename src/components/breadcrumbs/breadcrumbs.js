@@ -14,11 +14,7 @@ const Breadcrumbs = ({ items }) => {
                 index === items.length - 1 ? "active" : ""
               }`}
             >
-              {index === items.length - 1 ? (
-                item.name
-              ) : (
-                <Link to={item.link}>{item.name}</Link>
-              )}
+              <Link to={item.link}>{item.name}</Link>
             </li>
           ))}
         </ol>

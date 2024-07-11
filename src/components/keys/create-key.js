@@ -23,7 +23,9 @@ const CreateKey = ({ inputData, onSubmit, onClose, showModal }) => {
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
         <div className="title-bar">
-          <span className="title">Create Fact</span>
+          <span className="title">
+            {formData.id ? "Update" : "Create"} Fact
+          </span>
           <span className="close" onClick={onClose}>
             &times;
           </span>

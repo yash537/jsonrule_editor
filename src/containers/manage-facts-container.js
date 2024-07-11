@@ -6,6 +6,7 @@ import CreateFact from "../components/facts/create-fact";
 import { handleFact, handleFetchFacts } from "../redux/actions/fact";
 import { useDispatch, useSelector } from "react-redux";
 import { isContains } from "../utils/stringutils";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ManageFactsContainer = () => {
   const [showModal, setShowModal] = useState(false);
@@ -39,18 +40,20 @@ const ManageFactsContainer = () => {
     { header: "Created At", accessor: "created_at", isLink: false },
     {
       header: "Action",
-      accessor: "id",
+      accessor: "action",
       isLink: false,
       actions: [
         {
           actionName: "Edit",
           handler: (row) => handleEdit(row),
-          className: "btn btn-primary"
+          font: faEdit,
+          iconClass: "icon edit-icon"
         },
         {
           actionName: "Delete",
           handler: (row) => handleDelete(row),
-          className: "btn btn-danger"
+          font: faTrash,
+          iconClass: "icon delete-icon"
         }
       ]
     }
@@ -75,10 +78,8 @@ const ManageFactsContainer = () => {
 
   const handleSubmit = (payload) => {
     if (payload.id) {
-      console.log("updae");
       dispatch(handleFact("UPDATE", payload, payload.id));
     } else {
-      console.log("add");
       dispatch(handleFact("ADD", payload));
     }
     setShowModal(false);
@@ -92,10 +93,9 @@ const ManageFactsContainer = () => {
     );
   }, [attributes, searchCriteria]);
 
-  const breadcrumbItems = [{ name: "Home", link: "/" }];
+  // const breadcrumbItems = [{ name: "Home", link: "/" }];
   const filteredAttributes = searchCriteria ? filterAttribute() : attributes;
 
-  console.log(attributes);
   return (
     <div className="rules-container">
       {showModal && (
@@ -106,7 +106,7 @@ const ManageFactsContainer = () => {
           showModal={showModal}
         />
       )}
-      <Breadcrumbs items={breadcrumbItems} />
+      {/* <Breadcrumbs items={breadcrumbItems} /> */}
       <ToolBar
         handleAdd={handleAdd}
         reset={handleReset}

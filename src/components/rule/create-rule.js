@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import InputField from "../forms/input-field";
 import Button from "../button/button";
 
-const CreateRule = ({ inputData, onSubmit, onClose, showModal }) => {
+const CreateRule = ({ inputData, onSubmit, onClose, showModal, mode }) => {
   const [formData, setFormData] = useState(inputData);
   const [error, setError] = useState({});
 
@@ -23,23 +23,26 @@ const CreateRule = ({ inputData, onSubmit, onClose, showModal }) => {
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
         <div className="title-bar">
-          <span className="title">Create Rule</span>
+          <span className="title">
+            {" "}
+            {mode == "edit" ? "Edit" : "Create"} Rule
+          </span>
           <span className="close" onClick={onClose}>
             &times;
           </span>
         </div>
         <form onSubmit={handleSubmit} className="rule-group">
           <InputField
-            label="Title"
-            name="title"
+            label="Name"
+            name="name"
             onChange={handleFormChange}
-            value={formData.title}
-            error={error.title}
+            value={formData.name}
+            error={error.name}
             required
           />
           <div style={{ display: "flex" }}>
             <Button
-              label={formData.mode === "edit" ? "Edit" : "Add"}
+              label={mode == "edit" ? "Edit" : "Create"}
               classname="btn-success"
               type="submit"
             />
