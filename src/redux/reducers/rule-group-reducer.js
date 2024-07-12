@@ -35,6 +35,15 @@ const RuleGroupReducer = (state = initialState, action) => {
         )
       };
     }
+    case ActionTypes.DELETE_RULE_GROUP: {
+      const updatedRuleGroup = action.payload;
+      return {
+        ...state,
+        ruleGroups: state.ruleGroups.filter(
+          (ruleGroup) => ruleGroup.name != updatedRuleGroup
+        )
+      };
+    }
     default:
       return state;
   }

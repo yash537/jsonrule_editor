@@ -2,7 +2,7 @@ import api from "./api";
 
 export const fetchRulesbyRuleGroupName = async (name) => {
   try {
-    const response = await api.get(`/list/rule/group/${name}`);
+    const response = await api.get(`external/list/rule/group/${name}`);
     return response.data.rules ?? [];
   } catch (error) {
     if (
@@ -17,20 +17,29 @@ export const fetchRulesbyRuleGroupName = async (name) => {
   }
 };
 
-// export const createRuleGroupApi = async (data) => {
-//   try {
-//     const response = await api.post("/add/rule_group", data);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+export const createRuleApi = async (data) => {
+  try {
+    const response = await api.post("external/add/rule", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
-// export const updateRuleGroupApi = async (data) => {
-//   try {
-//     const response = await api.patch("/update/rule_group", data);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+export const updateRuleApi = async (data) => {
+  try {
+    const response = await api.patch("external/update/rule", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const DeleteRuleApi = async (data) => {
+  try {
+    const response = await api.delete(`external/rule_name/${data}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -21,6 +21,16 @@ const FactReducer = (state = initialState, action) => {
         ]
       };
     }
+    case ActionTypes.DELETE_FACT: {
+      const { name } = action.payload;
+      return {
+        ...state,
+        attributes: [
+          attribute,
+          ...state.attributes.filter((attribute) => attribute.name !== name)
+        ]
+      };
+    }
     case ActionTypes.FETCH_FACTS: {
       return {
         ...state,

@@ -6,16 +6,21 @@ import CreateRuleGroup from "../components/rule-group/create-rule-group";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createRuleGroup,
+  deleteRuleGroup,
   loadRuleGroups,
   updateRuleGroup
 } from "../redux/actions/rule-group";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../components/Spinner";
+import Error from "../components/Error";
+import DeleteModal from "../components/Delete";
 
 const RuleGroupsContainer = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [oldName, setOldName] = useState("");
   const [mode, setMode] = useState("add");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,7 +38,8 @@ const RuleGroupsContainer = () => {
   };
 
   const handleDelete = (row) => {
-    alert(`Delete action clicked for ${row.id}`);
+    setShowDeleteModal(true);
+    setFormData(row);
   };
 
   const columns = [
@@ -63,8 +69,11 @@ const RuleGroupsContainer = () => {
     }
   ];
 
-  const handleActionClick = (row) => {
-    alert(`Action clicked for ${row.name}`);
+  const handleActionClick = () => {
+    setLoading(true);
+    setShowDeleteModal(false);
+    dispatch(deleteRuleGroup(formData.name));
+    setLoading(false);
   };
 
   const handleAdd = (row) => {
@@ -85,6 +94,7 @@ const RuleGroupsContainer = () => {
   };
 
   const handleSubmit = (formData) => {
+    setLoading(true);
     if (oldName) {
       dispatch(
         updateRuleGroup({
@@ -96,6 +106,7 @@ const RuleGroupsContainer = () => {
       dispatch(createRuleGroup(formData));
     }
     setShowModal(false);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -110,12 +121,23 @@ const RuleGroupsContainer = () => {
     }
   }, [dispatch, ruleGroups.length]);
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   if (error) {
-    return <div>{error}</div>;
+    return <Error error={error} />;
   }
 
   return (
     <div className="rules-container">
+      {showDeleteModal && (
+        <DeleteModal
+          onCancel={() => setShowDeleteModal(false)}
+          onProceed={handleActionClick}
+          showModal={showDeleteModal}
+        />
+      )}
       {showModal && (
         <CreateRuleGroup
           inputData={formData}
@@ -134,11 +156,7 @@ const RuleGroupsContainer = () => {
         {loading ? (
           <div className="loading-spinner">Loading...</div> // Add your spinner component or HTML here
         ) : (
-          <CustomTable
-            columns={columns}
-            data={ruleGroups}
-            onActionClick={handleActionClick}
-          />
+          <CustomTable columns={columns} data={ruleGroups} />
         )}
       </div>
     </div>

@@ -1,25 +1,35 @@
 import React, { useCallback, useEffect, useState } from "react";
 import CustomTable from "../components/table/custom-table";
 import ToolBar from "../components/toolbar/toolbar";
-import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
 import { useDispatch, useSelector } from "react-redux";
 import { isContains } from "../utils/stringutils";
-import { handleKey } from "../redux/actions/key";
 import CreateConstant from "../components/constants/create-constant";
-import { handleFetchConstants } from "../redux/actions/constant";
+import {
+  handleConstant,
+  handleFetchConstants
+} from "../redux/actions/constant";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../components/Spinner";
+import Error from "../components/Error";
 
 const ManageConstantsContainer = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState("add");
 
   const dispatch = useDispatch();
 
-  const constants = useSelector((state) => state.constant.constants);
+  const { constants, error } = useSelector((state) => state.constant);
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    name: "",
+    value: "",
+    dataType: ""
+  });
 
   const handleEdit = (row) => {
+    setMode("edit");
     setFormData(row);
     setShowModal(true);
   };
@@ -29,10 +39,14 @@ const ManageConstantsContainer = () => {
   };
 
   useEffect(() => {
-    if (constants.length === 0) {
-      dispatch(handleFetchConstants());
-    }
-  }, []);
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(handleFetchConstants());
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [dispatch, constants.length]);
 
   const columns = [
     { header: "Id", accessor: "id", isLink: false },
@@ -66,6 +80,7 @@ const ManageConstantsContainer = () => {
   };
 
   const handleAdd = (row) => {
+    setMode("add");
     setShowModal(true);
     setFormData({});
   };
@@ -80,9 +95,9 @@ const ManageConstantsContainer = () => {
 
   const handleSubmit = (payload) => {
     if (payload.id) {
-      dispatch(handleKey("UPDATE", payload, payload.id));
+      dispatch(handleConstant("UPDATE", payload, payload.id));
     } else {
-      dispatch(handleKey("ADD", payload));
+      dispatch(handleConstant("ADD", payload));
     }
     setShowModal(false);
   };
@@ -98,6 +113,14 @@ const ManageConstantsContainer = () => {
 
   const filteredconstants = searchCriteria ? filterKey() : constants;
 
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <Error error={error} />;
+  }
+
   return (
     <div className="rules-container">
       {showModal && (
@@ -106,6 +129,7 @@ const ManageConstantsContainer = () => {
           onSubmit={handleSubmit}
           onClose={() => setShowModal(false)}
           showModal={showModal}
+          mode={mode}
         />
       )}
       <ToolBar

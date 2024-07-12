@@ -4,11 +4,11 @@ import Button from "../button/button";
 import { useState } from "react";
 import SelectField from "../forms/selectmenu-field";
 import dataTypes from "../../data-objects/operator.json";
+import constantValidations from "../../validations/constant-validations";
 
-const CreateConstant = ({ inputData, onSubmit, onClose, showModal }) => {
+const CreateConstant = ({ inputData, onSubmit, onClose, showModal, mode }) => {
   const [formData, setFormData] = useState(inputData);
   const [error, setError] = useState({});
-  console.log(formData);
 
   const handleFormChange = (e) => {
     setFormData({
@@ -19,7 +19,12 @@ const CreateConstant = ({ inputData, onSubmit, onClose, showModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const validationErrors = constantValidations(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setError(validationErrors);
+    } else {
+      onSubmit(formData);
+    }
   };
 
   const attributeTypes = Object.keys(dataTypes);
@@ -28,7 +33,9 @@ const CreateConstant = ({ inputData, onSubmit, onClose, showModal }) => {
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
         <div className="title-bar">
-          <span className="title">Create Fact</span>
+          <span className="title">
+            {mode == "add" ? "Create" : "Edit"} Constant
+          </span>
           <span className="close" onClick={onClose}>
             &times;
           </span>
@@ -43,12 +50,12 @@ const CreateConstant = ({ inputData, onSubmit, onClose, showModal }) => {
             required
           />
           <SelectField
-            label="Type"
-            name={"type"}
+            label="DataType"
+            name={"dataType"}
             options={attributeTypes}
             onChange={handleFormChange}
-            value={formData.type}
-            error={error.type}
+            value={formData.dataType}
+            error={error.dataType}
           />
           <InputField
             label="Value"
@@ -60,7 +67,7 @@ const CreateConstant = ({ inputData, onSubmit, onClose, showModal }) => {
           />
           <div style={{ display: "flex" }}>
             <Button
-              label={formData.id ? "Update" : "Create"}
+              label={mode == "add" ? "Create" : "Update"}
               classname="btn-success"
               type="submit"
             />

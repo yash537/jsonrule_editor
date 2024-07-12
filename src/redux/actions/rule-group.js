@@ -1,5 +1,6 @@
 import {
   createRuleGroupApi,
+  deleteRuleGroupApi,
   fetchRuleGroups,
   updateRuleGroupApi
 } from "../apis/rule-group";
@@ -7,7 +8,8 @@ import {
   FETCH_RULE_GROUPS_SUCCESS,
   FETCH_RULE_GROUPS_FAILURE,
   CREATE_RULE_GROUP,
-  UPDATE_RULE_GROUP
+  UPDATE_RULE_GROUP,
+  DELETE_RULE_GROUP
 } from "../actionTypes/action-type";
 
 export const fetchRuleGroupsSuccess = (ruleGroups) => ({
@@ -26,6 +28,10 @@ export const addRuleGroup = (ruleGroup) => {
 
 export const editRuleGroup = (ruleGroup) => {
   return { type: UPDATE_RULE_GROUP, payload: ruleGroup };
+};
+
+export const removeRuleGroup = (ruleGroupName) => {
+  return { type: DELETE_RULE_GROUP, payload: ruleGroupName };
 };
 
 export const loadRuleGroups = () => async (dispatch) => {
@@ -50,6 +56,15 @@ export const updateRuleGroup = (data) => async (dispatch) => {
   try {
     const ruleGroup = await updateRuleGroupApi(data);
     dispatch(editRuleGroup({ ...ruleGroup, oldName: data.name }));
+  } catch (error) {
+    dispatch(fetchRuleGroupsFailure(error.message));
+  }
+};
+
+export const deleteRuleGroup = (data) => async (dispatch) => {
+  try {
+    await deleteRuleGroupApi(data);
+    dispatch(removeRuleGroup(data));
   } catch (error) {
     dispatch(fetchRuleGroupsFailure(error.message));
   }

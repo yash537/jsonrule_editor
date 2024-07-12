@@ -1,24 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CustomTable from "../components/table/custom-table";
 import ToolBar from "../components/toolbar/toolbar";
 import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
 import CreateRule from "../components/rule/create-rule";
-import { loadRules, resetRules } from "../redux/actions/rule";
+import {
+  createrule,
+  deleteRule,
+  loadRules,
+  updaterule
+} from "../redux/actions/rule";
 import { useDispatch, useSelector } from "react-redux";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
+import Error from "../components/Error";
+import Spinner from "../components/Spinner";
+import { isContains } from "../utils/stringutils";
+import DeleteModal from "../components/Delete";
 
 const RuleListContainer = () => {
   const { ruleId } = useParams();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [oldName, setOldName] = useState("");
   const [mode, setMode] = useState("add");
   const [formData, setFormData] = useState({
     name: ""
   });
-
+  const [searchCriteria, setSearchCriteria] = useState("");
   const { rules, error } = useSelector((state) => state.rules);
 
   const handleEdit = (row) => {
@@ -29,7 +39,8 @@ const RuleListContainer = () => {
   };
 
   const handleDelete = (row) => {
-    alert(`Delete action clicked for ${row.id}`);
+    setShowDeleteModal(true);
+    setFormData(row);
   };
 
   const columns = [
@@ -60,8 +71,11 @@ const RuleListContainer = () => {
 
   const dispatch = useDispatch();
 
-  const handleActionClick = (row) => {
-    alert(`Action clicked for ${row.name}`);
+  const handleActionClick = () => {
+    setLoading(true);
+    setShowDeleteModal(false);
+    dispatch(deleteRule(formData.name));
+    setLoading(false);
   };
 
   const handleAdd = (row) => {
@@ -77,17 +91,41 @@ const RuleListContainer = () => {
     alert(`Action clicked for ${row.name}`);
   };
 
-  const handleSearch = (row) => {
-    alert(`Action clicked for ${row.name}`);
+  const handleSearch = (value) => {
+    setSearchCriteria(value);
   };
 
-  const handleSubmit = () => {
+  const filterAttribute = useCallback(() => {
+    return rules.filter((att) => isContains(att.name, searchCriteria));
+  }, [rules, searchCriteria]);
+
+  const filteredRules = searchCriteria ? filterAttribute() : rules;
+
+  const handleSubmit = (formData) => {
+    setLoading(true);
+    if (oldName) {
+      dispatch(
+        updaterule({
+          name: oldName,
+          updatedName: formData.name
+        })
+      );
+    } else {
+      dispatch(
+        createrule({
+          ruleGroup: ruleId,
+          name: formData.name
+        })
+      );
+    }
     setShowModal(false);
+    setLoading(false);
   };
 
   const breadcrumbItems = [
     { name: "Home", link: "/" },
-    { name: "Rule-Groups", link: `/rule-groups` }
+    { name: "Rule-Groups", link: `/rule-groups` },
+    { name: ruleId, link: `/rule-groups/${ruleId}` }
   ];
 
   useEffect(() => {
@@ -100,12 +138,23 @@ const RuleListContainer = () => {
     fetchData();
   }, [dispatch, rules.length]);
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   if (error) {
-    return <div>{error}</div>;
+    return <Error error={error} />;
   }
 
   return (
     <div className="rules-container">
+      {showDeleteModal && (
+        <DeleteModal
+          onCancel={() => setShowDeleteModal(false)}
+          onProceed={handleActionClick}
+          showModal={showDeleteModal}
+        />
+      )}
       {showModal && (
         <CreateRule
           inputData={formData}
@@ -122,11 +171,7 @@ const RuleListContainer = () => {
         searchTxt={handleSearch}
       />
       <div className="custom-table">
-        <CustomTable
-          columns={columns}
-          data={rules}
-          onActionClick={handleActionClick}
-        />
+        <CustomTable columns={columns} data={filteredRules} />
       </div>
     </div>
   );

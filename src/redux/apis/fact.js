@@ -1,27 +1,9 @@
+import api from "./api";
+
 export const fetchFactsApi = async () => {
   try {
-    // const response = await api.get("/albums");
-    // return response.data;
-    return [
-      {
-        name: "Age",
-        type: "number",
-        id: 1,
-        created_at: "1st July, 2024"
-      },
-      {
-        name: "Location",
-        type: "string",
-        id: 2,
-        created_at: "1st July, 2024"
-      },
-      {
-        name: "Subscription",
-        type: "boolean",
-        id: 3,
-        created_at: "1st July, 2024"
-      }
-    ];
+    const response = await api.get("/fact/list");
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -29,10 +11,17 @@ export const fetchFactsApi = async () => {
 
 export const createFactApi = async (fact) => {
   try {
-    // const response = await api.get("/create");
-    // return response.data;
+    const response = await api.post("/fact/add", fact);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateFactApi = async (fact, index) => {
+  try {
     return {
-      id: 10,
+      id: index,
       name: fact.name,
       type: fact.type,
       created_at: "12st July,2024"
@@ -42,16 +31,10 @@ export const createFactApi = async (fact) => {
   }
 };
 
-export const updateFactApi = async (fact, index) => {
+export const deleteFactApi = async (fact) => {
   try {
-    // const response = await api.get("/create");
-    // return response.data;
-    return {
-      id: index,
-      name: fact.name,
-      type: fact.type,
-      created_at: "12st July,2024"
-    };
+    const response = await api.delete(`/fact/${fact}`);
+    return response.data;
   } catch (error) {
     throw error;
   }

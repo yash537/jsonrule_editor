@@ -1,7 +1,8 @@
 import * as ActionTypes from "../actionTypes/action-type";
 
 const initialState = {
-  constants: []
+  constants: [],
+  error: null
 };
 
 const ConstantReducer = (state = initialState, action) => {

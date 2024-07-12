@@ -30,14 +30,12 @@ const RulesReducer = (state = initialState, action) => {
         ...state,
         rules: state.rules.concat(action.payload)
       };
-    case ActionTypes.UPDATE_RULE: {
+    case ActionTypes.DELETE_RULE: {
       const updatedRuleGroup = action.payload;
       return {
         ...state,
-        rules: state.rules.map((ruleGroup) =>
-          ruleGroup.name === updatedRuleGroup.oldName
-            ? { ...ruleGroup, ...updatedRuleGroup }
-            : ruleGroup
+        rules: state.rules.filter(
+          (ruleGroup) => ruleGroup.name != updatedRuleGroup
         )
       };
     }

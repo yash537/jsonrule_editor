@@ -29,4 +29,7 @@ export const FETCH_RULE_SUCCESS = "FETCH_RULE_SUCCESS";
 export const FETCH_RULE_FAILURE = "FETCH_RULE_FAILURE";
 export const CREATE_RULE = "CREATE_RULE";
 export const UPDATE_RULE = "UPDATE_RULE";
+export const DELETE_RULE = "DELETE_RULE";
+export const DELETE_FACT = "DELETE_FACT";
+export const DELETE_RULE_GROUP = "DELETE_RULE_GROUP";
 export const RESET_RULES = "RESET_RULES";

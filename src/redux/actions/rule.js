@@ -1,5 +1,17 @@
 import * as ActionTypes from "../actionTypes/action-type";
 import { updateState } from "./app";
+import {
+  FETCH_RULE_FAILURE,
+  FETCH_RULE_SUCCESS,
+  CREATE_RULE,
+  UPDATE_RULE
+} from "../actionTypes/action-type";
+import {
+  createRuleApi,
+  DeleteRuleApi,
+  fetchRulesbyRuleGroupName,
+  updateRuleApi
+} from "../apis/rule";
 
 export const uploadRuleset = (ruleset) => (dispatch) => {
   dispatch(updateState("open"));
@@ -32,14 +44,6 @@ export const updateRulesetIndex = (name) => {
   };
 };
 
-import {
-  FETCH_RULE_FAILURE,
-  FETCH_RULE_SUCCESS,
-  CREATE_RULE,
-  UPDATE_RULE
-} from "../actionTypes/action-type";
-import { fetchRulesbyRuleGroupName } from "../apis/rule";
-
 export const fetchRulesSuccess = (Rules) => ({
   type: FETCH_RULE_SUCCESS,
   payload: Rules
@@ -58,6 +62,10 @@ export const editrule = (rule) => {
   return { type: UPDATE_RULE, payload: rule };
 };
 
+export const removeRule = (rule) => {
+  return { type: ActionTypes.DELETE_RULE, payload: rule };
+};
+
 export const resetRules = () => async (dispatch) => {
   dispatch(fetchRulesSuccess([]));
 };
@@ -71,20 +79,29 @@ export const loadRules = (name) => async (dispatch) => {
   }
 };
 
-// export const createrule = (data) => async (dispatch) => {
-//   try {
-//     const rule = await createruleApi(data);
-//     dispatch(addrule(rule));
-//   } catch (error) {
-//     dispatch(fetchRulesFailure(error.message));
-//   }
-// };
+export const createrule = (data) => async (dispatch) => {
+  try {
+    const rule = await createRuleApi(data);
+    dispatch(addrule(rule));
+  } catch (error) {
+    dispatch(fetchRulesFailure(error.message));
+  }
+};
 
-// export const updaterule = (data) => async (dispatch) => {
-//   try {
-//     const rule = await updateruleApi(data);
-//     dispatch(editrule({ ...rule, oldName: data.name }));
-//   } catch (error) {
-//     dispatch(fetchRulesFailure(error.message));
-//   }
-// };
+export const updaterule = (data) => async (dispatch) => {
+  try {
+    const rule = await updateRuleApi(data);
+    dispatch(editrule({ ...rule, oldName: data.name }));
+  } catch (error) {
+    dispatch(fetchRulesFailure(error.message));
+  }
+};
+
+export const deleteRule = (data) => async (dispatch) => {
+  try {
+    await DeleteRuleApi(data);
+    dispatch(removeRule(data));
+  } catch (error) {
+    dispatch(fetchRulesFailure(error.message));
+  }
+};

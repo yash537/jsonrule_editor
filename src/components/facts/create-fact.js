@@ -4,11 +4,11 @@ import Button from "../button/button";
 import { useState } from "react";
 import SelectField from "../forms/selectmenu-field";
 import dataTypes from "../../data-objects/operator.json";
+import factValidations from "../../validations/fact-validations";
 
-const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
+const CreateFact = ({ inputData, onSubmit, onClose, showModal, mode }) => {
   const [formData, setFormData] = useState(inputData);
   const [error, setError] = useState({});
-  console.log(formData);
 
   const handleFormChange = (e) => {
     setFormData({
@@ -19,7 +19,12 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const validationErrors = factValidations(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setError(validationErrors);
+    } else {
+      onSubmit(formData);
+    }
   };
 
   const attributeTypes = Object.keys(dataTypes);
@@ -28,7 +33,9 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
         <div className="title-bar">
-          <span className="title">Create Fact</span>
+          <span className="title">
+            {mode == "add" ? "Create" : "Update"} Fact
+          </span>
           <span className="close" onClick={onClose}>
             &times;
           </span>
@@ -43,16 +50,24 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal }) => {
             required
           />
           <SelectField
-            label="Type"
-            name={"type"}
+            label="DataType"
+            name={"dataType"}
             options={attributeTypes}
             onChange={handleFormChange}
-            value={formData.type}
-            error={error.type}
+            value={formData.dataType}
+            error={error.dataType}
+          />
+          <InputField
+            label="Description"
+            name="description"
+            onChange={handleFormChange}
+            value={formData.description}
+            error={error.description}
+            required
           />
           <div style={{ display: "flex" }}>
             <Button
-              label={formData.id ? "Update" : "Create"}
+              label={mode == "add" ? "Create" : "Update"}
               classname="btn-success"
               type="submit"
             />

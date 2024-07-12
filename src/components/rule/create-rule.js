@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import InputField from "../forms/input-field";
 import Button from "../button/button";
+import createRuleValidations from "../../validations/create-rule-validations";
 
 const CreateRule = ({ inputData, onSubmit, onClose, showModal, mode }) => {
   const [formData, setFormData] = useState(inputData);
@@ -16,7 +17,12 @@ const CreateRule = ({ inputData, onSubmit, onClose, showModal, mode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const validationErrors = createRuleValidations(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setError(validationErrors);
+    } else {
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -24,7 +30,6 @@ const CreateRule = ({ inputData, onSubmit, onClose, showModal, mode }) => {
       <div className="modal-content">
         <div className="title-bar">
           <span className="title">
-            {" "}
             {mode == "edit" ? "Edit" : "Create"} Rule
           </span>
           <span className="close" onClick={onClose}>
