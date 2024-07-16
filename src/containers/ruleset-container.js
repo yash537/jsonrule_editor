@@ -18,6 +18,8 @@ import {
   addConstantToRuleName,
   loadConstantsPerRule
 } from "../redux/actions/constant";
+import { addKeyToRuleName, loadKeysPerRule } from "../redux/actions/key";
+import Keys from "../components/keys/keys";
 
 const tabs = [
   { name: "Facts" },
@@ -59,6 +61,7 @@ const RulesetContainer = () => {
 
   const { attributesOfRule, error } = useSelector((state) => state.fact);
   const { constantsPerRule } = useSelector((state) => state.constant);
+  const { keysPerRule } = useSelector((state) => state.key);
 
   const message = updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
 
@@ -73,6 +76,7 @@ const RulesetContainer = () => {
       setLoading(true);
       await dispatch(loadFactsPerRule(ruleId));
       await dispatch(loadConstantsPerRule(ruleId));
+      await dispatch(loadKeysPerRule(ruleId));
       setLoading(false);
     };
 
@@ -102,6 +106,14 @@ const RulesetContainer = () => {
               constants={constantsPerRule}
               handleConstant={(operation, attribute, index) =>
                 dispatch(addConstantToRuleName(ruleId, attribute.name))
+              }
+            />
+          )}
+          {activeTab === "Keys" && (
+            <Keys
+              keys={keysPerRule}
+              handleConstant={(operation, attribute, index) =>
+                dispatch(addKeyToRuleName(ruleId, attribute.name))
               }
             />
           )}

@@ -1,11 +1,17 @@
 /* eslint-disable default-case */
 import * as ActionTypes from "../actionTypes/action-type";
 import { fetchFactsPerRuleApi } from "../apis/fact";
+import { sendNotification } from "./app";
 
 export const add = (attribute) => {
   const payload = { attribute };
   return { type: ActionTypes.ADD_ATTRIBUTE, payload };
 };
+
+export const attributeFailuer = (error) => ({
+  type: ActionTypes.FETCH_RULE_GROUPS_FAILURE,
+  payload: error
+});
 
 export const update = (attribute, index) => {
   const payload = { attribute, index };
@@ -51,6 +57,6 @@ export const loadFactsPerRule = (ruleId) => async (dispatch) => {
         type: "error"
       })
     );
-    dispatch(fetchRuleGroupsFailure(error.message));
+    dispatch(attributeFailuer(error.message));
   }
 };

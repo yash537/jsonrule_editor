@@ -1,9 +1,11 @@
 /* eslint-disable default-case */
 import * as ActionTypes from "../actionTypes/action-type";
 import {
+  assignKeysToRule,
   createKeyApi,
   deleteKeyApi,
   fetchKeysApi,
+  fetchKeysPerRuleApi,
   updateKeyApi
 } from "../apis/key";
 
@@ -30,9 +32,10 @@ export const deleteKey = (key) => {
   return { type: ActionTypes.DELETE_KEY, payload: key };
 };
 
-// export const reset = () => {
-//   return { type: ActionTypes.RESET_constant };
-// };
+export const fetchKeyPerRule = (keys) => ({
+  type: ActionTypes.FETCH_KEYS_PER_RULE,
+  payload: keys
+});
 
 export const handlefetchKeys = () => async (dispatch) => {
   try {
@@ -74,5 +77,23 @@ export const handleKey = (action, key, index) => async (dispatch) => {
     }
     default:
       break; // Optional, but good practice to have a default case
+  }
+};
+
+export const loadKeysPerRule = (ruleId) => async (dispatch) => {
+  try {
+    const keys = await fetchKeysPerRuleApi(ruleId);
+    dispatch(fetchKeyPerRule(keys));
+  } catch (error) {
+    dispatch(keyFailuer(error.message));
+  }
+};
+
+export const addKeyToRuleName = (ruleId, key) => async (dispatch) => {
+  try {
+    const keys = await assignKeysToRule(ruleId, key);
+    dispatch(fetchKeyPerRule(keys));
+  } catch (error) {
+    dispatch(keyFailuer(error.message));
   }
 };

@@ -40,3 +40,21 @@ export const deleteKeyApi = async (key) => {
     throw error;
   }
 };
+
+export const assignKeysToRule = async (ruleId, key) => {
+  try {
+    const response = await api.put(`external/${ruleId}/key/${key}`);
+    return response.data?.constants ?? [];
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchKeysPerRuleApi = async (ruleId) => {
+  try {
+    const response = await api.get(`/keys/rule_name/${ruleId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

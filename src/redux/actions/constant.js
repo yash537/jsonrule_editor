@@ -8,6 +8,7 @@ import {
   fetchConstantsPerRuleApi,
   updateconstantApi
 } from "../apis/constant";
+import { sendNotification } from "./app";
 
 export const addConstant = (constant) => {
   return { type: ActionTypes.ADD_CONSTANT, payload: constant };
@@ -51,15 +52,6 @@ export const loadConstantsPerRule = (ruleId) => async (dispatch) => {
     dispatch(constantFailuer(error.message));
   }
 };
-// export const remove = (constant, index) => {
-//   const payload = { constant, index };
-
-//   return { type: ActionTypes.REMOVE_constant, payload };
-// };
-
-// export const reset = () => {
-//   return { type: ActionTypes.RESET_constant };
-// };
 
 export const handleFetchConstants = () => async (dispatch) => {
   try {

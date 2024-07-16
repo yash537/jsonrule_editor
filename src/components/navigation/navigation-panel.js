@@ -33,7 +33,7 @@ const navmenu = [
     linkClass: "navmenu"
   },
   {
-    name: "Global Keys",
+    name: "Evalution Keys",
     navigate: "/manage-keys",
     iconClass: "icon",
     fontIcons: faKey,

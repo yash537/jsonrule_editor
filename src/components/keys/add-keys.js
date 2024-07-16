@@ -4,12 +4,14 @@ import Panel from "../panel/panel";
 import SelectField from "../forms/selectmenu-field";
 import Button from "../button/button";
 import { attributeValidationsForRules } from "../../validations/attribute-validations";
+import dataTypes from "../../data-objects/operator.json";
+import CheckBox from "../forms/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFetchFacts } from "../../redux/actions/fact";
 import Spinner from "../Spinner";
-import { handleFetchConstants } from "../../redux/actions/constant";
+import { handlefetchKeys } from "../../redux/actions/key";
 
-const AddConstants = ({
+const AddKeys = ({
   attribute = {},
   addAttribute,
   cancel,
@@ -20,22 +22,18 @@ const AddConstants = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const [filteredAttributes, setfilteredAttributes] = useState([]);
-  const { constants, constantsPerRule } = useSelector(
-    (state) => state.constant
-  );
-
-  console.log(constants, constantsPerRule);
+  const { keys, keysPerRule } = useSelector((state) => state.key);
 
   useEffect(() => {
     // Filter out constants that are present in constantsPerRule
-    const newfilteredAttributes = constants.filter(
+    const newfilteredAttributes = keys.filter(
       (attr) =>
-        !constantsPerRule.some(
+        !keysPerRule.some(
           (attributeOfRule) => attributeOfRule.name === attr.name
         )
     );
     setfilteredAttributes(newfilteredAttributes);
-  }, [constants, constantsPerRule]);
+  }, [keys, keysPerRule]);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -59,7 +57,7 @@ const AddConstants = ({
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(handleFetchConstants());
+      await dispatch(handlefetchKeys());
       setLoading(false);
     };
 
@@ -102,7 +100,7 @@ const AddConstants = ({
   );
 };
 
-AddConstants.propTypes = {
+AddKeys.propTypes = {
   addAttribute: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,
   attribute: PropTypes.shape({
@@ -115,4 +113,4 @@ AddConstants.propTypes = {
   })
 };
 
-export default AddConstants;
+export default AddKeys;

@@ -1,7 +1,8 @@
 import * as ActionTypes from "../actionTypes/action-type";
 
 const initialState = {
-  keys: []
+  keys: [],
+  keysPerRule: []
 };
 
 const KeyReducer = (state = initialState, action) => {
@@ -30,6 +31,13 @@ const KeyReducer = (state = initialState, action) => {
       return {
         ...state,
         keys: action.payload,
+        error: null
+      };
+    }
+    case ActionTypes.FETCH_KEYS_PER_RULE: {
+      return {
+        ...state,
+        keysPerRule: action.payload,
         error: null
       };
     }
