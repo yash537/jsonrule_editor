@@ -7,7 +7,6 @@ import {
   faAngleUp
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SweetAlert from "react-bootstrap-sweetalert";
 
 const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
   const [showChildren, setShowChildren] = useState(false);
@@ -22,37 +21,8 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
     setRemoveAlert(true);
   };
 
-  const removeAlertComponent = () => (
-    <SweetAlert
-      warning
-      showCancel
-      confirmBtnText="Yes, Remove it!"
-      confirmBtnBsStyle="danger"
-      title="Are you sure?"
-      onConfirm={() => {
-        onDeleteNode(condition);
-        setRemoveAlert(false);
-        setSuccessAlert(true);
-      }}
-      onCancel={() => setRemoveAlert(false)}
-      focusCancelBtn
-    >
-      You will not be able to recover the changes!
-    </SweetAlert>
-  );
-
-  const successAlertComponent = () => (
-    <SweetAlert
-      success
-      title={"Changes has been applied successfully!!"}
-      onConfirm={() => setSuccessAlert(false)}
-    />
-  );
-
   return (
     <>
-      {removeAlert && removeAlertComponent()}
-      {successAlert && successAlertComponent()}
       <ul className="tree">
         <li style={{ listStyleType: "none" }}>
           <div className="tree-box">

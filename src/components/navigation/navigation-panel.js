@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   faSquarePlus,
@@ -42,15 +42,8 @@ const navmenu = [
 ];
 
 const NavigationPanel = (props) => {
-  const navigate = useNavigate();
   const { closedState } = props;
 
-  const handleNavLink = (name) => {
-    props.setActiveRulesetIndex(name);
-    navigate("/ruleset");
-  };
-
-  let rulesetLink = navmenu;
   const { background } = useContext(ApperanceContext);
 
   return (
@@ -67,7 +60,13 @@ const NavigationPanel = (props) => {
                 <NavLink
                   key={value.name}
                   to={value.navigate}
-                  className={({ isActive }) => (isActive ? "active" : "")}
+                  className={({ isActive }) =>
+                    isActive ||
+                    (value.navigate === "/rule-groups" &&
+                      location.pathname === "/")
+                      ? "active"
+                      : ""
+                  }
                 >
                   <FontAwesomeIcon icon={value.fontIcons} /> {value.name}
                 </NavLink>

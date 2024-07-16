@@ -18,6 +18,14 @@ const KeyReducer = (state = initialState, action) => {
         keys: [key, ...state.keys.filter((key) => key.id !== index)]
       };
     }
+    case ActionTypes.DELETE_KEY: {
+      return {
+        ...state,
+        keys: state.keys.filter(
+          (attribute) => attribute.name !== action.payload
+        )
+      };
+    }
     case ActionTypes.FETCH_KEYS: {
       return {
         ...state,

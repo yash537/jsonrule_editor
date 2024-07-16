@@ -2,71 +2,72 @@
     font-family: $form-font-family;
     display: flex;
     flex-wrap: wrap;
-
+  
     div {
-        margin-top: 10px;
+      margin-top: 10px;
     }
-
+  
     .form-field {
-        width: 35%;
+      width: 35%;
     }
-}
-
-.upload-panel {
+  }
+  
+  .upload-panel {
     .form-field {
-        width: 70%;
+      width: 70%;
     }
-}
-
-.form-field {
+  }
+  
+  .form-field {
     margin-right: 10%;
     margin-top: 5px;
-width: 100%;
+    width: 100%;
     .error-message {
-        color: $danger;
+      color: $danger;
     }
-
+  
     input,
     select {
-        border: 1px solid $form-border-color;
-        border-radius: 4px;
-        color: $form-field-color;
-        font-size: 16px;
-        height: 40px; /* Ensure both input and select have the same height */
-        margin-top: 5px;
-        padding-left: 10px;
-        width: 100%;
-        box-sizing: border-box; /* Ensures padding is included in the width */
+      border: 1px solid $form-border-color;
+      border-radius: 4px;
+      color: $form-field-color;
+      font-size: 16px;
+      height: 40px; /* Ensure both input and select have the same height */
+      margin-top: 5px;
+      padding-left: 10px;
+      width: 100%;
+      box-sizing: border-box; /* Ensures padding is included in the width */
     }
-
+  
     .error {
-        border-color: $danger;
+      border-color: $danger;
     }
-
+  
     .readOnly {
-        background-color: #eee;
-        border: 1px dashed;
+      background-color: #eee;
+      border: 1px dashed;
     }
-}
-
-.form-error {
+  }
+  
+  .form-error {
     color: $danger;
     font-family: $form-font-family;
     font-size: 14px;
     font-weight: 500;
-}
-input[type="checkbox"] {
+  }
+  input[type="checkbox"] {
     margin-right: 0.5rem;
     width: 18px;
     height: 18px;
     cursor: pointer;
-
+  
     &:checked {
-        background-color: blue;
-        border-color: blue;
+      background-color: blue;
+      border-color: blue;
     }
-}
-.checkbox-wrapper {
+  }
+  .checkbox-wrapper {
     display: flex;
     align-items: center;
-}
+  }
+  

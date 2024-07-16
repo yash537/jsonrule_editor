@@ -3,16 +3,23 @@ const validationMessages = {
   type: "Please specify the attribute type"
 };
 
-export const validateAttribute = (attribute) => {
-  console.log(attribute);
-  return Object.keys(validationMessages).reduce((error, key) => {
+const validationMessagesForRule = {
+  name: "Please specify the attribute name"
+};
+
+const validateAttribute = (attribute, messages) => {
+  return Object.keys(messages).reduce((errors, key) => {
     if (!attribute[key]) {
-      error[key] = validationMessages[key];
+      errors[key] = messages[key];
     }
-    return error;
+    return errors;
   }, {});
 };
 
-export default function attributeValidations(attribute) {
-  return validateAttribute(attribute);
-}
+export const attributeValidations = (attribute) => {
+  return validateAttribute(attribute, validationMessages);
+};
+
+export const attributeValidationsForRules = (attribute) => {
+  return validateAttribute(attribute, validationMessagesForRule);
+};

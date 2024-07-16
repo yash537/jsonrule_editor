@@ -1,7 +1,11 @@
-import { UPDATE_NAV_STATE } from "../actionTypes/action-type";
+import { SET_NOTIFICATION, UPDATE_NAV_STATE } from "../actionTypes/action-type";
 
 const initialState = {
-  navState: "open"
+  navState: "open",
+  notification: {
+    message: "",
+    type: ""
+  }
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -13,6 +17,15 @@ const AppReducer = (state = initialState, action) => {
         nav = "open";
       }
       return { ...state, navState: nav };
+    }
+    case SET_NOTIFICATION: {
+      return {
+        ...state,
+        notification: {
+          message: action.payload.message,
+          type: action.payload.type
+        }
+      };
     }
     default:
       return state;

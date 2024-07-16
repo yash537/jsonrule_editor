@@ -39,3 +39,21 @@ export const deleteFactApi = async (fact) => {
     throw error;
   }
 };
+
+export const fetchFactsPerRuleApi = async (ruleId) => {
+  try {
+    const response = await api.get(`/fact/rule_name/${ruleId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const assignFactsToRule = async (ruleId, fact) => {
+  try {
+    const response = await api.put(`external/${ruleId}/fact/${fact}`);
+    return response.data?.facts ?? [];
+  } catch (error) {
+    throw error;
+  }
+};

@@ -36,7 +36,7 @@ const CustomTable = ({ columns, data, className }) => {
               {columns.map((col, colIndex) => (
                 <td key={colIndex}>
                   {col.accessor === "id" ? (
-                    <span>{row.id ? row.id : rowIndex + 1}</span>
+                    <span>{row?.id ? row?.id : rowIndex + 1}</span>
                   ) : col.isLink ? (
                     <Link to={`${row[col.accessor]}`}>
                       {formatCellValue(row[col.accessor])}

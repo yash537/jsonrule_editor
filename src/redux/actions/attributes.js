@@ -1,5 +1,6 @@
 /* eslint-disable default-case */
 import * as ActionTypes from "../actionTypes/action-type";
+import { fetchFactsPerRuleApi } from "../apis/fact";
 
 export const add = (attribute) => {
   const payload = { attribute };
@@ -22,6 +23,10 @@ export const reset = () => {
   return { type: ActionTypes.RESET_ATTRIBUTE };
 };
 
+export const fetchFactsPerRuleSuccess = (ruleId) => {
+  return { type: ActionTypes.FETCH_FACTS_PER_RULE, payload: ruleId };
+};
+
 export const handleAttribute = (action, attribute, index) => (dispatch) => {
   switch (action) {
     case "ADD":
@@ -32,5 +37,20 @@ export const handleAttribute = (action, attribute, index) => (dispatch) => {
       return dispatch(remove(attribute, index));
     case "RESET":
       return dispatch(reset());
+  }
+};
+
+export const loadFactsPerRule = (ruleId) => async (dispatch) => {
+  try {
+    const facts = await fetchFactsPerRuleApi(ruleId);
+    dispatch(fetchFactsPerRuleSuccess(facts));
+  } catch (error) {
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
+    dispatch(fetchRuleGroupsFailure(error.message));
   }
 };

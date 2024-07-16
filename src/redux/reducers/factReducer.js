@@ -1,7 +1,8 @@
 import * as ActionTypes from "../actionTypes/action-type";
 
 const initialState = {
-  attributes: []
+  attributes: [],
+  attributesOfRule: []
 };
 
 const FactReducer = (state = initialState, action) => {
@@ -22,13 +23,18 @@ const FactReducer = (state = initialState, action) => {
       };
     }
     case ActionTypes.DELETE_FACT: {
-      const { name } = action.payload;
       return {
         ...state,
-        attributes: [
-          attribute,
-          ...state.attributes.filter((attribute) => attribute.name !== name)
-        ]
+        attributes: state.attributes.filter(
+          (attribute) => attribute.name !== action.payload
+        )
+      };
+    }
+    case ActionTypes.FETCH_FACTS_PER_RULE: {
+      return {
+        ...state,
+        attributesOfRule: action.payload,
+        error: null
       };
     }
     case ActionTypes.FETCH_FACTS: {

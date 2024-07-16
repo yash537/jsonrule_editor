@@ -1,6 +1,7 @@
 /* eslint-disable default-case */
 import * as ActionTypes from "../actionTypes/action-type";
 import {
+  assignFactsToRule,
   createFactApi,
   deleteFactApi,
   fetchFactsApi,
@@ -22,7 +23,7 @@ export const updateFact = (attribute, index) => {
 };
 
 export const deleteFact = (fact) => {
-  return { type: ActionTypes.UPDATE_FACT, payload: fact };
+  return { type: ActionTypes.DELETE_FACT, payload: fact };
 };
 
 export const fetchFacts = (attributes) => ({
@@ -30,10 +31,33 @@ export const fetchFacts = (attributes) => ({
   payload: attributes
 });
 
+export const fetchFactPerRule = (attributes) => ({
+  type: ActionTypes.FETCH_FACTS_PER_RULE,
+  payload: attributes
+});
+
 export const handleFetchFacts = () => async (dispatch) => {
   try {
     const facts = await fetchFactsApi();
     dispatch(fetchFacts(facts));
+  } catch (error) {
+    dispatch(factFailuer(error.message));
+  }
+};
+
+export const handleFetchFactsPerRule = (ruleId) => async (dispatch) => {
+  try {
+    const facts = await fetchFactsPerRuleApi(ruleId);
+    dispatch(fetchFactPerRule(facts));
+  } catch (error) {
+    dispatch(factFailuer(error.message));
+  }
+};
+
+export const addFactToRuleName = (ruleId, fact) => async (dispatch) => {
+  try {
+    const facts = await assignFactsToRule(ruleId, fact);
+    dispatch(fetchFactPerRule(facts));
   } catch (error) {
     dispatch(factFailuer(error.message));
   }

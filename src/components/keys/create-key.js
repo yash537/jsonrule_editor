@@ -2,6 +2,9 @@ import PropTypes from "prop-types";
 import InputField from "../forms/input-field";
 import Button from "../button/button";
 import { useState } from "react";
+import keyValidations from "../../validations/key-validations";
+import dataTypes from "../../data-objects/operator.json";
+import SelectField from "../forms/selectmenu-field";
 
 const CreateKey = ({ inputData, onSubmit, onClose, showModal }) => {
   const [formData, setFormData] = useState(inputData);
@@ -16,8 +19,15 @@ const CreateKey = ({ inputData, onSubmit, onClose, showModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const validationErrors = keyValidations(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setError(validationErrors);
+    } else {
+      onSubmit(formData);
+    }
   };
+
+  const attributeTypes = Object.keys(dataTypes);
 
   return (
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
@@ -38,6 +48,14 @@ const CreateKey = ({ inputData, onSubmit, onClose, showModal }) => {
             value={formData.name}
             error={error.name}
             required
+          />
+          <SelectField
+            label="DataType"
+            name={"dataType"}
+            options={attributeTypes}
+            onChange={handleFormChange}
+            value={formData.dataType}
+            error={error.dataType}
           />
           <div style={{ display: "flex" }}>
             <Button

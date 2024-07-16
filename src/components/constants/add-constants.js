@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Panel from "../panel/panel";
-import InputField from "../forms/input-field";
 import SelectField from "../forms/selectmenu-field";
 import Button from "../button/button";
-import attributeValidations, {
-  attributeValidationsForRules
-} from "../../validations/attribute-validations";
+import { attributeValidationsForRules } from "../../validations/attribute-validations";
 import dataTypes from "../../data-objects/operator.json";
 import CheckBox from "../forms/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFetchFacts } from "../../redux/actions/fact";
 import Spinner from "../Spinner";
 
-const AddAttributes = ({
+const AddConstants = ({
   attribute = {},
   addAttribute,
   cancel,
@@ -25,18 +22,22 @@ const AddAttributes = ({
   const [isMandatory, setMandatory] = useState(attribute.mandatory ?? false);
   const [error, setError] = useState({});
   const [filteredAttributes, setfilteredAttributes] = useState([]);
-  const { attributes, attributesOfRule } = useSelector((state) => state.fact);
+  const { constants, constantsPerRule } = useSelector(
+    (state) => state.constant
+  );
+
+  console.log(constants, constantsPerRule);
 
   useEffect(() => {
     // Filter out constants that are present in constantsPerRule
-    const newfilteredAttributes = attributes.filter(
+    const newfilteredAttributes = constants.filter(
       (attr) =>
-        !attributesOfRule.some(
+        !constantsPerRule.some(
           (attributeOfRule) => attributeOfRule.name === attr.name
         )
     );
     setfilteredAttributes(newfilteredAttributes);
-  }, [attributes, attributesOfRule]);
+  }, [constants, constantsPerRule]);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -118,7 +119,7 @@ const AddAttributes = ({
   );
 };
 
-AddAttributes.propTypes = {
+AddConstants.propTypes = {
   addAttribute: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,
   attribute: PropTypes.shape({
@@ -131,4 +132,4 @@ AddAttributes.propTypes = {
   })
 };
 
-export default AddAttributes;
+export default AddConstants;

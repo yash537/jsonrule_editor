@@ -1,6 +1,11 @@
 /* eslint-disable default-case */
 import * as ActionTypes from "../actionTypes/action-type";
-import { createKeyApi, fetchKeysApi, updateKeyApi } from "../apis/key";
+import {
+  createKeyApi,
+  deleteKeyApi,
+  fetchKeysApi,
+  updateKeyApi
+} from "../apis/key";
 
 export const addKey = (constant) => {
   return { type: ActionTypes.ADD_KEY, payload: constant };
@@ -21,11 +26,9 @@ export const fetchKeys = (constants) => ({
   payload: constants
 });
 
-// export const remove = (constant, index) => {
-//   const payload = { constant, index };
-
-//   return { type: ActionTypes.REMOVE_constant, payload };
-// };
+export const deleteKey = (key) => {
+  return { type: ActionTypes.DELETE_KEY, payload: key };
+};
 
 // export const reset = () => {
 //   return { type: ActionTypes.RESET_constant };
@@ -55,6 +58,15 @@ export const handleKey = (action, key, index) => async (dispatch) => {
       try {
         await updateKeyApi(key, index);
         dispatch(updateKey(key, index));
+      } catch (error) {
+        dispatch(keyFailuer(error.message));
+      }
+      break; // Add this break statement
+    }
+    case "DELETE": {
+      try {
+        await deleteKeyApi(key);
+        dispatch(deleteKey(key));
       } catch (error) {
         dispatch(keyFailuer(error.message));
       }

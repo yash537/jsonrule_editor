@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import AddAttributes from "./add-atrribtues";
 import { PanelBox } from "../panel/panel";
 import Button from "../button/button";
+import AddConstants from "./add-constants";
 
-const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
+const ConstantDetails = ({ constants, updateAttribute, removeAttribute }) => {
   const [removeAlert, setRemoveAlert] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
   const [activeAttribute, setActiveAttribute] = useState(null);
   const [activeAttributeIndex, setActiveAttributeIndex] = useState(-1);
   const [showRuleIndex, setShowRuleIndex] = useState(-1);
+
+  const handleEdit = (e, val) => {
+    e.preventDefault();
+    setShowRuleIndex(val);
+  };
 
   const handleRemove = (e, attribute, index) => {
     e.preventDefault();
@@ -36,7 +41,7 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
 
   return (
     <React.Fragment>
-      {attributes.map((attr, index) => (
+      {constants.map((attr, index) => (
         <div key={attr.name}>
           <PanelBox className={attr.type}>
             <div className="index">{index + 1}</div>
@@ -59,7 +64,7 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
             </div>
           </PanelBox>
           {showRuleIndex === index && (
-            <AddAttributes
+            <AddConstants
               attribute={attr}
               addAttribute={updateAttributeFunc}
               cancel={cancelAlert}
@@ -75,10 +80,10 @@ const AttributeDetails = ({ attributes, updateAttribute, removeAttribute }) => {
   );
 };
 
-AttributeDetails.propTypes = {
-  attributes: PropTypes.array,
+ConstantDetails.propTypes = {
+  constants: PropTypes.array,
   updateAttribute: PropTypes.func,
   removeAttribute: PropTypes.func
 };
 
-export default AttributeDetails;
+export default ConstantDetails;

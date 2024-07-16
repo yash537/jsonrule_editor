@@ -2,7 +2,8 @@ import * as ActionTypes from "../actionTypes/action-type";
 
 const initialState = {
   constants: [],
-  error: null
+  error: null,
+  constantsPerRule: []
 };
 
 const ConstantReducer = (state = initialState, action) => {
@@ -20,6 +21,21 @@ const ConstantReducer = (state = initialState, action) => {
           attribute,
           ...state.constants.filter((attribute) => attribute.id !== index)
         ]
+      };
+    }
+    case ActionTypes.FETCH_CONSTANTS_PER_RULE: {
+      return {
+        ...state,
+        constantsPerRule: action.payload,
+        error: null
+      };
+    }
+    case ActionTypes.DELETE_CONSTANT: {
+      return {
+        ...state,
+        constants: state.constants.filter(
+          (attribute) => attribute.name !== action.payload
+        )
       };
     }
     case ActionTypes.FETCH_CONSTANTS: {

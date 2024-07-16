@@ -4,10 +4,10 @@ import ToolBar from "../toolbar/toolbar";
 import Banner from "../panel/banner";
 import * as Message from "../../constants/messages";
 import { isContains } from "../../utils/stringutils";
-import AddAttributes from "./add-atrribtues";
-import AttributeDetails from "./attr-details";
+import AddConstants from "./add-constants";
+import ConstantDetails from "./constant-details";
 
-const Attributes = ({ handleAttribute, attributes = [] }) => {
+const Constants = ({ handleConstant, constants = [] }) => {
   const [showAddAttr, setShowAddAttr] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [bannerflag, setBannerflag] = useState(false);
@@ -23,16 +23,15 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
 
   const addAttribute = useCallback(
     (attribute) => {
-      console.log("ASdasdasd", attribute);
       setShowAddAttr(false);
-      handleAttribute("ADD", attribute);
+      handleConstant("ADD", attribute);
     },
-    [handleAttribute]
+    [handleConstant]
   );
 
   const handleReset = useCallback(() => {
-    handleAttribute("RESET");
-  }, [handleAttribute]);
+    handleConstant("RESET");
+  }, [handleConstant]);
 
   const cancelAddAttribute = useCallback(() => {
     setShowAddAttr(false);
@@ -40,18 +39,22 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
   }, []);
 
   const filterAttribute = useCallback(() => {
-    return attributes.filter(
+    return constants.filter(
       (att) =>
         isContains(att.name, searchCriteria) ||
         isContains(att.dataType, searchCriteria)
     );
-  }, [attributes, searchCriteria]);
+  }, [constants, searchCriteria]);
 
-  const buttonProps = { primaryLabel: "Add Fact", secondaryLabel: "Cancel" };
-  const filteredAttributes = searchCriteria ? filterAttribute() : attributes;
+  const buttonProps = {
+    primaryLabel: "Add Constant",
+    secondaryLabel: "Cancel"
+  };
+
+  const filteredConstants = searchCriteria ? filterAttribute() : constants;
 
   return (
-    <div className="attributes-container">
+    <div className="Constants-container">
       <ToolBar
         handleAdd={handleAdd}
         reset={handleReset}
@@ -59,27 +62,27 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
         addTitle="Add"
       />
       {showAddAttr && (
-        <AddAttributes
+        <AddConstants
           addAttribute={addAttribute}
           cancel={cancelAddAttribute}
           buttonProps={buttonProps}
         />
       )}
-      <AttributeDetails
-        attributes={filteredAttributes}
-        updateAttribute={handleAttribute}
-        removeAttribute={handleAttribute}
+      <ConstantDetails
+        constants={filteredConstants}
+        updateAttribute={handleConstant}
+        removeAttribute={handleConstant}
       />
-      {!bannerflag && attributes.length < 1 && (
+      {!bannerflag && filteredConstants.length < 1 && (
         <Banner message={Message.NO_ATTRIBUTE_MSG} onConfirm={handleAdd} />
       )}
     </div>
   );
 };
 
-Attributes.propTypes = {
-  handleAttribute: PropTypes.func,
-  attributes: PropTypes.array
+Constants.propTypes = {
+  handleConstant: PropTypes.func,
+  constants: PropTypes.array
 };
 
-export default Attributes;
+export default Constants;

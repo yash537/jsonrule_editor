@@ -33,3 +33,30 @@ export const updateconstantApi = async (constant, index) => {
     throw error;
   }
 };
+
+export const fetchConstantsPerRuleApi = async (ruleId) => {
+  try {
+    const response = await api.get(`/constant/rule_name/${ruleId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteConstantApi = async (constant) => {
+  try {
+    const response = await api.delete(`/constant/${constant}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const assignConstantsToRule = async (ruleId, fact) => {
+  try {
+    const response = await api.put(`external/${ruleId}/const/${fact}`);
+    return response.data?.constants ?? [];
+  } catch (error) {
+    throw error;
+  }
+};

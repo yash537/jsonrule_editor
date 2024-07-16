@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CustomTable from "../components/table/custom-table";
 import ToolBar from "../components/toolbar/toolbar";
-import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
 import CreateFact from "../components/facts/create-fact";
 import {
   deleteFact,
@@ -10,7 +9,7 @@ import {
 } from "../redux/actions/fact";
 import { useDispatch, useSelector } from "react-redux";
 import { isContains } from "../utils/stringutils";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../components/Spinner";
 import Error from "../components/Error";
 import DeleteModal from "../components/Delete";
@@ -59,12 +58,6 @@ const ManageFactsContainer = () => {
       accessor: "action",
       isLink: false,
       actions: [
-        {
-          actionName: "Edit",
-          handler: (row) => handleEdit(row),
-          font: faEdit,
-          iconClass: "icon edit-icon"
-        },
         {
           actionName: "Delete",
           handler: (row) => handleDelete(row),

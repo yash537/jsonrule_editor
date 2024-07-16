@@ -1,178 +1,178 @@
 .rule-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  margin-left: 50px;
+
+  .decision-box {
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    width: 100%;
+  }
+
+  .tool-flex {
     display: flex;
-    flex-wrap: wrap;
-    margin-top: 50px;
-    margin-left: 50px;
+    justify-content: flex-end;
+    width: 100%;
 
-    .decision-box {
-        border-bottom: 2px solid #ccc;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        width: 100%;
+    div {
+      width: 30px;
     }
-
-    .tool-flex {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-
-        div {
-            width: 30px;
-        }
-    }
+  }
 }
 
 .add-rulecase-wrapper {
-    border-bottom: 2px dashed $form-label-color;
-    border-top: 2px dashed $form-label-color;
-    margin-top: 20px;
-    padding: 20px 0;
+  border-bottom: 2px dashed $form-label-color;
+  border-top: 2px dashed $form-label-color;
+  margin-top: 20px;
+  padding: 20px 0;
 }
 
 .add-decision-step {
-    display: flex;
-    color: $form-label-color;
-    font-family: $form-font-family;
-    flex-wrap: wrap;
+  display: flex;
+  color: $form-label-color;
+  font-family: $form-font-family;
+  flex-wrap: wrap;
 
-    .step1 {
-        margin-right: 10%;
-    }
+  .step1 {
+    margin-right: 10%;
+  }
 
-    .step2 {
-        margin-right: 10%;
-    }
+  .step2 {
+    margin-right: 10%;
+  }
 
-    div {
-        margin-bottom: 10px;
-    }
+  div {
+    margin-bottom: 10px;
+  }
 }
 
 .dark {
-    .add-decision-step {
-        color: $form-label-color-drk;
-    }
+  .add-decision-step {
+    color: $form-label-color-drk;
+  }
 }
 
 .md-blue {
-    .add-decision-step {
-        color: $form-label-color-drk;
-    }
+  .add-decision-step {
+    color: $form-label-color-drk;
+  }
 }
 
 .light {
-    .add-decision-step {
-        color: $form-label-color;
-    }
+  .add-decision-step {
+    color: $form-label-color;
+  }
 }
 
 .add-field-panel {
-    display: flex;
-    flex-direction: row;
-    font-family: $form-font-family;
-    justify-content: space-between;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  font-family: $form-font-family;
+  justify-content: space-between;
+  margin-top: 20px;
 
-    div {
-        flex-grow: 1;
-        width: 100%;
-    }
+  div {
+    flex-grow: 1;
+    width: 100%;
+  }
 
-    .btn-container {
-        margin-top: 27px;
-    }
+  .btn-container {
+    margin-top: 27px;
+  }
 
-    &.half-width {
-        width: 50%;
-    }
+  &.half-width {
+    width: 50%;
+  }
 }
 
 /* The Modal (background) */
 .modal {
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-    padding-top: 60px;
-  }
-  
-  /* Modal Content */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 500px; /* Max width for modal */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  /* Form styles */
-  .input-field {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .form-button {
-    background-color: #4caf50; /* Green */
-    color: white;
-    padding: 10px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .form-button:hover {
-    background-color: #45a049;
-  }
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
 
-  .modal-content .title {
-    font-size: 20px;
-    color: $primary-btn-color;
-    font-weight: bold;
-    display: block;
-    padding: 10px 0px;
-  }
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 500px; /* Max width for modal */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
 
-  .title-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: Arial, Helvetica, sans-serif;
-    text-transform: capitalize;
-    border-bottom: 1px solid #e2e2e2;
-  }
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-  .fact-form {
-    padding-top: 20px;
-  }
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 
-  .fact-form .form-field {
-    margin-bottom: 10px;
-  }
+/* Form styles */
+.input-field {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-button {
+  background-color: #4caf50; /* Green */
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-button:hover {
+  background-color: #45a049;
+}
+
+.modal-content .title {
+  font-size: 20px;
+  color: $primary-btn-color;
+  font-weight: bold;
+  display: block;
+  padding: 10px 0px;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: capitalize;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.fact-form {
+  padding-top: 20px;
+}
+
+.fact-form .form-field {
+  margin-bottom: 10px;
+}

@@ -7,10 +7,13 @@ import { isContains } from "../utils/stringutils";
 import { handleKey, handlefetchKeys } from "../redux/actions/key";
 import CreateKey from "../components/keys/create-key";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import DeleteModal from "../components/Delete";
 
 const ManageKeysContainer = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -24,30 +27,30 @@ const ManageKeysContainer = () => {
   };
 
   const handleDelete = (row) => {
-    alert(`Delete action clicked for ${row.id}`);
+    setShowDeleteModal(true);
+    setFormData(row);
   };
 
   useEffect(() => {
-    if (keys.length === 0) {
-      dispatch(handlefetchKeys());
-    }
-  }, []);
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(handlefetchKeys());
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [dispatch, keys.length]);
 
   const columns = [
     { header: "Id", accessor: "id", isLink: false },
     { header: "Key Name", accessor: "name", isLink: false },
-    { header: "Created At", accessor: "created_at", isLink: false },
+    { header: "DataType", accessor: "dataType", isLink: false },
+    { header: "Description", accessor: "description", isLink: false },
     {
       header: "Action",
       accessor: "action",
       isLink: false,
       actions: [
-        {
-          actionName: "Edit",
-          handler: (row) => handleEdit(row),
-          font: faEdit,
-          iconClass: "icon edit-icon"
-        },
         {
           actionName: "Delete",
           handler: (row) => handleDelete(row),
@@ -58,8 +61,11 @@ const ManageKeysContainer = () => {
     }
   ];
 
-  const handleActionClick = (row) => {
-    alert(`Action clicked for ${row.name}`);
+  const handleActionClick = () => {
+    setLoading(true);
+    setShowDeleteModal(false);
+    dispatch(handleKey("DELETE", formData.name));
+    setLoading(false);
   };
 
   const handleAdd = (row) => {
@@ -76,12 +82,14 @@ const ManageKeysContainer = () => {
   }, []);
 
   const handleSubmit = (payload) => {
+    setLoading(true);
     if (payload.id) {
       dispatch(handleKey("UPDATE", payload, payload.id));
     } else {
       dispatch(handleKey("ADD", payload));
     }
     setShowModal(false);
+    setLoading(false);
   };
 
   const filterKey = useCallback(() => {
@@ -92,6 +100,13 @@ const ManageKeysContainer = () => {
 
   return (
     <div className="rules-container">
+      {showDeleteModal && (
+        <DeleteModal
+          onCancel={() => setShowDeleteModal(false)}
+          onProceed={handleActionClick}
+          showModal={showDeleteModal}
+        />
+      )}
       {showModal && (
         <CreateKey
           inputData={formData}

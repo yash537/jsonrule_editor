@@ -11,12 +11,14 @@ import {
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../components/Spinner";
 import Error from "../components/Error";
+import DeleteModal from "../components/Delete";
 
 const ManageConstantsContainer = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("add");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -35,7 +37,8 @@ const ManageConstantsContainer = () => {
   };
 
   const handleDelete = (row) => {
-    alert(`Delete action clicked for ${row.id}`);
+    setShowDeleteModal(true);
+    setFormData(row);
   };
 
   useEffect(() => {
@@ -60,12 +63,6 @@ const ManageConstantsContainer = () => {
       isLink: false,
       actions: [
         {
-          actionName: "Edit",
-          handler: (row) => handleEdit(row),
-          font: faEdit,
-          iconClass: "icon edit-icon"
-        },
-        {
           actionName: "Delete",
           handler: (row) => handleDelete(row),
           font: faTrash,
@@ -76,7 +73,10 @@ const ManageConstantsContainer = () => {
   ];
 
   const handleActionClick = (row) => {
-    alert(`Action clicked for ${row.name}`);
+    setLoading(true);
+    setShowDeleteModal(false);
+    dispatch(handleConstant("DELETE", formData.name));
+    setLoading(false);
   };
 
   const handleAdd = (row) => {
@@ -123,6 +123,13 @@ const ManageConstantsContainer = () => {
 
   return (
     <div className="rules-container">
+      {showDeleteModal && (
+        <DeleteModal
+          onCancel={() => setShowDeleteModal(false)}
+          onProceed={handleActionClick}
+          showModal={showDeleteModal}
+        />
+      )}
       {showModal && (
         <CreateConstant
           inputData={formData}

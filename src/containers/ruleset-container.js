@@ -1,27 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import PageTitle from "../components/title/page-title";
 import Tabs from "../components/tabs/tabs";
 import Banner from "../components/panel/banner";
 import * as Message from "../constants/messages";
 import RuleErrorBoundary from "../components/error/ruleset-error";
-import SweetAlert from "react-bootstrap-sweetalert";
 import Attributes from "../components/attributes/attributes";
-import { handleAttribute } from "../redux/actions/attributes";
 import ValidateRules from "../components/validate/validate-rules";
 import { connect } from "react-redux";
 import Decisions from "../components/decisions/decision";
 import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
+import { useParams } from "react-router-dom";
+import { loadFactsPerRule } from "../redux/actions/attributes";
+import Spinner from "../components/Spinner";
+import { addFactToRuleName } from "../redux/actions/fact";
+import Constants from "../components/constants/constants";
+import {
+  addConstantToRuleName,
+  loadConstantsPerRule
+} from "../redux/actions/constant";
 
 const tabs = [
   { name: "Facts" },
-  { name: "Decisions" },
-  { name: "Validate" },
+  { name: "Constants" },
+  { name: "Keys" },
+  { name: "Decision Tree" },
+  { name: "Evalute" },
   { name: "Generate" }
 ];
 
-const RulesetContainer = ({ loggedIn = false }) => {
+const RulesetContainer = () => {
+  const { ruleGroupId, ruleId } = useParams();
   const [activeTab, setActiveTab] = useState("Facts");
+  const [loading, setLoading] = useState(false);
   const [generateFlag, setGenerateFlag] = useState(false);
 
   const ruleset = useSelector(
@@ -45,41 +55,53 @@ const RulesetContainer = ({ loggedIn = false }) => {
     setGenerateFlag(true);
   };
 
-  const cancelAlert = () => {
-    setGenerateFlag(false);
-  };
-
-  const successAlert = () => {
-    const { name } = ruleset;
-    return (
-      <SweetAlert success title="File generated!" onConfirm={cancelAlert}>
-        {`${name} rule is successfully generated at your default download location`}
-      </SweetAlert>
-    );
-  };
-
   const { attributes, decisions, name } = ruleset || {};
+
+  const { attributesOfRule, error } = useSelector((state) => state.fact);
+  const { constantsPerRule } = useSelector((state) => state.constant);
 
   const message = updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
 
   const breadcrumbItems = [
     { name: "Home", link: "/" },
-    { name: "Rule-Groups", link: "/rule-groups" },
-    { name: "Rules", link: "/rule-group/1" }
+    { name: "Rule-Groups", link: `/rule-groups` },
+    { name: `Rule-Group(${ruleGroupId})`, link: `/rule-groups/${ruleGroupId}` }
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(loadFactsPerRule(ruleId));
+      await dispatch(loadConstantsPerRule(ruleId));
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div>
       <RuleErrorBoundary>
         <Breadcrumbs items={breadcrumbItems} />
-        {/* <PageTitle name={name} /> */}
         <Tabs tabs={tabs} onConfirm={handleTab} activeTab={activeTab} />
         <div className="tab-page-container">
           {activeTab === "Facts" && (
             <Attributes
-              attributes={attributes}
+              attributes={attributesOfRule}
               handleAttribute={(operation, attribute, index) =>
-                dispatch(handleAttribute(operation, attribute, index))
+                dispatch(addFactToRuleName(ruleId, attribute.name))
+              }
+            />
+          )}
+          {activeTab === "Constants" && (
+            <Constants
+              constants={constantsPerRule}
+              handleConstant={(operation, attribute, index) =>
+                dispatch(addConstantToRuleName(ruleId, attribute.name))
               }
             />
           )}
@@ -94,7 +116,6 @@ const RulesetContainer = ({ loggedIn = false }) => {
               onConfirm={generateFile}
             />
           )}
-          {generateFlag && successAlert()}
         </div>
       </RuleErrorBoundary>
     </div>

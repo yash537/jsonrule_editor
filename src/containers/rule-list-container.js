@@ -19,7 +19,7 @@ import { isContains } from "../utils/stringutils";
 import DeleteModal from "../components/Delete";
 
 const RuleListContainer = () => {
-  const { ruleId } = useParams();
+  const { ruleGroupId } = useParams();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -113,7 +113,7 @@ const RuleListContainer = () => {
     } else {
       dispatch(
         createrule({
-          ruleGroup: ruleId,
+          ruleGroup: ruleGroupId,
           name: formData.name
         })
       );
@@ -125,13 +125,13 @@ const RuleListContainer = () => {
   const breadcrumbItems = [
     { name: "Home", link: "/" },
     { name: "Rule-Groups", link: `/rule-groups` },
-    { name: ruleId, link: `/rule-groups/${ruleId}` }
+    { name: ruleGroupId, link: `/rule-groups/${ruleGroupId}` }
   ];
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(loadRules(ruleId));
+      await dispatch(loadRules(ruleGroupId));
       setLoading(false);
     };
 
