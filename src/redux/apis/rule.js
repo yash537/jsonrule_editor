@@ -43,3 +43,27 @@ export const DeleteRuleApi = async (data) => {
     throw error;
   }
 };
+
+export const fetchRuleConditions = async (ruleGroup, ruleId) => {
+  try {
+    const response = await api.get(
+      `/external/conditions/rule_group/${ruleGroup}/rule/${ruleId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createTree = async (ruleGroup, ruleId, tree) => {
+  try {
+    console.log("treee", tree);
+    const response = await api.post(
+      `/external/conditions/rule_group/${ruleGroup}/rule/${ruleId}`,
+      tree.conditions
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

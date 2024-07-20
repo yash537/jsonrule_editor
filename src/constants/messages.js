@@ -128,3 +128,24 @@ export const DELETE_CONSTANT_SUCCESS = {
   type: "success",
   message: "Yeah! Constant deleted successfully"
 };
+
+export const NO_CONSTANT_MSG = {
+  header: "No Constants",
+  body: "There is no constants available in the selected ruleset.",
+  buttonProps: BUTTON_PROPS_ATTRIBUTE,
+  type: "warning-panel"
+};
+
+export const NO_KEYS_MSG = {
+  header: "No Keys",
+  body: "There is no keys available in the selected ruleset.",
+  buttonProps: BUTTON_PROPS_ATTRIBUTE,
+  type: "warning-panel"
+};
+
+export const NO_DECISION_TREE_MSG = {
+  header: "No Conditions",
+  body: "There is no conditions available in the selected ruleset.",
+  buttonProps: BUTTON_PROPS_ATTRIBUTE,
+  type: "warning-panel"
+};

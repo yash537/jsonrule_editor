@@ -54,9 +54,8 @@ const ManageConstantsContainer = () => {
   const columns = [
     { header: "Id", accessor: "id", isLink: false },
     { header: "Name", accessor: "name", isLink: false },
-    { header: "Type", accessor: "type", isLink: false },
+    { header: "Type", accessor: "dataType", isLink: false },
     { header: "Value", accessor: "value", isLink: false },
-    { header: "Created At", accessor: "created_at", isLink: false },
     {
       header: "Action",
       accessor: "action",

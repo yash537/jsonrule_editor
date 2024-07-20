@@ -6,6 +6,7 @@ import {
   deleteKeyApi,
   fetchKeysApi,
   fetchKeysPerRuleApi,
+  handleRemoveKeyFromRuleApi,
   updateKeyApi
 } from "../apis/key";
 
@@ -35,6 +36,11 @@ export const deleteKey = (key) => {
 export const fetchKeyPerRule = (keys) => ({
   type: ActionTypes.FETCH_KEYS_PER_RULE,
   payload: keys
+});
+
+export const deleteKeyFromRule = (key) => ({
+  type: ActionTypes.DELETE_KEY_FROM_RULE,
+  payload: key
 });
 
 export const handlefetchKeys = () => async (dispatch) => {
@@ -93,6 +99,15 @@ export const addKeyToRuleName = (ruleId, key) => async (dispatch) => {
   try {
     const keys = await assignKeysToRule(ruleId, key);
     dispatch(fetchKeyPerRule(keys));
+  } catch (error) {
+    dispatch(keyFailuer(error.message));
+  }
+};
+
+export const handleRemoveKeyFromRule = (ruleId, key) => async (dispatch) => {
+  try {
+    await handleRemoveKeyFromRuleApi(ruleId, key);
+    dispatch(deleteKeyFromRule(key));
   } catch (error) {
     dispatch(keyFailuer(error.message));
   }

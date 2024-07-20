@@ -20,6 +20,7 @@ import {
 } from "../redux/actions/constant";
 import { addKeyToRuleName, loadKeysPerRule } from "../redux/actions/key";
 import Keys from "../components/keys/keys";
+import { handleFetchDecisionTree } from "../redux/actions/rule";
 
 const tabs = [
   { name: "Facts" },
@@ -36,28 +37,12 @@ const RulesetContainer = () => {
   const [loading, setLoading] = useState(false);
   const [generateFlag, setGenerateFlag] = useState(false);
 
-  const ruleset = useSelector(
-    (state) => state.ruleset.rulesets[state.ruleset.activeRuleset]
-  );
   const updatedFlag = useSelector((state) => state.ruleset.updatedFlag);
   const dispatch = useDispatch();
 
   const handleTab = (tabName) => {
     setActiveTab(tabName);
   };
-
-  const generateFile = () => {
-    const fileData = JSON.stringify(ruleset, null, "\t");
-    const blob = new Blob([fileData], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = `${ruleset.name}.json`;
-    link.href = url;
-    link.click();
-    setGenerateFlag(true);
-  };
-
-  const { attributes, decisions, name } = ruleset || {};
 
   const { attributesOfRule, error } = useSelector((state) => state.fact);
   const { constantsPerRule } = useSelector((state) => state.constant);
@@ -82,6 +67,20 @@ const RulesetContainer = () => {
 
     fetchData();
   }, [dispatch]);
+
+  const { tree } = useSelector((state) => state.ruleset);
+
+  const handleFetchTree = () => {
+    dispatch(handleFetchDecisionTree(ruleGroupId, ruleId));
+  };
+
+  useEffect(() => {
+    handleFetchTree();
+  }, []);
+
+  const generateFile = () => {
+    console.log("generate file");
+  };
 
   if (loading) {
     return <Spinner />;
@@ -117,14 +116,13 @@ const RulesetContainer = () => {
               }
             />
           )}
-          {activeTab === "Decisions" && <Decisions />}
-          {activeTab === "Validate" && (
-            <ValidateRules attributes={attributes} decisions={decisions} />
+          {activeTab === "Decision Tree" && (
+            <Decisions tree={{ name: ruleGroupId, conditions: tree }} />
           )}
+          {activeTab === "Evalute" && <ValidateRules />}
           {activeTab === "Generate" && (
             <Banner
-              message={message}
-              ruleset={ruleset}
+              message={Message.NO_CONSTANT_MSG}
               onConfirm={generateFile}
             />
           )}

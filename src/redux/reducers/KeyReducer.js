@@ -41,6 +41,14 @@ const KeyReducer = (state = initialState, action) => {
         error: null
       };
     }
+    case ActionTypes.DELETE_KEY_FROM_RULE: {
+      return {
+        ...state,
+        keysPerRule: state.keysPerRule.filter(
+          (attribute) => attribute.name !== action.payload
+        )
+      };
+    }
     default:
       return state;
   }

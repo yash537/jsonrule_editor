@@ -3,7 +3,7 @@ import Node from "./decision-tree-node";
 
 const Tree = ({ treeData, onAddNode, onEditNode, onDeleteNode }) => {
   const renderNodes = (conditions) => {
-    return conditions.map((condition, index) => (
+    return conditions?.map((condition, index) => (
       <Node
         key={index}
         condition={condition}

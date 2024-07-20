@@ -44,6 +44,15 @@ const FactReducer = (state = initialState, action) => {
         error: null
       };
     }
+    case ActionTypes.DELETE_FACT_FROM_RULE: {
+      return {
+        ...state,
+        attributesOfRule: state.attributesOfRule.filter(
+          (attribute) => attribute.name !== action.payload
+        )
+      };
+    }
+
     default:
       return state;
   }

@@ -1,11 +1,18 @@
-import { SET_NOTIFICATION, UPDATE_NAV_STATE } from "../actionTypes/action-type";
+import {
+  FETCH_OPRETORS,
+  FETCH_TYPES,
+  SET_NOTIFICATION,
+  UPDATE_NAV_STATE
+} from "../actionTypes/action-type";
 
 const initialState = {
   navState: "open",
   notification: {
     message: "",
     type: ""
-  }
+  },
+  dataTypes: [],
+  operators: []
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -25,6 +32,18 @@ const AppReducer = (state = initialState, action) => {
           message: action.payload.message,
           type: action.payload.type
         }
+      };
+    }
+    case FETCH_TYPES: {
+      return {
+        ...state,
+        dataTypes: action.payload
+      };
+    }
+    case FETCH_OPRETORS: {
+      return {
+        ...state,
+        operators: action.payload
       };
     }
     default:

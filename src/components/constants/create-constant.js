@@ -3,12 +3,13 @@ import InputField from "../forms/input-field";
 import Button from "../button/button";
 import { useState } from "react";
 import SelectField from "../forms/selectmenu-field";
-import dataTypes from "../../data-objects/operator.json";
 import constantValidations from "../../validations/constant-validations";
+import { useSelector } from "react-redux";
 
 const CreateConstant = ({ inputData, onSubmit, onClose, showModal, mode }) => {
   const [formData, setFormData] = useState(inputData);
   const [error, setError] = useState({});
+  const { dataTypes } = useSelector((state) => state.app);
 
   const handleFormChange = (e) => {
     setFormData({
@@ -26,8 +27,6 @@ const CreateConstant = ({ inputData, onSubmit, onClose, showModal, mode }) => {
       onSubmit(formData);
     }
   };
-
-  const attributeTypes = Object.keys(dataTypes);
 
   return (
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
@@ -52,7 +51,7 @@ const CreateConstant = ({ inputData, onSubmit, onClose, showModal, mode }) => {
           <SelectField
             label="DataType"
             name={"dataType"}
-            options={attributeTypes}
+            options={dataTypes.map((dataType) => dataType.name)}
             onChange={handleFormChange}
             value={formData.dataType}
             error={error.dataType}

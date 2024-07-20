@@ -10,12 +10,13 @@
 .panel-box-wrapper {
   border: 1px solid #bbb;
   box-shadow: 1px 3px #eee;
+  border-radius: 10px;
   display: flex;
   font-family: $tab-font-family;
   font-size: 17px;
   flex-wrap: wrap;
   margin-top: 30px;
-  padding: 20px;
+  padding: 12px;
   align-items: center;
 
   &.string-type {
@@ -90,6 +91,7 @@
   .menu {
     margin-left: 20px;
     width: auto;
+    text-align: center;
   }
 
   a {
@@ -162,4 +164,9 @@
 .banner-container {
   margin-left: 35px;
   margin-top: 50px;
+}
+
+.panel-box-wrapper .description {
+  width: 15%;
+  text-align: center;
 }

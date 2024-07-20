@@ -74,7 +74,7 @@ const Constants = ({ handleConstant, constants = [] }) => {
         removeAttribute={handleConstant}
       />
       {!bannerflag && filteredConstants.length < 1 && (
-        <Banner message={Message.NO_ATTRIBUTE_MSG} onConfirm={handleAdd} />
+        <Banner message={Message.NO_CONSTANT_MSG} onConfirm={handleAdd} />
       )}
     </div>
   );

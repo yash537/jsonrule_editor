@@ -1,137 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Panel from "../panel/panel";
 import InputField from "../forms/input-field";
-import SelectField from "../forms/selectmenu-field";
 import Button from "../button/button";
-import Table from "../table/table";
 import Banner from "../panel/banner";
 import * as Message from "../../constants/messages";
-import { validateRuleset } from "../../validations/rule-validation";
-import Loader from "../loader/loader";
-import { ViewOutcomes } from "../attributes/view-attributes";
+import { useSelector } from "react-redux";
 
-const ValidateRules = ({ attributes = [], decisions = [] }) => {
-  const [conditions, setConditions] = useState(
-    attributes
-      .filter((attr) => attr.type !== "object")
-      .map((attr) => ({ name: attr.name, value: "" }))
-  );
-  const [loading, setLoading] = useState(false);
-  const [outcomes, setOutcomes] = useState([]);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [result, setResult] = useState(false);
+const ValidateRules = () => {
+  const { attributesOfRule } = useSelector((state) => state.fact);
+  const [keyValues, setKeyValues] = useState([]);
 
-  const handleAttribute = (e, index) => {
-    const newConditions = [...conditions];
-    newConditions[index].name = e.target.value;
-    setConditions(newConditions);
+  // Initialize keyValues based on attributesOfRule
+  useEffect(() => {
+    const initialKeyValues = attributesOfRule.map((attr) => ({
+      key: attr.name,
+      value: ""
+    }));
+    setKeyValues(initialKeyValues);
+  }, [attributesOfRule]);
+
+  const handleKeyChange = (e, index) => {
+    const { name, value } = e.target;
+    const newKeyValues = [...keyValues];
+    newKeyValues[index].value = value;
+    setKeyValues(newKeyValues);
   };
 
-  const handleValue = (e, index) => {
-    const newConditions = [...conditions];
-    newConditions[index].value = e.target.value;
-    setConditions(newConditions);
-  };
-
-  const validateRules = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    let facts = {};
-    conditions.forEach((condition) => {
-      const attrProps = attributes.find((attr) => attr.name === condition.name);
-      if (attrProps.type === "number") {
-        facts[condition.name] = Number(condition.value);
-      } else if (condition.value && condition.value.indexOf(",") > -1) {
-        facts[condition.name] = condition.value.split(",");
-      } else {
-        facts[condition.name] = condition.value;
-      }
-    });
-
-    try {
-      const outcomes = await validateRuleset(facts, decisions);
-      setLoading(false);
-      setOutcomes(outcomes);
-      setResult(true);
-      setError(false);
-      setErrorMessage("");
-    } catch (e) {
-      setLoading(false);
-      setError(true);
-      setErrorMessage(e.error);
-      setResult(true);
-    }
+    // Perform validation or other logic with keyValues
+    console.log(keyValues);
   };
 
-  const attributeItems = () => {
-    const options = attributes.map((att) => att.name);
-
-    const formElements = conditions.map((condition, index) => (
-      <tr key={condition.name + index || "item" + index}>
-        <td>
-          <SelectField
-            options={options}
-            onChange={(e) => handleAttribute(e, index)}
-            value={condition.name}
-            readOnly
-          />
-        </td>
-        <td colSpan="2">
-          <InputField
-            onChange={(e) => handleValue(e, index)}
-            value={condition.value}
-          />
-        </td>
-      </tr>
-    ));
-
-    let messageContent;
-    if (result) {
-      if (error) {
-        messageContent = (
-          <div className="form-error">
-            Problem occurred when processing the rules. Reason is {errorMessage}
-          </div>
-        );
-      } else if (outcomes && outcomes.length < 1) {
-        messageContent = <div>No results found</div>;
-      } else if (outcomes && outcomes.length > 0) {
-        messageContent = (
-          <div className="view-params-container">
-            <h4>Outcomes</h4>
-            <ViewOutcomes items={outcomes} />
-          </div>
-        );
-      }
-    }
-
-    return (
-      <React.Fragment>
-        <Table columns={["Name", "Value"]}>{formElements}</Table>
-        <div className="btn-group">
-          <Button
-            label="Validate Ruleset"
-            onConfirm={validateRules}
-            className="primary-btn"
-            type="submit"
-          />
-        </div>
-        <hr />
-        {loading && <Loader />}
-        {!loading && messageContent}
-      </React.Fragment>
-    );
+  const handleReset = () => {
+    const resetKeyValues = keyValues.map((kv) => ({ ...kv, value: "" }));
+    setKeyValues(resetKeyValues);
   };
 
   return (
     <React.Fragment>
-      {decisions.length < 1 && <Banner message={Message.NO_VALIDATION_MSG} />}
-      {decisions.length > 0 && (
+      {attributesOfRule.length < 1 && (
+        <Banner message={Message.NO_VALIDATION_MSG} />
+      )}
+      {attributesOfRule.length > 0 && (
         <Panel>
-          <form>
-            <div>{attributeItems()}</div>
+          <form
+            className="rule-group-form"
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+          >
+            {attributesOfRule.map((attr, index) => (
+              <div key={attr.name} className="evaluate-wrapper">
+                <div> {attr.name}: </div>
+                <InputField
+                  label=""
+                  name={attr.name}
+                  onChange={(e) => handleKeyChange(e, index)}
+                  required
+                  value={keyValues[index]?.value || ""}
+                />
+              </div>
+            ))}
+            <div style={{ display: "flex" }}>
+              <Button label="Validate" classname="btn-success" type="submit" />
+              <Button label="Reset" classname="btn-danger" type="reset" />
+            </div>
           </form>
         </Panel>
       )}
@@ -139,9 +73,6 @@ const ValidateRules = ({ attributes = [], decisions = [] }) => {
   );
 };
 
-ValidateRules.propTypes = {
-  attributes: PropTypes.array,
-  decisions: PropTypes.array
-};
+ValidateRules.propTypes = {};
 
 export default ValidateRules;

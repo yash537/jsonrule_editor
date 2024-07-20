@@ -7,22 +7,36 @@ import {
   faAngleUp
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DeleteModal from "../Delete";
 
 const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
   const [showChildren, setShowChildren] = useState(false);
-  const [removeAlert, setRemoveAlert] = useState(false);
-  const [successAlert, setSuccessAlert] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentNode, setCurrentNode] = useState({});
 
   const handleToggleChildren = () => {
     setShowChildren(!showChildren);
   };
 
-  const handleDelete = () => {
-    setRemoveAlert(true);
+  const handleDelete = (node) => {
+    setCurrentNode(node);
+    setShowDeleteModal(true);
+  };
+
+  const handleActionClick = () => {
+    setShowDeleteModal(false);
+    onDeleteNode(currentNode);
   };
 
   return (
     <>
+      {showDeleteModal && (
+        <DeleteModal
+          showModal={showDeleteModal}
+          onCancel={() => setShowDeleteModal(false)}
+          onProceed={handleActionClick}
+        />
+      )}
       <ul className="tree">
         <li style={{ listStyleType: "none" }}>
           <div className="tree-box">
@@ -47,7 +61,7 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
                   <div>
                     <span className="textbold">{condition.fact} </span>
                     <span> ({condition.operator}) </span>
-                    <span className="textbold">{condition.value}</span>
+                    <span className="textbold">{condition.constant}</span>
                   </div>
                   <div className="action-btn">
                     <span
@@ -70,7 +84,7 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
                     </span>
                     <span
                       className="delete-node"
-                      onClick={() => handleDelete()}
+                      onClick={() => handleDelete(condition)}
                     >
                       <FontAwesomeIcon
                         className="close-icon"
@@ -79,7 +93,7 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
                     </span>
                   </div>
                 </div>
-                {condition.action && (
+                {condition.action.action && (
                   <div className="action">
                     <span className="action-message">
                       {condition.action.action}

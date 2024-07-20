@@ -6,6 +6,7 @@ import {
   deleteConstantApi,
   fetchConstantsApi,
   fetchConstantsPerRuleApi,
+  handleRemoveConstantFromRuleApi,
   updateconstantApi
 } from "../apis/constant";
 import { sendNotification } from "./app";
@@ -96,6 +97,11 @@ export const handleConstant = (action, constant, index) => async (dispatch) => {
   }
 };
 
+export const deleteConstFromRule = (constant) => ({
+  type: ActionTypes.DELETE_CONST_FROM_RULE,
+  payload: constant
+});
+
 export const addConstantToRuleName = (ruleId, constant) => async (dispatch) => {
   try {
     const constants = await assignConstantsToRule(ruleId, constant);
@@ -104,3 +110,13 @@ export const addConstantToRuleName = (ruleId, constant) => async (dispatch) => {
     dispatch(constantFailuer(error.message));
   }
 };
+
+export const handleRemoveConstantFromRule =
+  (ruleId, key) => async (dispatch) => {
+    try {
+      await handleRemoveConstantFromRuleApi(ruleId, key);
+      dispatch(deleteConstFromRule(key));
+    } catch (error) {
+      dispatch(constantFailuer(error.message));
+    }
+  };

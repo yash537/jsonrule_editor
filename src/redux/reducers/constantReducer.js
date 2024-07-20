@@ -45,6 +45,14 @@ const ConstantReducer = (state = initialState, action) => {
         error: null
       };
     }
+    case ActionTypes.DELETE_CONST_FROM_RULE: {
+      return {
+        ...state,
+        constantsPerRule: state.constantsPerRule.filter(
+          (attribute) => attribute.name !== action.payload
+        )
+      };
+    }
     default:
       return state;
   }

@@ -2,15 +2,27 @@ import React, { useCallback, useEffect, useState } from "react";
 import Title from "../components/title/title";
 import NavigationPanel from "../components/navigation/navigation-panel";
 import ApperanceContext from "../context/apperance-context";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { updateRulesetIndex } from "../redux/actions/rule";
-import { updateState } from "../redux/actions/app";
+import {
+  handleFetchDataTypes,
+  handleFetchOperators,
+  updateState
+} from "../redux/actions/app";
 import PropTypes from "prop-types";
 import AppRoutes from "../routes/app-routes";
 import { useNavigate } from "react-router-dom";
 
 const AppContainer = (props) => {
   const history = useNavigate();
+  const { dataTypes, operators } = useSelector((state) => state.app);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(handleFetchDataTypes());
+    dispatch(handleFetchOperators());
+  }, [dataTypes.length == 0, operators.length == 0]);
 
   const toggleBackground = useCallback((value) => {
     setTheme((prevTheme) => ({ ...prevTheme, background: value }));
@@ -62,7 +74,6 @@ AppContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   navState: state.app.navState,
-  rulenames: state.ruleset.rulesets.map((r) => r.name),
   loggedIn: state.app.loggedIn,
   activeIndex: state.ruleset.activeRuleset,
   ownProps

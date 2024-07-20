@@ -44,7 +44,7 @@ export const deleteKeyApi = async (key) => {
 export const assignKeysToRule = async (ruleId, key) => {
   try {
     const response = await api.put(`external/${ruleId}/key/${key}`);
-    return response.data?.constants ?? [];
+    return response.data?.ruleEvaluationKeys ?? [];
   } catch (error) {
     throw error;
   }
@@ -53,6 +53,15 @@ export const assignKeysToRule = async (ruleId, key) => {
 export const fetchKeysPerRuleApi = async (ruleId) => {
   try {
     const response = await api.get(`/keys/rule_name/${ruleId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const handleRemoveKeyFromRuleApi = async (ruleId, key) => {
+  try {
+    const response = await api.patch(`/external/remove/${ruleId}/key/${key}`);
     return response.data;
   } catch (error) {
     throw error;

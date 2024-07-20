@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import RulesetContainer from "../containers/ruleset-container";
 import RuleGroupsContainer from "../containers/rule-groups-container";
@@ -8,12 +8,18 @@ import ManageFactsContainer from "../containers/manage-facts-container";
 import ManageKeysContainer from "../containers/manage-keys-container";
 import ManageConstantsContainer from "../containers/manage-constants-container";
 import Notification from "../components/Notification";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOperators, fetchTypes } from "../redux/actions/app";
 
 const AppRoutes = (props) => {
   const { background } = props.appctx;
   const [show, setShow] = useState(false);
   const { notification } = useSelector((state) => state.app);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/") navigate("/rule-groups");
+  }, [location.pathname]);
 
   useEffect(() => {
     if (notification.message != "") {

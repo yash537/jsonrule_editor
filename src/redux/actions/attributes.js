@@ -1,6 +1,9 @@
 /* eslint-disable default-case */
 import * as ActionTypes from "../actionTypes/action-type";
-import { fetchFactsPerRuleApi } from "../apis/fact";
+import {
+  fetchFactsPerRuleApi,
+  handleRemoveAttrFromRuleApi
+} from "../apis/fact";
 import { sendNotification } from "./app";
 
 export const add = (attribute) => {
@@ -46,6 +49,11 @@ export const handleAttribute = (action, attribute, index) => (dispatch) => {
   }
 };
 
+export const deleteFactFromRule = (fact) => ({
+  type: ActionTypes.DELETE_FACT_FROM_RULE,
+  payload: fact
+});
+
 export const loadFactsPerRule = (ruleId) => async (dispatch) => {
   try {
     const facts = await fetchFactsPerRuleApi(ruleId);
@@ -57,6 +65,15 @@ export const loadFactsPerRule = (ruleId) => async (dispatch) => {
         type: "error"
       })
     );
+    dispatch(attributeFailuer(error.message));
+  }
+};
+
+export const handleRemoveAttrFromRule = (ruleId, fact) => async (dispatch) => {
+  try {
+    const facts = await handleRemoveAttrFromRuleApi(ruleId, fact);
+    dispatch(fetchFactsPerRuleSuccess(facts));
+  } catch (error) {
     dispatch(attributeFailuer(error.message));
   }
 };

@@ -60,3 +60,12 @@ export const assignConstantsToRule = async (ruleId, fact) => {
     throw error;
   }
 };
+
+export const handleRemoveConstantFromRuleApi = async (ruleId, key) => {
+  try {
+    const response = await api.patch(`/external/remove/${ruleId}/const/${key}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -8,7 +8,9 @@ import {
 } from "../actionTypes/action-type";
 import {
   createRuleApi,
+  createTree,
   DeleteRuleApi,
+  fetchRuleConditions,
   fetchRulesbyRuleGroupName,
   updateRuleApi
 } from "../apis/rule";
@@ -105,3 +107,33 @@ export const deleteRule = (data) => async (dispatch) => {
     dispatch(fetchRulesFailure(error.message));
   }
 };
+
+export const saveTree = (response) => {
+  return { type: ActionTypes.SAVE_DECISION_TREE_PER_RULE, payload: response };
+};
+
+export const fetchTree = (response) => {
+  return { type: ActionTypes.FETCH_DECISION_TREE_PER_RULE, payload: response };
+};
+
+export const handleSaveDecisionTree =
+  (ruleGroupId, ruleId, treeData) => async (dispatch) => {
+    console.log("heree", ruleGroupId, ruleId, treeData);
+    // try {
+    //   const response = await createTree(ruleGroupId, ruleId, treeData);
+    //   console.log("responer", response);
+    //   dispatch(saveTree(response));
+    // } catch (error) {
+    //   dispatch(fetchRulesFailure(error.message));
+    // }
+  };
+
+export const handleFetchDecisionTree =
+  (ruleGroupId, ruleId) => async (dispatch) => {
+    try {
+      const response = await fetchRuleConditions(ruleGroupId, ruleId);
+      dispatch(fetchTree(response));
+    } catch (error) {
+      dispatch(fetchRulesFailure(error.message));
+    }
+  };

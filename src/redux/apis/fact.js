@@ -57,3 +57,12 @@ export const assignFactsToRule = async (ruleId, fact) => {
     throw error;
   }
 };
+
+export const handleRemoveAttrFromRuleApi = async (ruleId, key) => {
+  try {
+    const response = await api.patch(`/external/remove/${ruleId}/fact/${key}`);
+    return response.data?.facts ?? [];
+  } catch (error) {
+    throw error;
+  }
+};

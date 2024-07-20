@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Panel from "../panel/panel";
-import InputField from "../forms/input-field";
 import SelectField from "../forms/selectmenu-field";
 import Button from "../button/button";
-import attributeValidations, {
-  attributeValidationsForRules
-} from "../../validations/attribute-validations";
-import dataTypes from "../../data-objects/operator.json";
+import { attributeValidationsForRules } from "../../validations/attribute-validations";
 import CheckBox from "../forms/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFetchFacts } from "../../redux/actions/fact";
@@ -60,8 +56,6 @@ const AddAttributes = ({
     const { checked } = e.target;
     setMandatory(checked);
   };
-
-  const attributeTypes = Object.keys(dataTypes);
 
   const dispatch = useDispatch();
 

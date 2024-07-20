@@ -23,7 +23,6 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
 
   const addAttribute = useCallback(
     (attribute) => {
-      console.log("ASdasdasd", attribute);
       setShowAddAttr(false);
       handleAttribute("ADD", attribute);
     },

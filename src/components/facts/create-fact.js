@@ -1,14 +1,16 @@
 import PropTypes from "prop-types";
 import InputField from "../forms/input-field";
 import Button from "../button/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectField from "../forms/selectmenu-field";
-import dataTypes from "../../data-objects/operator.json";
 import factValidations from "../../validations/fact-validations";
+import { useDispatch, useSelector } from "react-redux";
+import { handleFetchDataTypes } from "../../redux/actions/app";
 
 const CreateFact = ({ inputData, onSubmit, onClose, showModal, mode }) => {
   const [formData, setFormData] = useState(inputData);
   const [error, setError] = useState({});
+  const { dataTypes } = useSelector((state) => state.app);
 
   const handleFormChange = (e) => {
     setFormData({
@@ -27,8 +29,7 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal, mode }) => {
     }
   };
 
-  const attributeTypes = Object.keys(dataTypes);
-
+  console.log(dataTypes);
   return (
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
@@ -52,7 +53,7 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal, mode }) => {
           <SelectField
             label="DataType"
             name={"dataType"}
-            options={attributeTypes}
+            options={dataTypes.map((dataType) => dataType.name)}
             onChange={handleFormChange}
             value={formData.dataType}
             error={error.dataType}

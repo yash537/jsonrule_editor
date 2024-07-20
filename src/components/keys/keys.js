@@ -74,7 +74,7 @@ const Keys = ({ handleConstant, keys = [] }) => {
         removeAttribute={handleConstant}
       />
       {!bannerflag && filteredKeys.length < 1 && (
-        <Banner message={Message.NO_ATTRIBUTE_MSG} onConfirm={handleAdd} />
+        <Banner message={Message.NO_KEYS_MSG} onConfirm={handleAdd} />
       )}
     </div>
   );
