@@ -84,8 +84,6 @@ const Decisions = ({ tree }) => {
   };
 
   const handleSubmit = (submittedData) => {
-    console.log(submittedData);
-    console.log("olde tree data", tree);
     const updatedCondition = {
       fact: submittedData.fact,
       operator: submittedData.operator,
@@ -112,52 +110,33 @@ const Decisions = ({ tree }) => {
         updatedCondition.action.act[key] = value;
       });
     }
-    console.log("updated tree befoerw");
 
     const updateTree = (data) => {
       if (modalMode === "add" && currentNode === data) {
-        console.log("1");
-        data.conditions = data.conditions
-          ? data.conditions.concat(updatedCondition)
-          : [updatedCondition];
+        return {
+          ...data,
+          conditions: data.conditions
+            ? [...data.conditions, updatedCondition]
+            : [updatedCondition]
+        };
       } else if (modalMode === "edit" && currentNode === data) {
-        console.log("2");
-        Object.assign(data, updatedCondition);
+        return { ...data, ...updatedCondition };
       } else if (data.conditions) {
-        console.log("3");
-        data.conditions.forEach(updateTree);
+        return {
+          ...data,
+          conditions: data.conditions.map(updateTree)
+        };
       }
+      return data;
     };
 
-    console.log("seret tree data");
-    const newData = { ...treeData };
-    if (modalMode === "add" && currentNode === null) {
-      console.log("addd tree");
-      newData.conditions = newData.conditions
-        ? [...newData.conditions, updatedCondition]
-        : [updatedCondition];
-    } else {
-      console.log("update tree");
-      updateTree(newData);
-    }
-
+    const newData = updateTree({ ...treeData });
     setTreeData(newData);
-    console.log("set treed ata");
+    console.log(newData);
     setShowModal(false);
-    console.log("showe modal ");
-  };
-
-  console.log("tree data", treeData);
-  const handleActionClick = () => {
-    setLoading(true);
-    setShowDeleteModal(false);
-    dispatch(handleKey("DELETE", formData.name));
-    setLoading(false);
   };
 
   const handleSaveTree = (newData = treeData) => {
-    // console.log(treeData);
-    // const newTreeData = JSON.parse(JSON.stringify(newData));
     dispatch(handleSaveDecisionTree(ruleGroupId, ruleId, newData));
   };
 

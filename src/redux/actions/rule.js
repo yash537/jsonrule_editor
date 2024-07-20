@@ -119,13 +119,13 @@ export const fetchTree = (response) => {
 export const handleSaveDecisionTree =
   (ruleGroupId, ruleId, treeData) => async (dispatch) => {
     console.log("heree", ruleGroupId, ruleId, treeData);
-    // try {
-    //   const response = await createTree(ruleGroupId, ruleId, treeData);
-    //   console.log("responer", response);
-    //   dispatch(saveTree(response));
-    // } catch (error) {
-    //   dispatch(fetchRulesFailure(error.message));
-    // }
+    try {
+      const response = await createTree(ruleGroupId, ruleId, treeData);
+      console.log("responer", response);
+      dispatch(saveTree(response));
+    } catch (error) {
+      dispatch(fetchRulesFailure(error.message));
+    }
   };
 
 export const handleFetchDecisionTree =
