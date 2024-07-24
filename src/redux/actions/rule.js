@@ -1,5 +1,5 @@
 import * as ActionTypes from "../actionTypes/action-type";
-import { updateState } from "./app";
+import { sendNotification, updateState } from "./app";
 import {
   FETCH_RULE_FAILURE,
   FETCH_RULE_SUCCESS,
@@ -12,8 +12,16 @@ import {
   DeleteRuleApi,
   fetchRuleConditions,
   fetchRulesbyRuleGroupName,
+  saveFactsKeyValuePerRuleApi,
   updateRuleApi
 } from "../apis/rule";
+import {
+  CREATE_RULE_SUCCESS,
+  DELETE_RULE_SUCCESS,
+  MANAGE_TREE_SUCCESS,
+  OUTPUT_FOR_RULE_GROUP_SUCCESS,
+  UPDATE_RULE_SUCCESS
+} from "../../constants/messages";
 
 export const uploadRuleset = (ruleset) => (dispatch) => {
   dispatch(updateState("open"));
@@ -69,7 +77,7 @@ export const removeRule = (rule) => {
 };
 
 export const resetRules = () => async (dispatch) => {
-  dispatch(fetchRulesSuccess([]));
+  return { type: ActionTypes.RESET_RULES };
 };
 
 export const loadRules = (name) => async (dispatch) => {
@@ -85,6 +93,7 @@ export const createrule = (data) => async (dispatch) => {
   try {
     const rule = await createRuleApi(data);
     dispatch(addrule(rule));
+    dispatch(sendNotification(CREATE_RULE_SUCCESS));
   } catch (error) {
     dispatch(fetchRulesFailure(error.message));
   }
@@ -94,6 +103,7 @@ export const updaterule = (data) => async (dispatch) => {
   try {
     const rule = await updateRuleApi(data);
     dispatch(editrule({ ...rule, oldName: data.name }));
+    dispatch(sendNotification(UPDATE_RULE_SUCCESS));
   } catch (error) {
     dispatch(fetchRulesFailure(error.message));
   }
@@ -102,6 +112,7 @@ export const updaterule = (data) => async (dispatch) => {
 export const deleteRule = (data) => async (dispatch) => {
   try {
     await DeleteRuleApi(data);
+    dispatch(sendNotification(DELETE_RULE_SUCCESS));
     dispatch(removeRule(data));
   } catch (error) {
     dispatch(fetchRulesFailure(error.message));
@@ -116,12 +127,15 @@ export const fetchTree = (response) => {
   return { type: ActionTypes.FETCH_DECISION_TREE_PER_RULE, payload: response };
 };
 
+export const outputForValidation = (output) => {
+  return { type: ActionTypes.OUTPUT_FOR_RULE_VALIDATION, payload: output };
+};
+
 export const handleSaveDecisionTree =
   (ruleGroupId, ruleId, treeData) => async (dispatch) => {
-    console.log("heree", ruleGroupId, ruleId, treeData);
     try {
       const response = await createTree(ruleGroupId, ruleId, treeData);
-      console.log("responer", response);
+      dispatch(sendNotification(MANAGE_TREE_SUCCESS));
       dispatch(saveTree(response));
     } catch (error) {
       dispatch(fetchRulesFailure(error.message));
@@ -134,6 +148,23 @@ export const handleFetchDecisionTree =
       const response = await fetchRuleConditions(ruleGroupId, ruleId);
       dispatch(fetchTree(response));
     } catch (error) {
+      dispatch(fetchRulesFailure(error.message));
+    }
+  };
+
+export const saveFactsKeyValuePerRule =
+  (ruleGroup, data) => async (dispatch) => {
+    try {
+      const output = await saveFactsKeyValuePerRuleApi(ruleGroup, data);
+      dispatch(outputForValidation(output));
+      dispatch(sendNotification(OUTPUT_FOR_RULE_GROUP_SUCCESS));
+    } catch (error) {
+      dispatch(
+        sendNotification({
+          message: error.response.data.description,
+          type: "error"
+        })
+      );
       dispatch(fetchRulesFailure(error.message));
     }
   };

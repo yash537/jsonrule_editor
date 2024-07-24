@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CustomTable from "../components/table/custom-table";
 import ToolBar from "../components/toolbar/toolbar";
@@ -14,20 +14,20 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../components/Spinner";
 import Error from "../components/Error";
 import DeleteModal from "../components/Delete";
+import { isContains } from "../utils/stringutils";
 
 const RuleGroupsContainer = () => {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [oldName, setOldName] = useState("");
   const [mode, setMode] = useState("add");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+  const [searchCriteria, setSearchCriteria] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     executionMethod: ""
   });
-
-  const dispatch = useDispatch();
   const { ruleGroups, error } = useSelector((state) => state.ruleGroup);
 
   const handleEdit = (row) => {
@@ -85,12 +85,8 @@ const RuleGroupsContainer = () => {
     });
   };
 
-  const handleReset = (row) => {
-    alert(`Action clicked for ${row.name}`);
-  };
-
-  const handleSearch = (row) => {
-    alert(`Action clicked for ${row.name}`);
+  const handleSearch = (value) => {
+    setSearchCriteria(value);
   };
 
   const handleSubmit = (formData) => {
@@ -121,6 +117,12 @@ const RuleGroupsContainer = () => {
     }
   }, [dispatch, ruleGroups.length]);
 
+  const filterRuleGroup = useCallback(() => {
+    return ruleGroups.filter((att) => isContains(att.name, searchCriteria));
+  }, [ruleGroups, searchCriteria]);
+
+  const filteredRuleGroups = searchCriteria ? filterRuleGroup() : ruleGroups;
+
   if (loading) {
     return <Spinner />;
   }
@@ -147,16 +149,12 @@ const RuleGroupsContainer = () => {
           mode={mode}
         />
       )}
-      <ToolBar
-        handleAdd={handleAdd}
-        reset={handleReset}
-        searchTxt={handleSearch}
-      />
+      <ToolBar handleAdd={handleAdd} searchTxt={handleSearch} />
       <div className="custom-table">
         {loading ? (
           <div className="loading-spinner">Loading...</div> // Add your spinner component or HTML here
         ) : (
-          <CustomTable columns={columns} data={ruleGroups} />
+          <CustomTable columns={columns} data={filteredRuleGroups} />
         )}
       </div>
     </div>

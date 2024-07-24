@@ -8,6 +8,7 @@ import { handleKey, handlefetchKeys } from "../redux/actions/key";
 import CreateKey from "../components/keys/create-key";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DeleteModal from "../components/Delete";
+import Spinner from "../components/Spinner";
 
 const ManageKeysContainer = () => {
   const [showModal, setShowModal] = useState(false);
@@ -97,6 +98,10 @@ const ManageKeysContainer = () => {
   }, [keys, searchCriteria]);
 
   const filteredkeys = searchCriteria ? filterKey() : keys;
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="rules-container">

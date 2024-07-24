@@ -1,4 +1,9 @@
 /* eslint-disable default-case */
+import {
+  CREATE_KEY_SUCCESS,
+  DELETE_KEY_SUCCESS,
+  UPDATE_KEY_SUCCESS
+} from "../../constants/messages";
 import * as ActionTypes from "../actionTypes/action-type";
 import {
   assignKeysToRule,
@@ -9,6 +14,7 @@ import {
   handleRemoveKeyFromRuleApi,
   updateKeyApi
 } from "../apis/key";
+import { sendNotification } from "./app";
 
 export const addKey = (constant) => {
   return { type: ActionTypes.ADD_KEY, payload: constant };
@@ -48,6 +54,12 @@ export const handlefetchKeys = () => async (dispatch) => {
     const keys = await fetchKeysApi();
     dispatch(fetchKeys(keys));
   } catch (error) {
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
     dispatch(keyFailuer(error.message));
   }
 };
@@ -58,8 +70,15 @@ export const handleKey = (action, key, index) => async (dispatch) => {
       try {
         const response = await createKeyApi(key);
         dispatch(addKey(response));
+        dispatch(sendNotification(CREATE_KEY_SUCCESS));
       } catch (error) {
         dispatch(keyFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
@@ -67,8 +86,15 @@ export const handleKey = (action, key, index) => async (dispatch) => {
       try {
         await updateKeyApi(key, index);
         dispatch(updateKey(key, index));
+        dispatch(sendNotification(UPDATE_KEY_SUCCESS));
       } catch (error) {
         dispatch(keyFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
@@ -76,8 +102,15 @@ export const handleKey = (action, key, index) => async (dispatch) => {
       try {
         await deleteKeyApi(key);
         dispatch(deleteKey(key));
+        dispatch(sendNotification(DELETE_KEY_SUCCESS));
       } catch (error) {
         dispatch(keyFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
@@ -92,6 +125,12 @@ export const loadKeysPerRule = (ruleId) => async (dispatch) => {
     dispatch(fetchKeyPerRule(keys));
   } catch (error) {
     dispatch(keyFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
 
@@ -101,6 +140,12 @@ export const addKeyToRuleName = (ruleId, key) => async (dispatch) => {
     dispatch(fetchKeyPerRule(keys));
   } catch (error) {
     dispatch(keyFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
 
@@ -110,5 +155,11 @@ export const handleRemoveKeyFromRule = (ruleId, key) => async (dispatch) => {
     dispatch(deleteKeyFromRule(key));
   } catch (error) {
     dispatch(keyFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };

@@ -69,7 +69,7 @@ const Attributes = ({ handleAttribute, attributes = [] }) => {
         updateAttribute={handleAttribute}
         removeAttribute={handleAttribute}
       />
-      {!bannerflag && attributes.length < 1 && (
+      {!bannerflag && filteredAttributes.length < 1 && (
         <Banner message={Message.NO_ATTRIBUTE_MSG} onConfirm={handleAdd} />
       )}
     </div>

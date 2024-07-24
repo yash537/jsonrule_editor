@@ -57,11 +57,19 @@ export const fetchRuleConditions = async (ruleGroup, ruleId) => {
 
 export const createTree = async (ruleGroup, ruleId, tree) => {
   try {
-    console.log("treee", tree);
     const response = await api.post(
       `/external/conditions/rule_group/${ruleGroup}/rule/${ruleId}`,
       tree.conditions
     );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const saveFactsKeyValuePerRuleApi = async (ruleId, data) => {
+  try {
+    const response = await api.post(`${ruleId}`, data);
     return response.data;
   } catch (error) {
     throw error;

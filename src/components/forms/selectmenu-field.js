@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 const SelectField = ({
@@ -11,17 +11,11 @@ const SelectField = ({
   readOnly,
   name
 }) => {
-  const [fieldValue, setFieldValue] = useState(value);
-
   const errorClass = error ? "error" : "";
   const readOnlyClass = readOnly ? "readOnly" : "";
 
   const handleChange = (e) => {
-    setFieldValue(e.target.value);
     onChange(e);
-    if (required && e.target.value.trim() !== "") {
-      onChange({ ...e, error: "" });
-    }
   };
 
   return (
@@ -30,11 +24,11 @@ const SelectField = ({
       <select
         onChange={handleChange}
         className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`}
-        value={fieldValue}
+        value={value}
         disabled={readOnly}
         name={name}
       >
-        <option value="-1">Please select...</option>
+        <option value="">Please select...</option>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -48,8 +42,8 @@ const SelectField = ({
 
 SelectField.propTypes = {
   label: PropTypes.string,
-  name: PropTypes.string,
-  onChange: PropTypes.func,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
   required: PropTypes.bool,
   options: PropTypes.array.isRequired,

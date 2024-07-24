@@ -14,27 +14,18 @@ import Error from "../components/Error";
 import DeleteModal from "../components/Delete";
 
 const ManageConstantsContainer = () => {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("add");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const { constants, error } = useSelector((state) => state.constant);
-
   const [formData, setFormData] = useState({
     name: "",
     value: "",
     dataType: ""
   });
-
-  const handleEdit = (row) => {
-    setMode("edit");
-    setFormData(row);
-    setShowModal(true);
-  };
+  const { constants, error } = useSelector((state) => state.constant);
 
   const handleDelete = (row) => {
     setShowDeleteModal(true);
@@ -84,10 +75,6 @@ const ManageConstantsContainer = () => {
     setFormData({});
   };
 
-  const handleReset = (row) => {
-    alert(`Action clicked for ${row.name}`);
-  };
-
   const handleSearch = useCallback((value) => {
     setSearchCriteria(value);
   }, []);
@@ -105,7 +92,7 @@ const ManageConstantsContainer = () => {
     return constants.filter(
       (att) =>
         isContains(att.name, searchCriteria) ||
-        isContains(att.type, searchCriteria) ||
+        isContains(att.dataType, searchCriteria) ||
         isContains(att.value, searchCriteria)
     );
   }, [constants, searchCriteria]);
@@ -138,11 +125,7 @@ const ManageConstantsContainer = () => {
           mode={mode}
         />
       )}
-      <ToolBar
-        handleAdd={handleAdd}
-        reset={handleReset}
-        searchTxt={handleSearch}
-      />
+      <ToolBar handleAdd={handleAdd} searchTxt={handleSearch} />
       <div className="custom-table">
         <CustomTable
           columns={columns}

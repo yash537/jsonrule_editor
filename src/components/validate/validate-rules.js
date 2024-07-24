@@ -5,37 +5,53 @@ import InputField from "../forms/input-field";
 import Button from "../button/button";
 import Banner from "../panel/banner";
 import * as Message from "../../constants/messages";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetRules, saveFactsKeyValuePerRule } from "../../redux/actions/rule";
+import { useParams } from "react-router-dom";
+import JSONViewer from "../jsonViewer";
 
 const ValidateRules = () => {
+  const { ruleId } = useParams();
   const { attributesOfRule } = useSelector((state) => state.fact);
-  const [keyValues, setKeyValues] = useState([]);
+  const { outputForRule } = useSelector((state) => state.rules);
+  const [keyValues, setKeyValues] = useState({});
+  const [resetCounter, setResetCounter] = useState(0);
+  const dispatch = useDispatch();
 
-  // Initialize keyValues based on attributesOfRule
   useEffect(() => {
-    const initialKeyValues = attributesOfRule.map((attr) => ({
-      key: attr.name,
-      value: ""
-    }));
+    return () => {
+      dispatch(resetRules());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const initialKeyValues = attributesOfRule.reduce((acc, attr) => {
+      acc[attr.name] = "";
+      return acc;
+    }, {});
     setKeyValues(initialKeyValues);
   }, [attributesOfRule]);
 
-  const handleKeyChange = (e, index) => {
+  const handleKeyChange = (e) => {
     const { name, value } = e.target;
-    const newKeyValues = [...keyValues];
-    newKeyValues[index].value = value;
-    setKeyValues(newKeyValues);
+    setKeyValues({
+      ...keyValues,
+      [name]: value
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform validation or other logic with keyValues
-    console.log(keyValues);
+    dispatch(saveFactsKeyValuePerRule(ruleId, keyValues));
   };
 
   const handleReset = () => {
-    const resetKeyValues = keyValues.map((kv) => ({ ...kv, value: "" }));
+    const resetKeyValues = attributesOfRule.reduce((acc, attr) => {
+      acc[attr.name] = "";
+      return acc;
+    }, {});
     setKeyValues(resetKeyValues);
+    setResetCounter(resetCounter + 1); // force re-render
   };
 
   return (
@@ -44,21 +60,21 @@ const ValidateRules = () => {
         <Banner message={Message.NO_VALIDATION_MSG} />
       )}
       {attributesOfRule.length > 0 && (
-        <Panel>
+        <Panel key={resetCounter}>
           <form
-            className="rule-group-form"
+            className="evaluate-rule-group-form"
             onSubmit={handleSubmit}
             onReset={handleReset}
           >
-            {attributesOfRule.map((attr, index) => (
+            {attributesOfRule.map((attr) => (
               <div key={attr.name} className="evaluate-wrapper">
-                <div> {attr.name}: </div>
+                <div className="key-name"> {attr.name}: </div>
                 <InputField
                   label=""
                   name={attr.name}
-                  onChange={(e) => handleKeyChange(e, index)}
+                  onChange={handleKeyChange}
                   required
-                  value={keyValues[index]?.value || ""}
+                  value={keyValues[attr.name] || ""}
                 />
               </div>
             ))}
@@ -67,6 +83,13 @@ const ValidateRules = () => {
               <Button label="Reset" classname="btn-danger" type="reset" />
             </div>
           </form>
+        </Panel>
+      )}
+      {outputForRule && (
+        <Panel>
+          <span>Output: </span>
+          <br />
+          <JSONViewer json={outputForRule} />
         </Panel>
       )}
     </React.Fragment>

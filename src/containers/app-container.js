@@ -40,15 +40,17 @@ const AppContainer = (props) => {
   return (
     <React.Fragment>
       <ApperanceContext.Provider value={theme}>
-        <Title title={"Json Rule Editor"} />
-        <NavigationPanel
-          closedState={closednav}
-          updateState={props.updateState}
-          activeIndex={props.activeIndex}
-          rulenames={props.rulenames}
-          setActiveRulesetIndex={props.setActiveRulesetIndex}
-        />
-        <AppRoutes closedState={closednav} appctx={theme} />
+        <div className="scroll-container">
+          <Title title={"Json Rule Editor"} />
+          <NavigationPanel
+            closedState={closednav}
+            updateState={props.updateState}
+            activeIndex={props.activeIndex}
+            rulenames={props.rulenames}
+            setActiveRulesetIndex={props.setActiveRulesetIndex}
+          />
+          <AppRoutes closedState={closednav} appctx={theme} />
+        </div>
       </ApperanceContext.Provider>
     </React.Fragment>
   );

@@ -15,27 +15,20 @@ import Error from "../components/Error";
 import DeleteModal from "../components/Delete";
 
 const ManageFactsContainer = () => {
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("add");
   const [searchCriteria, setSearchCriteria] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({});
 
   const { attributes, error } = useSelector((state) => state.fact);
-
-  const [formData, setFormData] = useState({});
 
   const handleDelete = (row) => {
     setShowDeleteModal(true);
     setFormData(row);
-  };
-
-  const handleEdit = (row) => {
-    setFormData(row);
-    setMode("edit");
-    setShowModal(true);
   };
 
   useEffect(() => {
@@ -81,10 +74,6 @@ const ManageFactsContainer = () => {
     setMode("add");
   };
 
-  const handleReset = (row) => {
-    alert(`Action clicked for ${row.name}`);
-  };
-
   const handleSearch = useCallback((value) => {
     setSearchCriteria(value);
   }, []);
@@ -104,11 +93,10 @@ const ManageFactsContainer = () => {
     return attributes.filter(
       (att) =>
         isContains(att.name, searchCriteria) ||
-        isContains(att.type, searchCriteria)
+        isContains(att.dataType, searchCriteria)
     );
   }, [attributes, searchCriteria]);
 
-  // const breadcrumbItems = [{ name: "Home", link: "/" }];
   const filteredAttributes = searchCriteria ? filterAttribute() : attributes;
 
   if (loading) {
@@ -137,12 +125,7 @@ const ManageFactsContainer = () => {
           mode={mode}
         />
       )}
-      {/* <Breadcrumbs items={breadcrumbItems} /> */}
-      <ToolBar
-        handleAdd={handleAdd}
-        reset={handleReset}
-        searchTxt={handleSearch}
-      />
+      <ToolBar handleAdd={handleAdd} searchTxt={handleSearch} />
       <div className="custom-table">
         <CustomTable
           columns={columns}

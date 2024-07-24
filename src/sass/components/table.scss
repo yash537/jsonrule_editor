@@ -1,5 +1,5 @@
 .rules-container {
-  margin: 20px auto;
+  margin:  auto;
 }
 
 table {
@@ -19,7 +19,7 @@ table {
 .custom-table table {
   font-family: "Arial";
   width: 100%;
-  margin: 20px auto;
+  margin: 40px auto;
   border-collapse: collapse;
   border: 1px solid #eee;
   border-bottom: 2px solid #c2c2c2;
@@ -58,8 +58,10 @@ table {
   .action-wrapper .edit-icon {
     margin-right: 10px;
     color: $primary-btn-color;
+    cursor: pointer;
   }
   .action-wrapper .delete-icon {
     color: $danger;
+    cursor: pointer;
   }
 }

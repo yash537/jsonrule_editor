@@ -35,9 +35,7 @@ const RulesetContainer = () => {
   const { ruleGroupId, ruleId } = useParams();
   const [activeTab, setActiveTab] = useState("Facts");
   const [loading, setLoading] = useState(false);
-  const [generateFlag, setGenerateFlag] = useState(false);
 
-  const updatedFlag = useSelector((state) => state.ruleset.updatedFlag);
   const dispatch = useDispatch();
 
   const handleTab = (tabName) => {
@@ -47,8 +45,6 @@ const RulesetContainer = () => {
   const { attributesOfRule, error } = useSelector((state) => state.fact);
   const { constantsPerRule } = useSelector((state) => state.constant);
   const { keysPerRule } = useSelector((state) => state.key);
-
-  const message = updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
 
   const breadcrumbItems = [
     { name: "Home", link: "/" },

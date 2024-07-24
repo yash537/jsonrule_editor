@@ -4,12 +4,27 @@
   overflow-y: auto; /* Enable vertical scrolling */
   overflow-x: hidden; /* Hide horizontal scrolling if not needed */
   scrollbar-width: thin;
+  scrollbar-color: #006a4d #e4e4e4; /* Custom scrollbar colors */
+}
+
+#tree::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+#tree::-webkit-scrollbar-thumb {
+  background-color: #006a4d; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners */
+}
+
+#tree::-webkit-scrollbar-track {
+  background-color: #e4e4e4; /* Color of the scrollbar track */
 }
 
 #tree:first-child {
   border: 1px solid #006a4d;
   border-radius: 10px;
   margin-top: 20px;
+  background-color: #f9f9f9; /* Light background color */
 }
 
 .tree-box-inner {
@@ -18,7 +33,9 @@
 }
 
 .action-btn {
-  margin-left: 72px;
+  margin-left: 50px; /* Align buttons to the right */
+  display: flex;
+  gap: 10px; /* Space between buttons */
 }
 
 .tree {
@@ -52,18 +69,18 @@
 }
 
 .tree-box {
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
   display: inline-block;
   background-color: #ffffff;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 10px 15px;
+  padding: 15px;
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
     box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0; /* Slightly different background on hover */
   }
 
   .condition {
@@ -79,7 +96,7 @@
 
 .toggle-btn {
   font-size: 21px;
-  margin-right: 5px;
+  margin-right: 15px;
   cursor: pointer;
   color: #0ae240;
   user-select: none;
@@ -108,7 +125,7 @@
 .edit-node,
 .delete-node {
   cursor: pointer;
-  color: $primary-btn-color;
+  color: #007bff; /* Primary button color */
   margin-left: 10px;
   transition: color 0.3s ease;
 
@@ -118,15 +135,15 @@
 }
 
 .add-node {
-  color: $primary-btn-color;
+  color: #28a745; /* Green color */
 }
 
 .edit-node {
-  color: $warning;
+  color: #ffc107; /* Yellow color */
 }
 
 .delete-node {
-  color: $danger;
+  color: #dc3545; /* Red color */
 }
 
 .textbold {
@@ -141,7 +158,7 @@
 }
 
 .action-message {
-  color: $succees;
+  color: #28a745; /* Success color */
   font-weight: 600;
   text-transform: capitalize;
 }

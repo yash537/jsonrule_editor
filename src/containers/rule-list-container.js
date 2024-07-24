@@ -17,9 +17,14 @@ import Error from "../components/Error";
 import Spinner from "../components/Spinner";
 import { isContains } from "../utils/stringutils";
 import DeleteModal from "../components/Delete";
+import Tabs from "../components/tabs/tabs";
+import EvaluteRuleGroup from "../components/rule-group/evaluate-rule-group";
+
+const tabs = [{ name: "Rule-List" }, { name: "Evaluate Rule" }];
 
 const RuleListContainer = () => {
   const { ruleGroupId } = useParams();
+  const [activeTab, setActiveTab] = useState("Rule-List");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -87,10 +92,6 @@ const RuleListContainer = () => {
     });
   };
 
-  const handleReset = (row) => {
-    alert(`Action clicked for ${row.name}`);
-  };
-
   const handleSearch = (value) => {
     setSearchCriteria(value);
   };
@@ -138,6 +139,10 @@ const RuleListContainer = () => {
     fetchData();
   }, [dispatch, rules.length]);
 
+  const handleTab = (tabName) => {
+    setActiveTab(tabName);
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -148,6 +153,19 @@ const RuleListContainer = () => {
 
   return (
     <div className="rules-container">
+      <Breadcrumbs items={breadcrumbItems} />
+      <Tabs tabs={tabs} onConfirm={handleTab} activeTab={activeTab} />
+      <div className="tab-page-container">
+        {activeTab === "Rule-List" && (
+          <>
+            <ToolBar handleAdd={handleAdd} searchTxt={handleSearch} />
+            <div className="custom-table">
+              <CustomTable columns={columns} data={filteredRules} />
+            </div>
+          </>
+        )}
+        {activeTab === "Evaluate Rule" && <EvaluteRuleGroup />}
+      </div>
       {showDeleteModal && (
         <DeleteModal
           onCancel={() => setShowDeleteModal(false)}
@@ -164,15 +182,6 @@ const RuleListContainer = () => {
           mode={mode}
         />
       )}
-      <Breadcrumbs items={breadcrumbItems} />
-      <ToolBar
-        handleAdd={handleAdd}
-        reset={handleReset}
-        searchTxt={handleSearch}
-      />
-      <div className="custom-table">
-        <CustomTable columns={columns} data={filteredRules} />
-      </div>
     </div>
   );
 };

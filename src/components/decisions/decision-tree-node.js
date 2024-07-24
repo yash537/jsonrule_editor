@@ -3,14 +3,14 @@ import {
   faPencil,
   faTrash,
   faAdd,
-  faAngleDown,
-  faAngleUp
+  faCaretDown,
+  faCaretUp
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DeleteModal from "../Delete";
 
 const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
-  const [showChildren, setShowChildren] = useState(false);
+  const [showChildren, setShowChildren] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentNode, setCurrentNode] = useState({});
 
@@ -46,12 +46,12 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
                   {showChildren ? (
                     <FontAwesomeIcon
                       className="close-icon"
-                      icon={faAngleDown}
+                      icon={faCaretDown}
                     ></FontAwesomeIcon>
                   ) : (
                     <FontAwesomeIcon
                       className="close-icon"
-                      icon={faAngleUp}
+                      icon={faCaretUp}
                     ></FontAwesomeIcon>
                   )}
                 </span>
@@ -96,7 +96,7 @@ const Node = ({ condition, onAddNode, onEditNode, onDeleteNode }) => {
                 {condition.action.action && (
                   <div className="action">
                     <span className="action-message">
-                      {condition.action.action}
+                      Action: {condition.action.action}
                     </span>
                     {condition.action.act && (
                       <div className="action">

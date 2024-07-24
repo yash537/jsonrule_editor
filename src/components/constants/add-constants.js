@@ -24,8 +24,6 @@ const AddConstants = ({
     (state) => state.constant
   );
 
-  console.log(constants, constantsPerRule);
-
   useEffect(() => {
     // Filter out constants that are present in constantsPerRule
     const newfilteredAttributes = constants.filter(

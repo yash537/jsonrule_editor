@@ -35,3 +35,21 @@ export const deleteRuleGroupApi = async (data) => {
     throw error;
   }
 };
+
+export const fetchFactsForRuleGroup = async (ruleGroup) => {
+  try {
+    const response = await api.get(`fact/rule_group/${ruleGroup}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const saveFactsKeyValuePerRuleGroupApi = async (ruleGroup, data) => {
+  try {
+    const response = await api.post(`rulegroup/${ruleGroup}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

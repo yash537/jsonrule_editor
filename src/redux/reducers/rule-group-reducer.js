@@ -2,7 +2,9 @@ import * as ActionTypes from "../actionTypes/action-type";
 
 const initialState = {
   ruleGroups: [],
-  error: null
+  ruleGroupFacts: [],
+  error: null,
+  outputForRuleGroup: []
 };
 
 const RuleGroupReducer = (state = initialState, action) => {
@@ -44,6 +46,26 @@ const RuleGroupReducer = (state = initialState, action) => {
         )
       };
     }
+    case ActionTypes.FETCH_FACTS_FOR_RULE_GROUP:
+      return {
+        ...state,
+        ruleGroupFacts: action.payload,
+        error: null
+      };
+    case ActionTypes.OUTPUT_FOR_RULE_GROUP_VALIDATION: {
+      return {
+        ...state,
+        outputForRuleGroup: action.payload
+      };
+    }
+    case ActionTypes.RESET_RULE_GROUPS:
+      return {
+        ...state,
+        ruleGroups: [],
+        ruleGroupFacts: [],
+        error: null,
+        outputForRuleGroup: []
+      };
     default:
       return state;
   }

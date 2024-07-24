@@ -17,7 +17,8 @@ h1 {
         bottom: 30px;
     };
     position: fixed;
-    overflow-x: hidden;
+    overflow-x: scroll;
+    height: 100%;
 
     &.closed {
         left: 100px;
@@ -26,7 +27,7 @@ h1 {
 
     &.open {
         left: $sideNavWidth + 40px;
-        width: calc(100% - 360px);
+        width: calc(100% - 350px);
     }   
 }
 
@@ -112,3 +113,10 @@ $primary-color: #3498db; // Replace with your desired color
   .rule-group-form :last-child {
     justify-content: center;
   }
+
+//   .scroll-container {
+//     overflow-x: auto; /* Enables horizontal scrollbar */
+//     overflow-y: auto; /* Enables vertical scrollbar */
+//     height: 100%; /* Adjust as necessary */
+//     width: 100%; /* Adjust as necessary */
+//   }

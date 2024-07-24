@@ -29,7 +29,6 @@ const CreateFact = ({ inputData, onSubmit, onClose, showModal, mode }) => {
     }
   };
 
-  console.log(dataTypes);
   return (
     <div id="myModal" className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">

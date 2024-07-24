@@ -1,4 +1,9 @@
 /* eslint-disable default-case */
+import {
+  CREATE_FACT_SUCCESS,
+  DELETE_FACT_SUCCESS,
+  UPDATE_FACT_SUCCESS
+} from "../../constants/messages";
 import * as ActionTypes from "../actionTypes/action-type";
 import {
   assignFactsToRule,
@@ -7,6 +12,7 @@ import {
   fetchFactsApi,
   updateFactApi
 } from "../apis/fact";
+import { sendNotification } from "./app";
 
 export const addFact = (attribute) => {
   return { type: ActionTypes.ADD_FACT, payload: attribute };
@@ -42,6 +48,12 @@ export const handleFetchFacts = () => async (dispatch) => {
     dispatch(fetchFacts(facts));
   } catch (error) {
     dispatch(factFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
 
@@ -51,6 +63,12 @@ export const handleFetchFactsPerRule = (ruleId) => async (dispatch) => {
     dispatch(fetchFactPerRule(facts));
   } catch (error) {
     dispatch(factFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
 
@@ -60,6 +78,12 @@ export const addFactToRuleName = (ruleId, fact) => async (dispatch) => {
     dispatch(fetchFactPerRule(facts));
   } catch (error) {
     dispatch(factFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
 
@@ -69,8 +93,15 @@ export const handleFact = (action, fact, index) => async (dispatch) => {
       try {
         const response = await createFactApi(fact);
         dispatch(addFact(fact));
+        dispatch(sendNotification(CREATE_FACT_SUCCESS));
       } catch (error) {
         dispatch(factFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
@@ -78,8 +109,15 @@ export const handleFact = (action, fact, index) => async (dispatch) => {
       try {
         await updateFactApi(fact, index);
         dispatch(updateFact(fact, index));
+        dispatch(sendNotification(UPDATE_FACT_SUCCESS));
       } catch (error) {
         dispatch(factFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
@@ -87,8 +125,15 @@ export const handleFact = (action, fact, index) => async (dispatch) => {
       try {
         await deleteFactApi(fact);
         dispatch(deleteFact(fact));
+        dispatch(sendNotification(DELETE_FACT_SUCCESS));
       } catch (error) {
         dispatch(factFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }

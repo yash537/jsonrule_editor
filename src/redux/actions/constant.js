@@ -1,4 +1,9 @@
 /* eslint-disable default-case */
+import {
+  CREATE_CONSTANT_SUCCESS,
+  DELETE_CONSTANT_SUCCESS,
+  UPDATE_CONSTANT_SUCCESS
+} from "../../constants/messages";
 import * as ActionTypes from "../actionTypes/action-type";
 import {
   assignConstantsToRule,
@@ -69,26 +74,47 @@ export const handleConstant = (action, constant, index) => async (dispatch) => {
       try {
         const response = await createConstantApi(constant);
         dispatch(addConstant(response));
+        dispatch(sendNotification(CREATE_CONSTANT_SUCCESS));
       } catch (error) {
         dispatch(constantFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
     case "UPDATE": {
       try {
         await updateconstantApi(constant, index);
+        dispatch(sendNotification(UPDATE_CONSTANT_SUCCESS));
         dispatch(updateConstant(constant, index));
       } catch (error) {
         dispatch(constantFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
     case "DELETE": {
       try {
         await deleteConstantApi(constant);
+        dispatch(sendNotification(DELETE_CONSTANT_SUCCESS));
         dispatch(deleteConstant(constant));
       } catch (error) {
         dispatch(constantFailuer(error.message));
+        dispatch(
+          sendNotification({
+            message: error.response.data.description,
+            type: "error"
+          })
+        );
       }
       break; // Add this break statement
     }
@@ -108,6 +134,12 @@ export const addConstantToRuleName = (ruleId, constant) => async (dispatch) => {
     dispatch(fetchConstantPerRule(constants));
   } catch (error) {
     dispatch(constantFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
 
@@ -118,5 +150,11 @@ export const handleRemoveConstantFromRule =
       dispatch(deleteConstFromRule(key));
     } catch (error) {
       dispatch(constantFailuer(error.message));
+      dispatch(
+        sendNotification({
+          message: error.response.data.description,
+          type: "error"
+        })
+      );
     }
   };

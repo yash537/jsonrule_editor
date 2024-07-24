@@ -84,6 +84,11 @@ export const DELETE_RULE_GROUP_SUCCESS = {
   message: "Yeah! Rule group deleted successfully"
 };
 
+export const OUTPUT_FOR_RULE_GROUP_SUCCESS = {
+  type: "success",
+  message: "Yeah! Evaluation completed"
+};
+
 export const CREATE_RULE_SUCCESS = {
   type: "success",
   message: "Yeah! Rule created successfully"
@@ -112,6 +117,26 @@ export const UPDATE_FACT_SUCCESS = {
 export const DELETE_FACT_SUCCESS = {
   type: "success",
   message: "Yeah! Fact deleted successfully"
+};
+
+export const CREATE_KEY_SUCCESS = {
+  type: "success",
+  message: "Yeah! Key created successfully"
+};
+
+export const UPDATE_KEY_SUCCESS = {
+  type: "success",
+  message: "Yeah! Key updated successfully"
+};
+
+export const MANAGE_TREE_SUCCESS = {
+  type: "success",
+  message: "Yeah! Conditions updated successfully"
+};
+
+export const DELETE_KEY_SUCCESS = {
+  type: "success",
+  message: "Yeah! Key deleted successfully"
 };
 
 export const CREATE_CONSTANT_SUCCESS = {

@@ -50,7 +50,7 @@ const NavigationPanel = (props) => {
     <div
       className={`nav-container ${
         closedState ? "closed" : "open"
-      } ${background}`}
+      } ${background} scroll-container`}
     >
       {!closedState && (
         <div className="links-section">

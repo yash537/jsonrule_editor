@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Tree from "./decision-tree";
 import ManageDecision from "./manage-decision";
 import Button from "../button/button";
@@ -8,15 +8,17 @@ import { handleSaveDecisionTree } from "../../redux/actions/rule";
 import { useDispatch } from "react-redux";
 import Banner from "../panel/banner";
 import * as Message from "../../constants/messages";
-import { handleKey } from "../../redux/actions/key";
+import Spinner from "../Spinner";
 
 const Decisions = ({ tree }) => {
   const { ruleId, ruleGroupId } = useParams();
   const [treeData, setTreeData] = useState(tree);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [currentNode, setCurrentNode] = useState(null);
+  const [isLastNodeDeleted, setIsLastNodeDeleted] = useState(false);
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -80,7 +82,10 @@ const Decisions = ({ tree }) => {
 
     const newData = deleteNode({ ...treeData });
     setTreeData(newData);
-    handleSaveTree(newData);
+    // when last
+    if (newData.conditions.length == 0) {
+      setIsLastNodeDeleted(true);
+    }
   };
 
   const handleSubmit = (submittedData) => {
@@ -89,28 +94,21 @@ const Decisions = ({ tree }) => {
       operator: submittedData.operator,
       constant: submittedData.constant,
       action: {
-        action:
-          submittedData.mode == "add"
-            ? submittedData.action
-            : submittedData.action.action,
-        act: submittedData.mode == "add" ? null : submittedData.action.act
+        action: submittedData.action,
+        act: null
       }
     };
 
-    console.log("first");
-    if (submittedData.action === "execute") {
-      console.log("execute");
+    if (submittedData.action === "evaluate") {
       updatedCondition.action.act = {
         [submittedData.key]: ""
       };
-    } else if (submittedData.action === "evaluate") {
-      console.log("evaluate");
+    } else if (submittedData.action === "execute") {
       updatedCondition.action.act = {};
       submittedData.keyValues.forEach(({ key, value }) => {
         updatedCondition.action.act[key] = value;
       });
     }
-
     const updateTree = (data) => {
       if (modalMode === "add" && currentNode === data) {
         return {
@@ -130,15 +128,29 @@ const Decisions = ({ tree }) => {
       return data;
     };
 
-    const newData = updateTree({ ...treeData });
+    const newData = currentNode
+      ? updateTree({ ...treeData })
+      : {
+          ...treeData,
+          conditions: treeData.conditions
+            ? [...treeData.conditions, updatedCondition]
+            : [updatedCondition]
+        };
+
     setTreeData(newData);
-    console.log(newData);
     setShowModal(false);
   };
 
   const handleSaveTree = (newData = treeData) => {
+    setLoading(true);
     dispatch(handleSaveDecisionTree(ruleGroupId, ruleId, newData));
+    if (isLastNodeDeleted) setIsLastNodeDeleted(false);
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="tree">
@@ -150,7 +162,7 @@ const Decisions = ({ tree }) => {
         />
       )}
       <div className="tree-btn-wrapper">
-        {treeData.conditions?.length === 0 && (
+        {(!treeData.conditions || treeData.conditions.length === 0) && (
           <Button
             label="Create Node"
             onConfirm={() => handleAddNode(null)}
@@ -158,7 +170,8 @@ const Decisions = ({ tree }) => {
             type="button"
           />
         )}
-        {treeData.conditions?.length > 0 && (
+        {((treeData.conditions && treeData.conditions.length > 0) ||
+          isLastNodeDeleted) && (
           <Button
             label="Save Tree"
             onConfirm={() => handleSaveTree()}
@@ -181,7 +194,7 @@ const Decisions = ({ tree }) => {
           showModal={showModal}
         />
       )}
-      {treeData.conditions?.length < 1 && (
+      {(!treeData.conditions || treeData.conditions.length < 1) && (
         <Banner
           message={Message.NO_DECISION_TREE_MSG}
           onConfirm={() => handleAddNode(null)}

@@ -29,3 +29,15 @@
     margin: 30px auto !important;
   }
   
+
+  .scrollable-table-container {
+    overflow-x: auto; /* Enables horizontal scrollbar */
+    overflow-y: auto; /* Enables vertical scrollbar */
+    width: 100%; /* Make it responsive */
+    margin-bottom: 100px;
+  }
+  
+  table {
+    width: 100%; /* Make sure the table takes the full width */
+    border-collapse: collapse; /* Optional: for better table styling */
+  }

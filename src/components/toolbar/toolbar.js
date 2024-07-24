@@ -1,38 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Search from "../search/search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faUndo } from "@fortawesome/free-solid-svg-icons"; // Assuming these icons are used
+import { faPlus } from "@fortawesome/free-solid-svg-icons"; // Assuming these icons are used
 
 const ToolBar = ({ handleAdd, reset, searchTxt, addTitle = "Create" }) => {
-  const [alert, setAlert] = useState({
-    type: null, // success, warning, null
-    show: false,
-    message: ""
-  });
-
   const handleSearch = (value) => {
     searchTxt(value);
-  };
-
-  const handleAlertConfirm = () => {
-    if (alert.type === "success") {
-      reset();
-    }
-    setAlert({ ...alert, show: false });
-  };
-
-  const handleAlertCancel = () => {
-    setAlert({ ...alert, show: false });
-  };
-
-  const resetAction = () => {
-    reset();
-    setAlert({
-      type: "success",
-      show: true,
-      message: "Your changes are reset"
-    });
   };
 
   return (

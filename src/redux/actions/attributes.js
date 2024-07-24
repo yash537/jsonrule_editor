@@ -75,5 +75,11 @@ export const handleRemoveAttrFromRule = (ruleId, fact) => async (dispatch) => {
     dispatch(fetchFactsPerRuleSuccess(facts));
   } catch (error) {
     dispatch(attributeFailuer(error.message));
+    dispatch(
+      sendNotification({
+        message: error.response.data.description,
+        type: "error"
+      })
+    );
   }
 };
